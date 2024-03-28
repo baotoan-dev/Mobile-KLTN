@@ -1,0 +1,27 @@
+export const Color = {
+    // primary colors is black
+    primary: '#000000',
+    secondary: '#9e9e9e',
+    white: '#ffffff',
+    black: '#000000',
+    gray: '#f2f2f2',
+    lightGray: '#f9f9f9',
+    darkGray: '#c7c7c7',
+    red: '#ff0000',
+    green: '#00ff00',
+    blue: '#0000ff',
+    yellow: '#ffff00',
+    orange: '#ffa500',
+    purple: '#800080',
+    pink: '#ffc0cb',
+    brown: '#a52a2a',
+    transparent: 'transparent',
+    lightBlue: '#add8e6',
+    lightGreen: '#90ee90',
+    lightPink: '#ffb6c1',
+    lightPurple: '#9370db',
+    lightRed: '#ffcccb',
+    lightYellow: '#ffffed',
+    // rgba colors green and black
+    green_1: 'rgba(0, 128, 1, 1)',
+};
