@@ -3,7 +3,9 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function MoreInforComponent() {
+export default function MoreInforComponent({post}) {
+
+    console.log(post);
     return (
         <View style={styles.container}>
             <Text style={styles.line}></Text>
@@ -14,10 +16,12 @@ export default function MoreInforComponent() {
                         color: 'blue'
                     }} />
                     <Text style={styles.textCenterGray}>Mức lương</Text>
-                    <Text>
+                    <Text style={{
+                        textAlign: 'center',
+                    }}>
                         <Text
                             numberOfLines={1}
-                            style={styles.item}>10 - 20 triệu</Text>
+                            style={styles.item}>{post.salary_min + ' - ' + post.salary_max + ' ' + post.money_type_text}</Text>
                     </Text>
                 </View>
                 <View style={styles.address}>
@@ -26,7 +30,7 @@ export default function MoreInforComponent() {
                         color: 'blue'
                     }} />
                     <Text style={styles.textCenterGray}>Địa chỉ</Text>
-                    <Text style={styles.item}>123 abc xyz</Text>
+                    <Text style={styles.item}>{post.province_name}</Text>
                 </View>
                 <View style={styles.compare}>
                     <FontAwesome name="check" size={24} color="black" style={{
@@ -34,7 +38,7 @@ export default function MoreInforComponent() {
                         color: 'blue'
                     }} />
                     <Text style={styles.textCenterGray}>Phù hợp</Text>
-                    <Text style={styles.item}>2 công việc</Text>
+                    <Text style={styles.item}>0%</Text>
                 </View>
             </View>
         </View>

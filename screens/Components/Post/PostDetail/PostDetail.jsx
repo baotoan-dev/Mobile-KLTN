@@ -4,16 +4,14 @@ import { StyleSheet } from 'react-native'
 import jobApi from '../../../../api/job/jobApi'
 import { Ionicons } from '@expo/vector-icons';
 import MoreInforComponent from './MoreInforComponent/MoreInforComponent';
+import TabPostComponent from './TabPostComponent.jsx/TabPostComponent';
 
 export default function PostDetail(prop) {
     const id = prop.route.params.id;
     const [post, setPost] = useState({});
 
-    console.log('id', id);
-
     const fetchDetailPost = async () => {
         const response = await jobApi.getPostbyId(id, 'vi');
-        console.log(response.data);
         if (response && response.data.code === 200) {
             setPost(response.data.data);
         }
@@ -28,7 +26,7 @@ export default function PostDetail(prop) {
             <SafeAreaView>
                 <ScrollView style={styles.container}>
                     <View style={{
-                        height: 400,
+                        height: 350,
                     }}>
                         <ImageBackground style={styles.image} source={{ uri: 'https://quangcaonhat.com/wp-content/uploads/2020/08/Untitled-1-scaled.jpg' }} >
                             <View style={styles.wrapper}>
@@ -45,7 +43,7 @@ export default function PostDetail(prop) {
                                     <Text style={styles.companyName}>{post.company_name}</Text>
                                 </View>
 
-                                <MoreInforComponent />
+                                <MoreInforComponent post={post}/>
                             </View>
                             <TouchableOpacity style={{
                                 position: 'absolute',
@@ -60,6 +58,7 @@ export default function PostDetail(prop) {
                             </TouchableOpacity>
                         </ImageBackground>
                     </View>
+                    <TabPostComponent post={post}/>
                 </ScrollView>
             </SafeAreaView>
         ) : (
