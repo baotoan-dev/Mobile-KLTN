@@ -48,7 +48,6 @@ export default function HomeScreen() {
                 placeholder="Search"
               />
             </View>
-            <AntDesign name="filter" size={24} color="black" />
           </View>
         </View>
       </View>

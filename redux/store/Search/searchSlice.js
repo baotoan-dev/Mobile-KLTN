@@ -26,7 +26,6 @@ export const getSearchAction = (
     lang,
 ) => async (dispatch) => {
     try {
-        console.log(q, page, money_type, is_working_weekend, is_remotely, only_company, salary_min, salary_max, start_date, end_date, jobTypeId, category_ids, district_ids, salary_type, lang);
         dispatch(actions.getSearch());
         const response = await searchApi.getSearchByQueryV2(
             q,

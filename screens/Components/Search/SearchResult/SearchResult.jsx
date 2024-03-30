@@ -21,11 +21,12 @@ export default function SearchResult() {
   // }, [])
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
-      onPress={() => navigation.goBack()}
-      style={{
-        paddingHorizontal: 20,
-      }}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+          paddingHorizontal: 20,
+          marginBottom: 10,
+        }}>
         <Ionicons name="arrow-back-sharp" size={24} color="black" />
       </TouchableOpacity>
       <View style={{
@@ -35,15 +36,15 @@ export default function SearchResult() {
         paddingVertical: 10,
         paddingHorizontal: 20,
       }}>
-        <TouchableOpacity 
-        onPress={() => navigation.navigate('Filter')}
-        style={{
-          borderWidth: 1,
-          padding: 5,
-          borderColor: 'gray',
-          borderRadius: 20,
-          marginRight: 10,
-        }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Filter')}
+          style={{
+            borderWidth: 1,
+            padding: 5,
+            borderColor: 'gray',
+            borderRadius: 20,
+            marginRight: 10,
+          }}>
           <AntDesign name="filter" size={24} color="black" />
         </TouchableOpacity>
         <View style={{
@@ -60,6 +61,6 @@ export default function SearchResult() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 40,
   }
 })

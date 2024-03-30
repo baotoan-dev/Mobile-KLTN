@@ -1,0 +1,101 @@
+import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import React, { useEffect } from 'react'
+import Modal from 'react-native-modal';
+import { StyleSheet } from 'react-native';
+import { jobTypeApi } from '../../../../../api/job-type/jobTypeApi';
+import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+
+export default function TypeComponent({ showModalType, setShowModalType }) {
+    const [jobType, setJobType] = React.useState([])
+    const [idSelected, setIdSelected] = React.useState(100)
+    const fetchData = async () => {
+        const res = await jobTypeApi.getJobType('vi')
+        if (res && res.code === 200) {
+            setJobType(res.data)
+        }
+        setJobType([{ id: 0, name: 'Tất cả' }, ...res.data])
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    return (
+        <View>
+            <Modal
+                isVisible={showModalType}
+                onBackdropPress={() => setShowModalType(false)}
+                onSwipeComplete={() => setShowModalType(false)}
+                swipeDirection={['down']}
+                animationIn={"bounceInUp"}
+                animationOut={"bounceOutDown"}
+                style={styles.bottomModal}
+            >
+                <View style={{
+                    backgroundColor: 'white',
+                    width: '100%',
+                    height: '50%',
+                    borderRadius: 10,
+                }}>
+                    <View style={{
+                        padding: 20,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignContent: 'center',
+                    }}>
+                        <Text style={{
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                        }}>
+                            Loại công việc
+                        </Text>
+                        <TouchableOpacity onPress={() => {
+                            setShowModalType(false)
+                        }}>
+                            <MaterialIcons name="cancel" size={24} color="black" />
+                        </TouchableOpacity>
+                    </View>
+
+                    <FlatList
+                        data={jobType}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setIdSelected(item.id)
+                                    setShowModalType(false)
+                                }}
+                                style={{
+                                    padding: 20,
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: '#f0f0f0',
+                                    backgroundColor: idSelected === item.id ? '#f0f0f0' : 'white',
+                                }}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                }}>
+                                    <Text>
+                                        {item.name}
+                                    </Text>
+                                    {
+                                        +idSelected == +item.id && <AntDesign name="check" size={24} color="blue" />
+                                    }
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                    />
+                </View>
+            </Modal>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    bottomModal: {
+        justifyContent: 'flex-end',
+        margin: 0,
+        width: '100%',
+    },
+});

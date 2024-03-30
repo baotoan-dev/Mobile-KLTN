@@ -12,17 +12,13 @@ export default function HeaderSearch() {
     return (
         <View>
             <View style={styles.container}>
-                <View>
+                <TouchableOpacity
+                    onPress={() => navitation.goBack()}
+                >
                     <Ionicons name="arrow-back-outline" size={24} color="black" />
-                </View>
+                </TouchableOpacity>
                 <View style={styles.input}>
-                    <TouchableOpacity onPress={() => {
-                        navitation.navigate('Search');
-                    }} >
-                        <View>
-                            <EvilIcons name="search" size={24} color="black" />
-                        </View>
-                    </TouchableOpacity>
+                    <EvilIcons name="search" size={24} color="black" />
                     <TextInput
                         placeholder="Nhập từ khóa tìm kiếm..."
                     />
