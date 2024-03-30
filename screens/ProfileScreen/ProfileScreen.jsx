@@ -9,11 +9,12 @@ import { Color } from '../../utils/Color';
 import { Button } from '@rneui/themed';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AuthContext } from '../../App';
+import * as SecureStore from 'expo-secure-store';
 
 export default function ProfileScreen() {
   const dispatch = useDispatch();
   const [token, setToken] = useState('');
-  const {auth, setAuth} = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const { profile, loading, error } = useSelector(state => state.profile);
 
   AsyncStorage.getItem('token').then(token => {
@@ -22,8 +23,8 @@ export default function ProfileScreen() {
 
   const handleLogout = () => {
     console.log('logout');
-    AsyncStorage.removeItem('token');
-    AsyncStorage.removeItem('refreshToken');
+    SecureStore.deleteItemAsync('token');
+    SecureStore.deleteItemAsync('refreshToken');
     setAuth(false);
     setToken('');
   }
@@ -38,12 +39,13 @@ export default function ProfileScreen() {
         <View style={{
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 10,
         }}>
           <View>
             <Image source={{ uri: profile.avatarPath }} style={{ width: 60, height: 60, borderRadius: 50 }} />
           </View>
-          <View>
+          <View style={{
+            marginLeft: 10,
+          }}>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
@@ -53,13 +55,11 @@ export default function ProfileScreen() {
             <Text>{profile.name}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={handleLogout}>
-          <Button type='solid' radius="xl" color="secondary">
-            <MaterialIcons name="logout" size={22} color="white" style={{
-              marginLeft: 4,
-            }}/>
-          </Button>
-        </TouchableOpacity>
+        <Button type='solid' radius="xl" color="secondary" onPress={handleLogout}>
+          <MaterialIcons name="logout" size={22} color="white" style={{
+            marginLeft: 4,
+          }} />
+        </Button>
       </View>
     </View>
   )

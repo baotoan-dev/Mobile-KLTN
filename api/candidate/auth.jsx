@@ -3,7 +3,7 @@ import axiosConfig from "../../config/axiosConfig";
 export const authCandidate = {
     signInCandidate: async (email, password) => {
 
-        const URL = "/v1/sign-in/candidate";
+        const URL = "/api/v1/sign-in/candidate";
 
         const data = {
             email: email,

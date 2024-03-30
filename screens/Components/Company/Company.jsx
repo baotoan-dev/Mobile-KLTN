@@ -18,7 +18,7 @@ export default function Company() {
         const response = await companyApi.getAllCompany();
 
         if (response && response.data.status === 200) {
-            setCompany(response.data.data.companies);
+            setCompany(response.data.data.companies.slice(0, 4));
         }
     }
 
@@ -27,66 +27,95 @@ export default function Company() {
     }, [])
     return (
         <View style={styles.container}>
-            <Heading props={{ title: "Công ty nổi bật", extra: "Xem thêm" }} />
             <View style={{
-                marginTop: 10,
+                paddingHorizontal: 10,
             }}>
-                <FlatList
-                    data={company}
-                    horizontal={true}
-                    keyExtractor={item => item.id.toString()}
-                    renderItem={({ item, index }) => (
-                        <TouchableOpacity style={[styles.item, 
-                            selectItem === index ? { backgroundColor: 'rgba(161, 189, 139, 0.1)' } : null
-                        ]} onPress={()=> {
-                            setSelectItem(index);
-                            navigation.navigate('CompanyDetail', { id: item.id });
-                        }}>
-                            <View>
-                                <Image source={{ uri: item.logoPath }}
-                                    style={styles.image}
-                                />
-                                <Text style={styles.title}>{CheckLengthTitle(item.name)}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                />
+                <Heading props={{ title: "Công ty nổi bật", extra: "Xem thêm" }} />
             </View>
-        </View>
+            <View style={[{
+                marginTop: 10,
+            }, styles.wapper]}>
+                {
+                    company.map((item, index) => {
+                        return (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => {
+                                    console.log(item.id);
+                                    navigation.navigate('CompanyDetail', { id: item.id })
+                                }}
+                                style={[styles.item, {
+                                    borderColor: selectItem === index ? Color.primary : 'white',
+                                }]}
+                            >
+                                <Image
+                                    style={styles.image}
+                                    source={{
+                                        uri: item.logoPath,
+                                    }}
+                                />
+                                <Text style={styles.title}>
+                                    {CheckLengthTitle(item.name, 30)}
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                    )
+                }
+            </View>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        maxHeight: 200,
-        marginBottom: 30,   
-    },
-    item: {
-        gap: 10,
         padding: 10,
-        borderRadius: 5,
-        borderWidth: 0.1,
-        margin: 5,
-        width: 230,
-        flexDirection: 'column',
+        maxHeight: 300,
+        marginBottom: 100,
+    },
+    wapper: {
+        gap: 10,
+        width: '100%',
+        height: '100%',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: Color.primary
     },
+    item: {
+        width: '45%',
+        height: 150,
+        backgroundColor: 'white',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 5,
+        marginTop: 14,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 4,
+        borderRadius: 10,
+    },
     image: {
         height: '70%',
-        width: 250,
+        width: '100%',
         objectFit: 'contain',
+        marginTop: 10,
     },
     title: {
         fontSize: 13,
-        height: '30%',
         fontWeight: 'bold',
         color: 'black',
         fontStyle: 'italic',
         textAlign: 'center',
-        marginTop: 10,
+        height: '30%',
+        marginTop: 5,
     }
 })

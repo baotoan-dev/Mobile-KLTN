@@ -1,10 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Navigation from './StackNavigation';
 import { createContext, useEffect } from 'react';
 import { useState } from 'react';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import * as SecureStore from 'expo-secure-store';
 
 export const AuthContext = createContext();
 
@@ -13,8 +13,8 @@ export default function App() {
   const [auth, setAuth] = useState(false);
 
   const checkAuth = async () => {
-    const token = await AsyncStorage.getItem("token");
-    console.log('token', token);
+    const token = await SecureStore.getItemAsync('token');
+
     if (token) {
       setAuth(true);
     }

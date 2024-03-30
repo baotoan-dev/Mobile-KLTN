@@ -78,7 +78,7 @@ function Navigation() {
         <NavigationContainer>
             <Stack.Navigator>
                 {
-                    auth ? (
+                    !auth ? (
                         <>
                             <Stack.Screen name="LoginEmailAndPassword" component={LoginScreeForEmailAndPassword} options={{
                                 headerShown: false,

@@ -5,17 +5,16 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Entypo } from '@expo/vector-icons';
 import { Checkbox } from 'react-native-paper';
 import { authCandidate } from '../../api/candidate/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../App';
 import { useContext } from 'react';
+import * as SecureStore from 'expo-secure-store';
 
 export default function LoginScreeForEmailAndPassword() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [checked, setChecked] = React.useState(true);
     const toggleCheckbox = () => setChecked(!checked);
-    const navigation = useNavigation();
     const {auth, setAuth} = useContext(AuthContext);
 
     const handleLogin = async () => {
@@ -25,9 +24,8 @@ export default function LoginScreeForEmailAndPassword() {
             const response = await authCandidate.signInCandidate(email, password);
 
             if (response.code === 200) {
-                console.log(response.data);
-                AsyncStorage.setItem("token", response.data.accessToken);
-                AsyncStorage.setItem("refreshToken", response.data.refreshToken);
+                SecureStore.setItemAsync("token", response.data.accessToken);
+                SecureStore.setItemAsync("refreshToken", response.data.refreshToken);
                 console.log("Login success");
                 setAuth(true);
             }
@@ -43,7 +41,7 @@ export default function LoginScreeForEmailAndPassword() {
 
             <View style={styles.container}>
                 <Text style={styles.title}>
-                    Welcome to Spotify
+                    Welcome to JOBS
                 </Text>
 
                 <View style={{
