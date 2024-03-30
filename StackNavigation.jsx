@@ -14,6 +14,9 @@ import { useContext } from 'react';
 import { useState } from 'react';
 import CompanyDetail from './screens/Components/Company/CompanyDetail/CompanyDetail';
 import PostDetail from './screens/Components/Post/PostDetail/PostDetail';
+import Search from './screens/Components/Search/Search';
+import SearchResult from './screens/Components/Search/SearchResult/SearchResult';
+import Filter from './screens/Components/Search/Filter/Filter';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,12 +78,12 @@ function Navigation() {
         <NavigationContainer>
             <Stack.Navigator>
                 {
-                    !auth ? (
+                    auth ? (
                         <>
-                            <Stack.Screen name="Login" component={LoginScreen} options={{
+                            <Stack.Screen name="LoginEmailAndPassword" component={LoginScreeForEmailAndPassword} options={{
                                 headerShown: false,
                             }} />
-                            <Stack.Screen name="LoginEmailAndPassword" component={LoginScreeForEmailAndPassword} options={{
+                            <Stack.Screen name="Login" component={LoginScreen} options={{
                                 headerShown: false,
                             }} />
                         </>)
@@ -95,6 +98,15 @@ function Navigation() {
                     headerShown: false,
                 }} />
                 <Stack.Screen name="PostDetail" component={PostDetail} options={{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="Search" component={Search} options={{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="SearchResult" component={SearchResult} options={{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="Filter" component={Filter} options={{
                     headerShown: false,
                 }} />
 

@@ -4,8 +4,6 @@ import { StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
 export default function MoreInforComponent({post}) {
-
-    console.log(post);
     return (
         <View style={styles.container}>
             <Text style={styles.line}></Text>

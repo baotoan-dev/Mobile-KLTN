@@ -3,7 +3,7 @@ import { CONST_API } from "../contants/urlContant";
 
 export const companyApi = {
     getAllCompany: (page, limit) => {
-        const URL = `http://10.0.2.2:1902/api/v3/companies`;
+        const URL = `${CONST_API}/api/v3/companies`;
         return axios.get(URL);
     },
     getDetailCompany: (id, lang) => {
@@ -42,5 +42,9 @@ export const companyApi = {
             },
         });
     },
+    getCompanyByName: (name) => {
+        const URL = `${CONST_API}/api/v3/companies/by-name?name=${name}`;
+        return axios.get(URL);
+    }
 }
 

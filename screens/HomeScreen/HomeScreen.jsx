@@ -1,12 +1,14 @@
 import { View, ScrollView, Image, Text, TextInput } from 'react-native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 import Company from '../Components/Company/Company';
 import NewJob from '../Components/NewJob/NewJob';
+import Blog from '../Components/Blog/Blog';
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <View
@@ -40,6 +42,9 @@ export default function HomeScreen() {
             }}>
               <AntDesign name="search1" size={24} color="black" />
               <TextInput
+                onTouchStart={() => {
+                  navigation.navigate('Search');
+                }}
                 placeholder="Search"
               />
             </View>
@@ -50,6 +55,7 @@ export default function HomeScreen() {
       <View>
         <NewJob />
         <Company />
+        <Blog />
       </View>
     </ScrollView>
   )

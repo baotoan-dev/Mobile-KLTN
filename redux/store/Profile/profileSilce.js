@@ -12,7 +12,6 @@ export const getProfileAction = (lang) => async (dispatch) => {
         dispatch(actions.getProfile()); 
         const response = await profileApi.getProfile(lang);
 
-        console.log('response', response);
         if (response.status === 200) {
             dispatch(actions.getProfileSuccess(response.data.data)); 
         }

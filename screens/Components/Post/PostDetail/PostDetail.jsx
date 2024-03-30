@@ -1,10 +1,11 @@
-import { View, Text, ImageBackground, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import { View, Text, ImageBackground, Image, ScrollView, SafeAreaView, TouchableOpacity, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import jobApi from '../../../../api/job/jobApi'
 import { Ionicons } from '@expo/vector-icons';
 import MoreInforComponent from './MoreInforComponent/MoreInforComponent';
 import TabPostComponent from './TabPostComponent.jsx/TabPostComponent';
+import { Feather } from '@expo/vector-icons';
 
 export default function PostDetail(prop) {
     const id = prop.route.params.id;
@@ -43,7 +44,7 @@ export default function PostDetail(prop) {
                                     <Text style={styles.companyName}>{post.company_name}</Text>
                                 </View>
 
-                                <MoreInforComponent post={post}/>
+                                <MoreInforComponent post={post} />
                             </View>
                             <TouchableOpacity style={{
                                 position: 'absolute',
@@ -53,12 +54,64 @@ export default function PostDetail(prop) {
                                 borderRadius: 20,
                                 padding: 5
                             }}
+                                onPress={() => prop.navigation.goBack()}
                             >
                                 <Ionicons name="arrow-back" size={24} color="black" />
                             </TouchableOpacity>
                         </ImageBackground>
                     </View>
                     <TabPostComponent post={post}/>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            bottom: -12,
+                            height: 70,
+                            width: '100%',
+                            backgroundColor: 'white',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            padding: 5,
+                            zIndex: 100,
+                        }}
+                    >
+                        <View style={{
+                            width: '15%',
+                            height: '70%',
+                            marginLeft: 10,
+                        }}>
+                            <View style={{
+                                borderWidth: 1,
+                                padding: 10,
+                                borderColor: 'blue',
+                                borderRadius: 10,
+                                width: '80%'
+                            }}>
+                                <Feather style={{
+                                    textAlign: 'center'
+                                }}
+
+                                    name="bookmark" size={24} color="black" />
+                            </View>
+                        </View>
+                        <View style={{
+                            width: '85%',
+                            height: '70%',
+                            marginLeft: 10,
+                        }}>
+                            <View style={{
+                                width: '90%',
+                                borderWidth: 0.5,
+                                padding: 10,
+                                backgroundColor: 'blue',
+                                borderRadius: 10,
+                            }}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white'
+                                }}> Ứng tuyển ngay</Text>
+                            </View>
+                        </View>
+                    </View>
                 </ScrollView>
             </SafeAreaView>
         ) : (
@@ -73,6 +126,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         height: '100%',
         width: '100%',
+        marginBottom: 100,
     },
     image: {
         height: 200,

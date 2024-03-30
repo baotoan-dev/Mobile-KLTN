@@ -32,11 +32,12 @@ const jobApi = {
             `${provinceId ? `provinceId=${provinceId}&` : ``}` +
             `limit=${limit}${threshold ? `&threshold=${threshold}` : ``}` +
             `&lang=${lang}`;
+
+        console.log(URL);
         return await axios.get(URL);
     },
     getPostbyId: async (params, lang) => {
         const URL = `${CONST_API_V1}/api/v1/posts/${params}?lang=${lang}`;
-        console.log(URL);
         return await axios.get(URL);
     },
 }

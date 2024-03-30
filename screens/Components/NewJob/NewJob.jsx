@@ -8,6 +8,7 @@ import jobApi from '../../../api/job/jobApi'
 import { Color } from '../../../utils/Color'
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import Carousel from 'react-native-snap-carousel';
 
 const SCREEN_WIDTH = Dimensions.get("screen").width - 45;
 
@@ -15,6 +16,7 @@ export default function NewJob() {
     const [newJob, setNewJob] = useState([]);
     const [thresholdNewJob, setThresholdNewJob] = useState(0);
     const navigation = useNavigation();
+    const [current, setCurrent] = useState(0);
 
     const getNewJob = async () => {
 
@@ -23,90 +25,115 @@ export default function NewJob() {
             null,
             null,
             null,
-            12,
-            thresholdNewJob,
+            16,
+            85000,
             "vi"
         );
 
-        if (response && response.data.status === 200) {
-            setNewJob(response.data.data);
+
+        if (response && response.data && response.data.status === 200) {
+            setThresholdNewJob(thresholdNewJob + 4);
+            const newData = [];
+            for (let i = 0; i < response.data.data.length; i += 4) {
+                newData.push(response.data.data.slice(i, i + 4));
+            }
+            setNewJob(newData);
         }
     }
 
     useEffect(() => {
         getNewJob();
-    }, [])
-
+    }, [current])
 
     return (
         <View style={styles.container}>
             <Heading props={{ title: 'Công việc mới nhất', extra: 'Xem thêm' }} />
-            <FlatList
-                style={{ marginTop: 10 }}
+            <Carousel
                 data={newJob}
-                horizontal={true}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('PostDetail', { id: item.id });
-                    }}>
-                        <View style={styles.item}>
-                            <View style={{
-                                flexDirection: 'row',
+                sliderWidth={SCREEN_WIDTH}
+                itemWidth={SCREEN_WIDTH}
+                layout={'default'}
+                // loop={true}
+                autoplay={false}
+                // autoplayInterval={5000}
+                onSnapToItem={(index) => {
+                    console.log(index);
+                    if (index === newJob.length - 1) {
+                        getNewJob();
+                    }
+                }}
+                renderItem={({ item, index }) => (
+                    <FlatList
+                        style={{ marginTop: 10 }}
+                        data={item}
+                        horizontal={false}
+                        keyExtractor={item => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('PostDetail', { id: item.id });
                             }}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={{ uri: item.image }} style={styles.image} />
-                                </View>
-                                <View style={styles.contentContainer}>
-                                    <Text
-                                        numberOfLines={1}
-                                        style={{
-                                            fontSize: 12,
-                                            fontWeight: 'bold',
-                                            color: Color.primary,
-                                            width: 150,
-                                            overflow: 'hidden',
-                                            whiteSpace: 'nowrap',
-                                            textOverflow: 'ellipsis',
-                                        }}
-                                    >{(item.title)}</Text>
-                                    <Text
-                                        numberOfLines={1}
-                                        style={{
-                                            fontSize: 10,
-                                            color: 'gray',
-                                        }}>
-                                        {item.companyName}
-                                    </Text>
+                                <View style={styles.item}>
                                     <View style={{
                                         flexDirection: 'row',
-                                        gap: 10, 
-                                        alignItems: 'center',
-                                        marginTop: 5,
-                                        flexWrap: 'wrap',
                                     }}>
-                                        <Text style={styles.extraInfor}>
-                                            {item.location.district.fullName}
-                                        </Text>
-                                        <Text style={styles.extraInfor}>
-                                            {item.jobType.name}
-                                        </Text>
+                                        <View style={styles.imageContainer}>
+                                            <Image source={{ uri: item.image }} style={styles.image} />
+                                        </View>
+                                        <View style={styles.contentContainer}>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 12,
+                                                    fontWeight: 'bold',
+                                                    color: Color.primary,
+                                                    width: 150,
+                                                    overflow: 'hidden',
+                                                    whiteSpace: 'nowrap',
+                                                    textOverflow: 'ellipsis',
+                                                }}
+                                            >{(item.title)}</Text>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 10,
+                                                    color: 'gray',
+                                                }}>
+                                                {item.companyName}
+                                            </Text>
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                gap: 10,
+                                                alignItems: 'center',
+                                                marginTop: 5,
+                                                flexWrap: 'wrap',
+                                            }}>
+                                                <Text style={styles.extraInfor}>
+                                                    {item.location.district.fullName}
+                                                </Text>
+                                                <Text style={styles.extraInfor}>
+                                                    {item.jobType.name}
+                                                </Text>
+                                            </View>
+                                            <Text
+                                                style={styles.textSalary}
+                                                numberOfLines={1}
+                                            >
+                                                {item.salaryMin + ' - ' + item.salaryMax + ' ' + item.moneyType}
+                                            </Text>
+                                        </View>
                                     </View>
-                                    <Text
-                                        style={styles.textSalary}
-                                        numberOfLines={1}
-                                    >
-                                        {item.salaryMin + ' - ' + item.salaryMax + ' ' + item.moneyType}
-                                    </Text>
+                                    <View>
+                                        <Feather name="bookmark" size={24} color="black" />
+                                    </View>
                                 </View>
-                            </View>
-                            <View>
-                                <Feather name="bookmark" size={24} color="black" />
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                )}
-            />
+                            </TouchableOpacity>
+                        )}
+                    />
+                )
+                }
+            >
+            </Carousel>
+
         </View>
     )
 }
@@ -126,7 +153,7 @@ const styles = StyleSheet.create({
         gap: 15,
         borderRadius: 5,
         margin: 5,
-        width: SCREEN_WIDTH,
+        width: SCREEN_WIDTH - 5,
         justifyContent: 'space-between',
     },
     image: {

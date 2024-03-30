@@ -6,7 +6,7 @@ import InforTabComponent from './InforTabComponent/InforTabComponent';
 import JobTabComponent from './JobTabComponent/JobTabComponent';
 import CompanyTabComponent from './CompanyTabComponent/CompanyTabComponent';
 
-export default function TabPostComponent({post}) {
+export default function TabPostComponent({ post }) {
     const [index, setIndex] = useState(0);
 
     return (
@@ -34,10 +34,12 @@ export default function TabPostComponent({post}) {
                     Công ty
                 </Tab.Item>
             </Tab>
-            <ScrollView>
-                {index === 0 && <InforTabComponent post={post}/>}
-                {index === 1 && <JobTabComponent post={post}/>}
-                {index === 2 && <CompanyTabComponent post={post}/>}
+            <ScrollView style={{
+                marginBottom: 70
+            }}>
+                {index === 0 && <InforTabComponent post={post} />}
+                {index === 1 && <JobTabComponent post={post} />}
+                {index === 2 && <CompanyTabComponent post={post} />}
             </ScrollView>
         </View>
     )
