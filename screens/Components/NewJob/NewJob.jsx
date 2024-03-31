@@ -57,7 +57,6 @@ export default function NewJob() {
                 autoplay={false}
                 // autoplayInterval={5000}
                 onSnapToItem={(index) => {
-                    console.log(index);
                     if (index === newJob.length - 1) {
                         getNewJob();
                     }
@@ -150,7 +149,6 @@ const styles = StyleSheet.create({
         padding: 10,
         display: 'flex',
         flexDirection: 'row',
-        gap: 15,
         borderRadius: 5,
         margin: 5,
         width: SCREEN_WIDTH - 5,
@@ -174,7 +172,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.1,
         padding: 3,
         borderRadius: 2,
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.1)',
         fontWeight: 'bold',
         marginRight: 10,
     },

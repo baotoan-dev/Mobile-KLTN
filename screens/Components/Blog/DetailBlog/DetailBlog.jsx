@@ -189,7 +189,7 @@ export default function DetailBlog(prop) {
                                 width: '100%',
                             }}>
                                 <View style={{
-                                    width: '48%',
+                                    width: '33%',
                                 }}>
                                     {
                                         detailBlog.liked ? (
@@ -198,13 +198,12 @@ export default function DetailBlog(prop) {
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                                 padding: 10,
-                                                backgroundColor: 'rgba(158, 147, 147, 1)',
                                                 borderRadius: 10,
                                                 marginTop: 10,
                                             }}>
                                                 <AntDesign name="like1" size={24} color="black" />
                                                 <Text style={{
-                                                    color: 'white',
+                                                    color: 'black',
                                                     marginLeft: 10,
                                                 }}>Đã thích</Text>
                                             </TouchableOpacity>
@@ -216,13 +215,12 @@ export default function DetailBlog(prop) {
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
                                                     padding: 10,
-                                                    backgroundColor: 'rgba(158, 147, 147, 1)',
                                                     borderRadius: 10,
                                                     marginTop: 10,
                                                 }}>
                                                     <AntDesign name="like2" size={24} color="black" />
                                                     <Text style={{
-                                                        color: 'white',
+                                                        color: 'black',
                                                         marginLeft: 10,
                                                     }}>Thích</Text>
                                                 </TouchableOpacity>
@@ -230,22 +228,39 @@ export default function DetailBlog(prop) {
                                     }
                                 </View>
                                 <View style={{
-                                    width: '48%',
+                                    width: '33%',
                                 }}>
                                     <TouchableOpacity style={{
                                         flexDirection: 'row',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         padding: 10,
-                                        backgroundColor: 'rgba(158, 147, 147, 1)',
                                         borderRadius: 10,
                                         marginTop: 10,
                                     }}>
-                                        <Ionicons name="chatbox" size={24} color="white" />
+                                        <Ionicons name="chatbox" size={24} color="black" />
                                         <Text style={{
-                                            color: 'white',
+                                            color: 'black',
                                             marginLeft: 10,
                                         }}>Bình luận</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{
+                                    width: '33%',
+                                }}>
+                                    <TouchableOpacity style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: 10,
+                                        borderRadius: 10,
+                                        marginTop: 10,
+                                    }}>
+                                        <AntDesign name="link" size={24} color="black" />                                        
+                                        <Text style={{
+                                            color: 'black',
+                                            marginLeft: 10,
+                                        }}>Sao chép</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         color: Color.primary
     },
     right: {
-        color: Color.primary,
+        color: 'blue', 
         fontSize: 14
     }
 })
