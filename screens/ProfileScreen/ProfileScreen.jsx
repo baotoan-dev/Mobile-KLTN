@@ -17,8 +17,8 @@ export default function ProfileScreen() {
   const { auth, setAuth } = useContext(AuthContext);
   const { profile, loading, error } = useSelector(state => state.profile);
 
-  AsyncStorage.getItem('token').then(token => {
-    setToken(token);
+  SecureStore.getItemAsync('token').then((value) => {
+    setToken(value);
   });
 
   const handleLogout = () => {

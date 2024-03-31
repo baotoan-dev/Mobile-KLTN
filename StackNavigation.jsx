@@ -17,6 +17,10 @@ import PostDetail from './screens/Components/Post/PostDetail/PostDetail';
 import Search from './screens/Components/Search/Search';
 import SearchResult from './screens/Components/Search/SearchResult/SearchResult';
 import Filter from './screens/Components/Search/Filter/Filter';
+import DetailBlog from './screens/Components/Blog/DetailBlog/DetailBlog';
+import SeeAllBlog from './screens/Components/Blog/SeeAllBlog/SeeAllBlog';
+import MoreInforComponent from './screens/Components/Post/PostDetail/MoreInforComponent/MoreInforComponent';
+import MoreInforOfTopCompany from './screens/Components/Company/MoreInforOfTopCompany/MoreInforOfTopCompany';
 
 const Tab = createBottomTabNavigator();
 
@@ -94,19 +98,37 @@ function Navigation() {
                             }} />
                         )
                 }
+                {/* company */}
                 <Stack.Screen name="CompanyDetail" component={CompanyDetail} options={{
                     headerShown: false,
                 }} />
+                <Stack.Screen name='MoreInforOfTopCompany' component={MoreInforOfTopCompany} options={{
+                    headerShown: false,
+                }} />
+
+                {/* post */}
                 <Stack.Screen name="PostDetail" component={PostDetail} options={{
                     headerShown: false,
                 }} />
+
+                {/* search */}
                 <Stack.Screen name="Search" component={Search} options={{
                     headerShown: false,
                 }} />
                 <Stack.Screen name="SearchResult" component={SearchResult} options={{
                     headerShown: false,
                 }} />
+
+                {/* filter */}
                 <Stack.Screen name="Filter" component={Filter} options={{
+                    headerShown: false,
+                }} />
+
+                {/* blog */}
+                <Stack.Screen name="DetailBlog" component={DetailBlog} options={{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="SeeAllBlog" component={SeeAllBlog} options={{
                     headerShown: false,
                 }} />
 

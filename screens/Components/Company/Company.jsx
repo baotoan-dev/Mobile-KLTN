@@ -8,6 +8,7 @@ import Heading from '../Heading/Heading';
 import { Color } from '../../../utils/Color';
 import { CheckLengthTitle } from '../../../utils/CheckLengthTitle';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Company() {
     const [company, setCompany] = useState([]);
@@ -32,6 +33,28 @@ export default function Company() {
             }}>
                 <Heading props={{ title: "Công ty nổi bật", extra: "Xem thêm" }} />
             </View>
+            <TouchableOpacity 
+            onPress={() => {
+                navigation.navigate('MoreInforOfTopCompany')
+            }}
+            style={{
+                paddingHorizontal: 10,
+                marginTop: 5,
+                flexDirection: 'row',
+                alignItems: 'center',
+            }}>
+                <Text style={{
+                    fontSize: 12,
+                    color: 'rgba(105, 76, 232, 1)'
+                }}>
+                    Tìm hiểu thêm
+                </Text>
+                <View style={{
+                    marginLeft: 5,
+                }}>
+                    <AntDesign name="infocirlceo" size={16} color="rgba(105, 76, 232, 1)s" />
+                </View>
+            </TouchableOpacity>
             <View style={[{
                 marginTop: 10,
             }, styles.wapper]}>
@@ -71,7 +94,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        maxHeight: 300,
+        maxHeight: 320,
         marginBottom: 100,
     },
     wapper: {

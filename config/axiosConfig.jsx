@@ -1,8 +1,8 @@
 // config axios
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { CONST_API_V1 } from "../api/contants/urlContant";
+import * as SecureStore from 'expo-secure-store';
 
 const axiosConfig = axios.create({
     baseURL: CONST_API_V1,
@@ -12,7 +12,7 @@ const axiosConfig = axios.create({
 });
 axiosConfig.interceptors.request.use(
     async (config) => {
-        const token = await AsyncStorage.getItem("token");
+        const token = await SecureStore.getItemAsync("token");
 
         if (token) {
             config.headers
@@ -31,22 +31,23 @@ axiosConfig.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        console.log('status', error.response.status);
-        if (error.response.status === 401 && !originalRequest._retry) {
+        console.log('status 34', error.response.status);
+        if (error.response.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true;
-            const refreshToken = await AsyncStorage.getItem("refreshToken");
+            const refreshToken = await SecureStore.getItemAsync("refreshToken");
+
             const URL = "/api/v1/reset-access-token";
             const data = {
                 refreshToken: refreshToken,
             };
             return axiosConfig.post(URL, data).then((res) => {
-                if (res.status === 201) {
-                    AsyncStorage.setItem("token", res.data.token);
+                if (res.data.code === 200) {
+                    SecureStore.setItemAsync("token", res.data.data.accessToken);
                     return axiosConfig(originalRequest);
                 }
                 else{
-                    AsyncStorage.removeItem("token");
-                    AsyncStorage.removeItem("refreshToken");
+                    SecureStore.deleteItemAsync("token");
+                    SecureStore.deleteItemAsync("refreshToken");
                     return Promise.reject(error);
                 }
             });

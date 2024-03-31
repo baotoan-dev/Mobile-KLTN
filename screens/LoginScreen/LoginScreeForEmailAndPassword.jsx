@@ -1,11 +1,9 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import { Entypo } from '@expo/vector-icons';
 import { Checkbox } from 'react-native-paper';
 import { authCandidate } from '../../api/candidate/auth';
-import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../App';
 import { useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
@@ -13,14 +11,13 @@ import * as SecureStore from 'expo-secure-store';
 export default function LoginScreeForEmailAndPassword() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [checked, setChecked] = React.useState(true);
-    const toggleCheckbox = () => setChecked(!checked);
-    const {auth, setAuth} = useContext(AuthContext);
+    const { auth, setAuth } = useContext(AuthContext);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async () => {
         try {
             // baotoandd2016@gmail.com
-            
+
             const response = await authCandidate.signInCandidate(email, password);
 
             if (response.code === 200) {
@@ -37,103 +34,166 @@ export default function LoginScreeForEmailAndPassword() {
         }
     }
     return (
-        <LinearGradient colors={["#1DB954", "#040306"]} style={{ flex: 1 }}>
 
-            <View style={styles.container}>
-                <Text style={styles.title}>
-                    Welcome to JOBS
-                </Text>
-
-                <View style={{
-                    backgroundColor: "#1DB954",
-                    padding: 10,
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    width: 100,
-                    borderRadius: 50,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginVertical: 10,
-                    marginTop: 40
+        <View style={styles.container}>
+            <Image source={require('../../images/login.jpg')}
+                style={{
+                    width: '100%',
+                    height: '40%',
+                    marginTop: 30,
+                    borderRadius: 20,
                 }}>
-                    <Entypo name="spotify-with-circle" size={80} color="white" />
+
+            </Image>
+
+            <Text style={styles.title}>
+                Login
+            </Text>
+
+
+            <View style={{
+                marginTop: 10,
+                paddingHorizontal: 20,
+            }}>
+                <View style={styles.item}>
+                    <Entypo name='email' size={24} color='black' />
+                    <TextInput
+                        placeholder="Email"
+                        placeholderTextColor="black"
+                        style={styles.input}
+                        onChangeText={(text) => {
+                            setEmail(text)
+                        }}
+                    />
                 </View>
 
-                <View style={{
-                    marginTop: 20
-                }}>
-                    <View style={styles.item}>
-                        <Entypo name='email' size={24} color='white' />
-                        <TextInput
-                            placeholder="Email"
-                            placeholderTextColor="white"
-                            style={styles.input}
-                            onChangeText={(text) => {
-                                setEmail(text)
-                            }}
-                        />
-                    </View>
-
-                    <View style={styles.item}>
-                        <Entypo name='lock' size={24} color='white' />
+                <View style={styles.item}>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}>
+                        <Entypo name='lock' size={24} color='black' style={{
+                            marginRight: 10,
+                        }} />
                         <TextInput
                             placeholder="Password"
-                            placeholderTextColor="white"
+                            placeholderTextColor="black"
                             style={styles.input}
                             onChangeText={(text) => setPassword(text)}
-                            secureTextEntry={true}
+                            secureTextEntry={showPassword ? false : true}
                         />
                     </View>
-
+                    <TouchableOpacity onPress={() => {
+                        setShowPassword(!showPassword);
+                    }}>
+                        {
+                            showPassword ? <Entypo name='eye' size={24} color='black' /> : <Entypo name='eye-with-line' size={24} color='black' />
+                        }
+                    </TouchableOpacity>
                 </View>
 
+            </View>
+
+            <TouchableOpacity style={{ marginTop: 10, paddingHorizontal: 20 }}>
+                <Text style={{
+                    textAlign: "right",
+                    color: "rgba(52, 14, 231, 0.56)"
+                }}>
+                    Quên mật khẩu ?
+                </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={{
+                    width: '100%',
+                    padding: 20,
+                }}
+                onPress={handleLogin}
+            >
+                <Text style={styles.button}>
+                    Login
+                </Text>
+            </TouchableOpacity>
+
+            <Text style={{
+                color: "black",
+                textAlign: "center",
+                marginTop: 10,
+            }}>
+                OR
+            </Text>
+
+            <TouchableOpacity
+                style={{
+                    width: '100%',
+                    padding: 20,
+                }}
+            >
                 <View style={{
-                    marginTop: 10,
                     flexDirection: 'row',
                     alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(213, 213, 214, 0.56)',
+                    padding: 10,
+                    borderRadius: 10,
                 }}>
-                    <Checkbox   
-                        status={checked ? 'checked' : 'unchecked'}
-                        onPress={toggleCheckbox}
-                        color="white"
-                    />
-                    <Text style={{ color: "white" }}>
-                        Please select to agree to our terms
+                    <View >
+                        <Image source={require('../../images/google.png')}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                marginRight: 10,
+                            }}
+                        >
+                        </Image>
+                    </View>
+                    <Text style={{
+                        color: 'black',
+                    }}>
+                        Đăng nhập bằng google
                     </Text>
                 </View>
-            
+            </TouchableOpacity>
+
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 10,
+            }}>
+                <Text style={{
+                    color: 'black',
+                }}>
+                    Bạn chưa có tài khoản ?
+                </Text>
                 <TouchableOpacity
-                    style={{
-                        width: '100%',
-                        padding: 20,
+                    onPress={() => {
+                        console.log("Register");
                     }}
-                    onPress={handleLogin}
-                    disabled={!checked}
                 >
-                    <Text style={styles.button}>
-                        Login
+                    <Text style={{
+                        color: 'rgba(52, 14, 231, 0.56)',
+                        marginLeft: 5,
+                    }}>
+                        Đăng ký
                     </Text>
                 </TouchableOpacity>
-
-                <Text style={{ color: "white", textAlign: "center", fontSize: 12, textDecorationLine: 'underline' }}>
-                    Forgot Password?
-                </Text>
             </View>
-        </LinearGradient>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        backgroundColor: 'white',
     },
     title: {
-        color: "white",
+        color: "black",
         fontSize: 25,
         fontWeight: "bold",
-        textAlign: "center",
-        marginTop: 100,
+        marginTop: 20,
+        paddingHorizontal: 20,
         fontStyle: "italic"
     },
     input: {
@@ -145,29 +205,30 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexDirection: "row",
         alignItems: "center",
+        borderColor: "black",
         marginVertical: 10,
-        color: "white"
+        color: "black"
     },
     button: {
-        backgroundColor: "#1DB954",
-        padding: 10,
+        backgroundColor: "rgba(0, 3, 255, 0.56)",
+        padding: 12,
         marginLeft: "auto",
         marginRight: "auto",
-        borderRadius: 25,
+        borderRadius: 10,
         alignItems: "center",
         textAlign: "center",
         justifyContent: "center",
         width: '100%',
+        color: "white",
     },
     item: {
         flexDirection: 'row',
-        gap: 10,
         alignItems: 'center',
         borderWidth: 0.5,
-        borderColor: 'white',
+        borderColor: 'black',
         marginTop: 20,
         paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderRadius: 20,
+        paddingVertical: 3,
+        borderRadius: 10,
     }
 })
