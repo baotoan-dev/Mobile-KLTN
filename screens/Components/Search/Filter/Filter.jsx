@@ -8,11 +8,13 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import TypeComponent from './TypeComponent/TypeComponent';
 import MoneyComponent from './MoneyComponent/MoneyComponent';
+import CatogoryComponent from './CatogoryComponent/CatogoryComponent';
 
 export default function Filter() {
     const navigation = useNavigation();
     const [showModalType, setShowModalType] = React.useState(false)
     const [showModalMoney, setShowModalMoney] = React.useState(false)
+    const [showModalCategory, setShowModalCategory] = React.useState(false)
     return (
         <View style={{
             height: '100%',
@@ -78,7 +80,9 @@ export default function Filter() {
                             <AntDesign name="right" size={24} color="gray" />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.content}>
+                    <TouchableOpacity style={styles.content} onPress={() => {
+                        setShowModalCategory(true)
+                    }}>
                         <View style={styles.twoFlex}>
                             <View>
                                 <MaterialIcons name="category" size={24} color="black" />
@@ -162,6 +166,7 @@ export default function Filter() {
             </View>
             <TypeComponent showModalType={showModalType} setShowModalType={setShowModalType} />
             <MoneyComponent showModalMoney={showModalMoney} setShowModalMoney={setShowModalMoney} />
+            <CatogoryComponent showModalCategory={showModalCategory} setShowModalCategory={setShowModalCategory} />
         </View>
     )
 }

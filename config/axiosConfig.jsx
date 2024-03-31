@@ -31,8 +31,7 @@ axiosConfig.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        console.log('status 34', error.response.status);
-        if (error.response.status === 403 && !originalRequest._retry) {
+        if ((error.response.status === 403  || error.response.status === 400 ) && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
