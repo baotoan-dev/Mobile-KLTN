@@ -9,12 +9,14 @@ import { FontAwesome } from '@expo/vector-icons';
 import TypeComponent from './TypeComponent/TypeComponent';
 import MoneyComponent from './MoneyComponent/MoneyComponent';
 import CatogoryComponent from './CatogoryComponent/CatogoryComponent';
+import LocationComponent from './LocationComponent/LocationComponent';
 
 export default function Filter() {
     const navigation = useNavigation();
     const [showModalType, setShowModalType] = React.useState(false)
     const [showModalMoney, setShowModalMoney] = React.useState(false)
     const [showModalCategory, setShowModalCategory] = React.useState(false)
+    const [showModalLocation, setShowModalLocation] = React.useState(false)
     return (
         <View style={{
             height: '100%',
@@ -44,7 +46,11 @@ export default function Filter() {
                     width: '100%',
                     height: '83%',
                 }}>
-                    <TouchableOpacity style={styles.content}>
+                    <TouchableOpacity style={styles.content}
+                        onPress={() => {
+                            setShowModalLocation(true)
+                        }}
+                    >
                         <View style={styles.twoFlex}>
                             <View>
                                 <Entypo name="address" size={24} color="black" />
@@ -167,6 +173,7 @@ export default function Filter() {
             <TypeComponent showModalType={showModalType} setShowModalType={setShowModalType} />
             <MoneyComponent showModalMoney={showModalMoney} setShowModalMoney={setShowModalMoney} />
             <CatogoryComponent showModalCategory={showModalCategory} setShowModalCategory={setShowModalCategory} />
+            <LocationComponent showModalLocation={showModalLocation} setShowModalLocation={setShowModalLocation} />
         </View>
     )
 }
