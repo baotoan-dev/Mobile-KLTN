@@ -1,11 +1,18 @@
-import { View, Text, TouchableOpacity, TextInput, SafeAreaView, ScrollView, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, SafeAreaView, ScrollView, FlatList, ToastAndroid } from 'react-native'
 import React, { useEffect } from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { EvilIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { LENGTH_LOCATION } from '../../../../../../utils/LengthLocationAndCategory';
 
-export default function ListWardComponent({ idProvince, setIsCheckClickProvince }) {
+export default function ListWardComponent({
+  idProvince,
+  setIsCheckClickProvince,
+  setShowModalLocation,
+  setDataLocationFilter,
+  dataLocationFilter
+}) {
   const location = useSelector((state) => state.location.location)
   const [filteredDistricts, setFilteredDistricts] = React.useState([]);
   const [filteredName, setFilteredName] = React.useState([]);
@@ -27,6 +34,14 @@ export default function ListWardComponent({ idProvince, setIsCheckClickProvince 
     });
     setFilteredName(filtered);
   }, [search]);
+
+  const showToastWithGravity = () => {
+    ToastAndroid.showWithGravity(
+      'Bạn đã chọn quá số lượng cho phép',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
 
   return (
     <View>
@@ -96,10 +111,44 @@ export default function ListWardComponent({ idProvince, setIsCheckClickProvince 
                     paddingLeft: 10,
                   }}
                   onPress={() => {
-                    setShowModalLocation(false)
+                    if (dataLocationFilter && dataLocationFilter.length > 0 && dataLocationFilter.find((ward) => +ward.id === +item.district_id)) {
+                      setDataLocationFilter(
+                        dataLocationFilter.filter((ward) => ward.id !== item.district_id)
+                      );
+                      return;
+                    }
+                    if (dataLocationFilter && dataLocationFilter.length === LENGTH_LOCATION) {
+                      showToastWithGravity();
+                      return;
+                    }
+
+                    setDataLocationFilter([
+                      ...dataLocationFilter,
+                      {
+                        id: item.district_id,
+                        name: item.district,
+                      }]
+                    );
+                    setShowModalLocation(false);
                   }}
+
                 >
-                  <Text>{item.district}</Text>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                    <Text>{item.district}</Text>
+                    {
+                      dataLocationFilter && dataLocationFilter.length > 0 && dataLocationFilter.find((ward) => ward.id === item.district_id)
+                      &&
+                      (
+                        <View>
+                          <Ionicons name="checkmark" size={24} color="blue" />
+                        </View>
+                      )
+                    }
+                  </View>
                 </TouchableOpacity>
               )
             }}

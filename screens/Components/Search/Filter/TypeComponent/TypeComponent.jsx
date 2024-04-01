@@ -6,9 +6,8 @@ import { jobTypeApi } from '../../../../../api/job-type/jobTypeApi';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function TypeComponent({ showModalType, setShowModalType }) {
+export default function TypeComponent({ showModalType, setShowModalType, setDataTypeFilter, dataTypeFilter }) {
     const [jobType, setJobType] = React.useState([])
-    const [idSelected, setIdSelected] = React.useState(100)
     const fetchData = async () => {
         const res = await jobTypeApi.getJobType('vi')
         if (res && res.code === 200) {
@@ -63,14 +62,21 @@ export default function TypeComponent({ showModalType, setShowModalType }) {
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => {
-                                    setIdSelected(item.id)
+                                    if (item.id === dataTypeFilter.id) {
+                                        setDataTypeFilter({})
+                                        return
+                                    }
                                     setShowModalType(false)
+                                    setDataTypeFilter({
+                                        id: item.id,
+                                        name: item.name
+                                    })
                                 }}
                                 style={{
                                     padding: 20,
                                     borderBottomWidth: 1,
                                     borderBottomColor: '#f0f0f0',
-                                    backgroundColor: idSelected === item.id ? '#f0f0f0' : 'white',
+                                    backgroundColor: dataTypeFilter.id === item.id ? '#f0f0f0' : 'white',
                                 }}>
                                 <View style={{
                                     flexDirection: 'row',
@@ -80,7 +86,7 @@ export default function TypeComponent({ showModalType, setShowModalType }) {
                                         {item.name}
                                     </Text>
                                     {
-                                        +idSelected == +item.id && <AntDesign name="check" size={24} color="blue" />
+                                        +dataTypeFilter.id == +item.id && <AntDesign name="check" size={24} color="blue" />
                                     }
                                 </View>
                             </TouchableOpacity>

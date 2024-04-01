@@ -9,11 +9,9 @@ import { AntDesign } from '@expo/vector-icons';
 export default function MoneyComponent({
     showModalMoney,
     setShowModalMoney,
+    setDataMoneyFilter,
+    dataMoneyFilter,
 }) {
-
-    const [idSelected, setIdSelected] = React.useState(1)
-    const [slaryMin, setSlaryMin] = React.useState(0)
-    const [slaryMax, setSlaryMax] = React.useState(0)
 
     return (
         <View>
@@ -57,16 +55,22 @@ export default function MoneyComponent({
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => {
-                                    setSlaryMin(item.slaryMin)
-                                    setSlaryMax(item.slaryMax)
-                                    setIdSelected(item.id)
+                                    if (dataMoneyFilter.id === item.id) {
+                                        setDataMoneyFilter({})
+                                        return
+                                    }
+                                    setDataMoneyFilter({
+                                        salaryMin: item.slaryMin,
+                                        salaryMax: item.slaryMax,
+                                        id: item.id,
+                                    })
                                     setShowModalMoney(false)
                                 }}
                                 style={{
                                     padding: 20,
                                     borderBottomWidth: 1,
                                     borderBottomColor: '#f0f0f0',
-                                    backgroundColor: idSelected === item.id ? '#f0f0f0' : 'white',
+                                    backgroundColor: dataMoneyFilter.id === item.id ? '#f0f0f0' : 'white',
                                 }}>
                                 <View style={{
                                     flexDirection: 'row',
@@ -76,7 +80,7 @@ export default function MoneyComponent({
                                         {item.text}
                                     </Text>
                                     {
-                                        +idSelected == +item.id && <AntDesign name="check" size={24} color="blue" />
+                                        +dataMoneyFilter.id == +item.id && <AntDesign name="check" size={24} color="blue" />
                                     }
                                 </View>
                             </TouchableOpacity>

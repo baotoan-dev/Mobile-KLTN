@@ -8,6 +8,8 @@ import ListWardComponent from './ListWardComponent/ListWardComponent';
 export default function LocationComponent({
     showModalLocation,
     setShowModalLocation,
+    dataLocationFilter,
+    setDataLocationFilter,
 }) {
     const [isCheckClickProvince, setIsCheckClickProvince] = React.useState(false)
     const [idProvince, setIdProvince] = React.useState('')
@@ -37,9 +39,12 @@ export default function LocationComponent({
                                     setIsCheckClickProvince={setIsCheckClickProvince}
                                     setShowModalLocation={setShowModalLocation}
                                     setIdProvince={setIdProvince}
-                                /> : <ListWardComponent 
+                                /> : <ListWardComponent
                                     idProvince={idProvince}
                                     setIsCheckClickProvince={setIsCheckClickProvince}
+                                    setShowModalLocation={setShowModalLocation}
+                                    setDataLocationFilter={setDataLocationFilter}
+                                    dataLocationFilter={dataLocationFilter}
                                 />
                         }
                     </View>

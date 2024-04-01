@@ -6,7 +6,9 @@ import ListCategoryComponent from './ListCategoryComponent/ListCategoryComponent
 
 export default function CatogoryComponent({
     showModalCategory,
-    setShowModalCategory
+    setShowModalCategory,
+    setDataCategoryFilter,
+    dataCategoryFilter
 }) {
     return (
         <View>
@@ -28,7 +30,7 @@ export default function CatogoryComponent({
                     <View style={{
                         paddingHorizontal: 20,
                     }}>
-                        <ListCategoryComponent setShowModalCategory={setShowModalCategory}/>
+                        <ListCategoryComponent dataCategoryFilter={dataCategoryFilter} setDataCategoryFilter={setDataCategoryFilter} setShowModalCategory={setShowModalCategory}/>
                     </View>
                 </View>
             </Modal>

@@ -1,10 +1,17 @@
-import { View, Text, SafeAreaView, ScrollView, FlatList, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, FlatList, TouchableOpacity, TextInput, ToastAndroid } from 'react-native'
 import React, { useEffect } from 'react'
 import { EvilIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { LENGTH_CATEGORY } from '../../../../../../utils/LengthLocationAndCategory';
 
-export default function ListChildCategoryComponent({ categories, setOnClickItem, setShowModalCategory }) {
+export default function ListChildCategoryComponent({
+    categories,
+    setOnClickItem,
+    setShowModalCategory,
+    dataCategoryFilter,
+    setDataCategoryFilter
+}) {
     const [search, setSearch] = React.useState('')
     const [childCategories, setChildCategories] = React.useState([])
 
@@ -23,6 +30,13 @@ export default function ListChildCategoryComponent({ categories, setOnClickItem,
         }
     }, [search])
 
+    const showToastWithGravity = () => {
+        ToastAndroid.showWithGravity(
+            'Bạn đã chọn quá số lượng cho phép',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+        );
+    };
 
     return (
         <SafeAreaView>
@@ -80,17 +94,48 @@ export default function ListChildCategoryComponent({ categories, setOnClickItem,
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => {
+                                if (dataCategoryFilter && dataCategoryFilter.length > 0 && dataCategoryFilter.some((categories) => categories.id === item.id)) {
+                                    setDataCategoryFilter(dataCategoryFilter.filter((categories) => {
+                                        return categories.id !== item.id
+                                    }))
+                                    return;
+                                }
 
+                                if (dataCategoryFilter && dataCategoryFilter.length === LENGTH_CATEGORY) {
+                                    showToastWithGravity()
+                                    return;
+                                }
+
+                                setDataCategoryFilter([
+                                    ...dataCategoryFilter,
+                                    {
+                                        id: item.id,
+                                        name: item.name
+                                    }
+                                ])
                             }}
                             style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
                                 padding: 10,
                                 borderBottomWidth: 0.5,
                                 borderBottomColor: 'gray',
                             }}>
-                            <Text>{item.name}</Text>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}>
+                                <Text>{item.name}</Text>
+                                {
+                                    dataCategoryFilter && dataCategoryFilter.length > 0 && dataCategoryFilter.find((categories) => categories.id === item.id)
+                                    &&
+                                    (
+                                        <View>
+                                            <Ionicons name="checkmark" size={24} color="blue" />
+                                        </View>
+                                    )
+                                }
+                            </View>
+
                         </TouchableOpacity>
                     )}
                 />

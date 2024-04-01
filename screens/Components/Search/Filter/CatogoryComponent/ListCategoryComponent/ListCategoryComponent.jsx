@@ -6,7 +6,11 @@ import { useState, useEffect } from 'react';
 import { categoriesApi } from '../../../../../../api/categories/categoriesApi';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function ListCategoryComponent({setShowModalCategory}) {
+export default function ListCategoryComponent({
+    setShowModalCategory,
+    dataCategoryFilter,
+    setDataCategoryFilter
+}) {
     const [onClickItem, setOnClickItem] = React.useState(false);
     const [id, setId] = React.useState(0);
     const [categories, setCategories] = useState([])
@@ -90,7 +94,7 @@ export default function ListCategoryComponent({setShowModalCategory}) {
                     )
                     :
                     (
-                        <ListChildCategoryComponent setShowModalCategory={setShowModalCategory} setOnClickItem={setOnClickItem} categories={categories.filter((item) => { return item.parent_category_id === id })} />
+                        <ListChildCategoryComponent dataCategoryFilter={dataCategoryFilter} setDataCategoryFilter={setDataCategoryFilter} setShowModalCategory={setShowModalCategory} setOnClickItem={setOnClickItem} categories={categories.filter((item) => { return item.parent_category_id === id })} />
                     )
             }
 
