@@ -1,15 +1,67 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import React from 'react'
-import { MaterialIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Foundation } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAllPostCompanyAction } from '../../../../../redux/store/Company/GetAllPostCompany/getAllPostCompany';
+import ListJobOfCompanyComponent from '../../../Post/ListJobOfCompanyComponent/ListJobOfCompanyComponent';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function CompanyJob({ company }) {
+    const dispatch = useDispatch()
+    const [listJob, setListJob] = useState([])
+    const [currentPage, setCurrentPage] = useState(0)
+    const [isOver, setIsOver] = useState(false)
+    const getAllPostCompany = useSelector(state => state.getAllPostCompany.data)
+
+    useEffect(() => {
+        if (company.id) {
+            dispatch(getAllPostCompanyAction(company.id, 10, currentPage))
+        }
+    }, [])
+
+    useEffect(() => {
+        if (getAllPostCompany) {
+            if (currentPage === 0) {
+                setListJob(getAllPostCompany)
+            }
+            else {
+                setListJob((prev) => [...prev, ...getAllPostCompany])
+            }
+        }
+        setIsOver(getAllPostCompany.postData.is_over)
+    }, [getAllPostCompany])
+
+
     return (
         <View style={styles.container}>
-       
+            {
+                listJob.data ? (
+                    <ListJobOfCompanyComponent
+                        listJob={listJob}
+                        setCurrentPage={setCurrentPage}
+                        isOver={isOver}
+                    />
+                ) 
+                :
+                    <View style={{
+                        flex: 1,
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 20
+                    }}>
+                        <FontAwesome name="binoculars" size={24} color="black" />
+                        <Text style={{
+                            marginTop: 10,
+                            fontSize: 16,
+                            fontWeight: 'bold'
+                        }}>
+                            Không tìm thấy công việc
+                        </Text>
+                    </View>
+            }
         </View>
     )
 }
