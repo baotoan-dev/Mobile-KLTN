@@ -43,6 +43,8 @@ export const getSearchAction = (
             district_ids,
             salary_type,
             lang,
+            page,
+            limit
         );
 
         if (response && response.data) {

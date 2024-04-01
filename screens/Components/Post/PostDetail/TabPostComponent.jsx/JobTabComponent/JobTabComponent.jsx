@@ -1,18 +1,21 @@
 import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
-import ListJobComponent from '../../../ListJobComponent/ListJobComponent'
 import { searchApi } from '../../../../../../api/search/searchApi'
+import ListJobOfCompanyComponent from '../../../ListJobOfCompanyComponent/ListJobOfCompanyComponent'
+import ListJobComponent from '../../../ListJobComponent/ListJobComponent'
 
-export default function JobTabComponent({post}) {
+export default function JobTabComponent({ post }) {
 
-  const [idChildCategory, setIdChildCategory] = useState([]) 
+  const [idChildCategory, setIdChildCategory] = useState([])
   const [listJob, setListJob] = useState([])
+  const [currentPage, setCurrentPage] = useState(0)
+  const [isOver, setIsOver] = useState(false)
 
   const fetchListJob = async () => {
     const result = await searchApi.getSearchByQueryV2(
       null,
-      null,
+      currentPage,
       null,
       null,
       null,
@@ -29,7 +32,13 @@ export default function JobTabComponent({post}) {
     );
 
     if (result && result.data.data) {
-      setListJob(result.data.data.posts)
+      if (currentPage === 0) {
+        setListJob(result.data.data.posts)
+      }
+      else {
+        setListJob((prev) => [...prev, ...result.data.data.posts])
+      }
+      setIsOver(result.data.data.is_over)
     }
   }
 
@@ -46,17 +55,21 @@ export default function JobTabComponent({post}) {
     }
   }, [post])
 
+  useEffect(() => {
+    fetchListJob()
+  }, [currentPage])
+
 
 
   return (
     <View style={styles.container}>
-      <ListJobComponent listJob={listJob}/>
+      <ListJobComponent listJob={listJob} setCurrentPage={setCurrentPage} isOver={isOver} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    }
+  container: {
+    padding: 10,
+  }
 })

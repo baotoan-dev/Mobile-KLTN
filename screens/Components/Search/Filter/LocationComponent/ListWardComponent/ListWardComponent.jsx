@@ -129,7 +129,6 @@ export default function ListWardComponent({
                         name: item.district,
                       }]
                     );
-                    setShowModalLocation(false);
                   }}
 
                 >

@@ -18,6 +18,7 @@ export default function CompanyTabComponent({ post }) {
       if (res) {
         setDetailCompany(res.data.data)
       }
+
     } catch (error) {
       throw error;
     }
@@ -86,7 +87,7 @@ export default function CompanyTabComponent({ post }) {
                   }}>
                     Việc làm của công ty
                   </Text>
-                  <JobCompanyOfTab nameCompany={detailCompany.name} />
+                  <JobCompanyOfTab idCompany={detailCompany.id} />
                 </View>
               </View>
             </>

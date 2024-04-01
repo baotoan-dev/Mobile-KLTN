@@ -35,6 +35,6 @@ export default function SeeAllBlog() {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 30,
+        marginTop: 40,
     }
 })

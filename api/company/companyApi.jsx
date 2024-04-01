@@ -45,6 +45,10 @@ export const companyApi = {
     getCompanyByName: (name) => {
         const URL = `${CONST_API}/api/v3/companies/by-name?name=${name}`;
         return axios.get(URL);
+    },
+    getAllPostByCompanyId : (id, page, limit) => {
+        const URL = `${CONST_API}/api/v3/companies/all-post/${id}?page=${page}&limit=${limit}`;
+        return axios.get(URL);
     }
 }
 

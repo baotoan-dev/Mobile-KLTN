@@ -1,10 +1,12 @@
-import { View, FlatList, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator } from 'react-native'
 import React from 'react'
-import { StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
-export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
+export default function ListJobOfCompanyComponent({
+    listJob, setCurrentPage, isOver
+}) {
 
     const navation = useNavigation();
 
@@ -22,7 +24,6 @@ export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
         );
     };
 
-
     const loadMoreItem = () => {
         if (!isOver) {
             setCurrentPage((prev) => prev + 1)
@@ -32,21 +33,13 @@ export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
     return (
         <View>
             {
-                listJob && listJob.length > 0 && (
+                listJob && listJob.postData && (
                     <FlatList
-                        data={listJob}
+                        data={listJob.postData.data}
                         horizontal={false}
                         onEndReached={loadMoreItem}
-                        ListFooterComponentStyle={renderLoader}
                         onEndReachedThreshold={0}
-                        ListFooterComponent={() => (
-                            <View style={{
-                                height: 100,
-                            }}>
-                                <ActivityIndicator size="large" color="#0000ff" />
-                            </View>
-
-                        )}
+                        ListFooterComponent={renderLoader}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => {
@@ -72,7 +65,7 @@ export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
                                             {item.title}
                                         </Text>
                                         <Text>
-                                            {item.company_name}
+                                            {item.companyName}
                                         </Text>
                                         <View style={{
                                             flexDirection: 'row',
@@ -85,7 +78,7 @@ export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
                                                 padding: 3,
                                                 backgroundColor: '#f0f0f0',
                                             }}>
-                                                {item.district_name}
+                                                {item?.location?.ward.fullName}
                                             </Text>
                                             <Text style={{
                                                 marginLeft: 10,
@@ -95,7 +88,7 @@ export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
                                                 padding: 3,
                                                 backgroundColor: '#f0f0f0',
                                             }}>
-                                                {item.job_type.job_type_name}
+                                                {item.jobType.name}
                                             </Text>
                                         </View>
                                     </View>

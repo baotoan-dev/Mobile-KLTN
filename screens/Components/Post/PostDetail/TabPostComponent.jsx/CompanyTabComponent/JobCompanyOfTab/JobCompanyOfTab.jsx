@@ -1,45 +1,47 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React, { useEffect } from 'react'
-import { searchApi } from '../../../../../../../api/search/searchApi'
 import { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import ListJobComponent from '../../JobTabComponent/JobTabComponent'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllPostCompanyAction } from '../../../../../../../redux/store/Company/GetAllPostCompany/getAllPostCompany'
+import ListJobOfCompanyComponent from '../../../../ListJobOfCompanyComponent/ListJobOfCompanyComponent'
 
-export default function JobCompanyOfTab({ nameCompany }) {
+export default function JobCompanyOfTab({ idCompany }) {
+    const dispatch = useDispatch()
     const [listJob, setListJob] = useState([])
-
-    const fetchDataCompany = async () => {
-        const result = (await searchApi.getSearchByQueryV2(
-            nameCompany,
-            null,
-            null,
-            null,
-            null,
-            0,
-            null,
-            null,
-            null,
-            null,
-            [],
-            null,
-            null,
-            null,
-            "vi"
-        ));
-        if (result && result.data) {
-            setListJob(result.data.data.posts)
-        }
-    }
+    const [currentPage, setCurrentPage] = useState(0)
+    const [isOver, setIsOver] = useState(false)
+    const getAllPostCompany = useSelector(state => state.getAllPostCompany.data)
 
     useEffect(() => {
-        if (nameCompany) {
-            fetchDataCompany()
+        if (idCompany) {
+            dispatch(getAllPostCompanyAction(idCompany, 10, currentPage))
         }
-    }, [nameCompany])
+    },[])
+
+    useEffect(() => {
+        if (getAllPostCompany) {
+            if (currentPage === 0) {
+                setListJob(getAllPostCompany)
+            }
+            else {
+                setListJob((prev) => [...prev, ...getAllPostCompany])
+            }
+        }
+        setIsOver(getAllPostCompany.postData.is_over)
+    }, [getAllPostCompany])
 
     return (
         <View>
-            <ListJobComponent listJob={listJob} />
+            {
+                listJob && (
+                    <ListJobOfCompanyComponent
+                        listJob={listJob}
+                        setCurrentPage={setCurrentPage}
+                        isOver={isOver}
+                    />
+                )
+            }
         </View>
     )
 }
