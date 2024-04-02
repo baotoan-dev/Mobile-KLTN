@@ -1,5 +1,6 @@
 import axios from "axios";
 import { CONST_API, CONST_API_V1 } from "../contants/urlContant";
+import * as SecureStore from 'expo-secure-store';
 
 const jobApi = {
     getPostNewest: async (
@@ -38,7 +39,11 @@ const jobApi = {
     },
     getPostbyId: async (params, lang) => {
         const URL = `${CONST_API_V1}/api/v1/posts/${params}?lang=${lang}`;
-        return await axios.get(URL);
+        return await axios.get(URL, {
+            headers: {
+                Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,
+            },
+        });
     },
 }
 

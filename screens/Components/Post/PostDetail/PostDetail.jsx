@@ -9,12 +9,15 @@ import { Feather } from '@expo/vector-icons';
 
 export default function PostDetail(prop) {
     const id = prop.route.params.id;
+    const [fitOfPost, setFitOfPost] = useState(''); 
     const [post, setPost] = useState({});
 
     const fetchDetailPost = async () => {
         const response = await jobApi.getPostbyId(id, 'vi');
+
         if (response && response.data.code === 200) {
             setPost(response.data.data);
+            setFitOfPost(response.data.data.fit);
         }
     }
 
@@ -44,7 +47,7 @@ export default function PostDetail(prop) {
                                     <Text style={styles.companyName}>{post.company_name}</Text>
                                 </View>
 
-                                <MoreInforComponent post={post} />
+                                <MoreInforComponent post={post} fitOfPost={fitOfPost} />
                             </View>
                             <TouchableOpacity style={{
                                 position: 'absolute',

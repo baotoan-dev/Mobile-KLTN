@@ -28,7 +28,7 @@ export default function JobCompanyOfTab({ idCompany }) {
                 setListJob((prev) => [...prev, ...getAllPostCompany])
             }
         }
-        setIsOver(getAllPostCompany.postData.is_over)
+        setIsOver(getAllPostCompany?.postData?.is_over)
     }, [getAllPostCompany])
 
     return (
@@ -46,10 +46,3 @@ export default function JobCompanyOfTab({ idCompany }) {
     )
 }
 
-const styles = StyleSheet.create({
-    item: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderColor: '#d9d9d9'
-    }
-})

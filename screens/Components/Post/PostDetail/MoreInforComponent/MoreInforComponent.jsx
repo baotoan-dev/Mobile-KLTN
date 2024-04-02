@@ -3,7 +3,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function MoreInforComponent({post}) {
+export default function MoreInforComponent({post, fitOfPost}) {
     return (
         <View style={styles.container}>
             <Text style={styles.line}></Text>
@@ -36,7 +36,7 @@ export default function MoreInforComponent({post}) {
                         color: 'blue'
                     }} />
                     <Text style={styles.textCenterGray}>Phù hợp</Text>
-                    <Text style={styles.item}>0%</Text>
+                    <Text style={styles.item}>{fitOfPost + '%'}</Text>
                 </View>
             </View>
         </View>
