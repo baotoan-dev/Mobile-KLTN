@@ -19,17 +19,8 @@ export default function ProfileScreen() {
 
   useEffect(async () => {
     const token = await SecureStore.getItemAsync('token');
-    console.log('token', token);
     setToken(token);
   }, []);
-
-  const handleLogout = () => {
-    console.log('logout');
-    SecureStore.deleteItemAsync('token');
-    SecureStore.deleteItemAsync('refreshToken');
-    setAuth(false);
-    setToken('');
-  }
 
   useEffect(() => {
     dispatch(getProfileAction('vi'));
@@ -41,15 +32,21 @@ export default function ProfileScreen() {
     }
   }, [profile]);
 
+  const handleScroll = (event) => {
+    if (event.nativeEvent.contentOffset.y > 0) {
+      setIsScrolling(true);
+    } else {
+      setIsScrolling(false);
+    }
+  };
+
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <HeaderProfile profile={profile} isScrolling={isScrolling} />
-        </View>
-        <ContentProfile profile={profile} setIsScrolling={setIsScrolling} isScrolling={isScrolling}/>
+    <View>
+      {<HeaderProfile profile={profile} isScrolling={isScrolling} />}
+      <ScrollView onScroll={handleScroll} style={styles.container}>
+        <ContentProfile profile={profile} setIsScrolling={setIsScrolling} isScrolling={isScrolling} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   )
 }
 const styles = StyleSheet.create({

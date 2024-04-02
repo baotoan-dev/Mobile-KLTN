@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
-export default function HeadingContentProfile({ left, right }) {
+export default function HeadingContentProfile({ left, right, handleOpenModal }) {
     return (
         <View style={styles.container}>
             <Text style={styles.left}>
                 {left}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+                handleOpenModal();
+            }}>
                 <Text style={styles.right}>
                     {right}
                 </Text>

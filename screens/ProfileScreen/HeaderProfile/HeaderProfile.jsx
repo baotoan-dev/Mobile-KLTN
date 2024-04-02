@@ -89,9 +89,14 @@ export default function HeaderProfile({ profile, isScrolling }) {
             </View>
         ) : (
             <View style={{
-                backgroundColor: 'white',
+                // fixed in top of screen
+                position: 'absolute',
+                top: 0,
                 width: '100%',
-                height: 80,
+                backgroundColor: 'white',
+                zIndex: 100,
+                elevation: 100,
+                shadowColor: 'black',
             }}>
                 <View style={{
                     flexDirection: 'row',

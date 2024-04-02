@@ -1,41 +1,32 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView } from 'react-native'
 import React from 'react'
 import JobExpect from './JobExpect/JobExpect';
 import AddressExpect from './AddressExpect/AddressExpect';
 import ManageRecord from './ManageRecord/ManageRecord';
+import ManageFindJob from './ManageFindJob/ManageFindJob';
+import SettingProfile from './SettingProfile/SettingProfile';
+import Logout from './Logout/Logout';
 
-export default function ContentProfile({ setIsScrolling, isScrolling, profile }) {
+export default function ContentProfile({ isScrolling, profile }) {
 
-    const handleScroll = (event) => {
-        if (event.nativeEvent.contentOffset.y > 0) {
-            setIsScrolling(true);
-        } else {
-            setIsScrolling(false);
-        }
-    };
     return (
-        <View style={{
+        <SafeAreaView style={{
             flex: 1,
             flexDirection: 'column',
-            marginTop: isScrolling ? 0 : 90,
+            marginTop: isScrolling ? 50 : 210,
+            height: '100%',
         }}>
             <ScrollView
-                onScrollEndDrag={handleScroll}
-                scrollEventThrottle={16}
-                style={{
-                    height: 600,
-                }}
-            >
-                <View
-                    style={{
-                        height: 4000,
-                    }}
-                >
+                scrollEventThrottle={16}>
+                <View>
                     {profile && (<JobExpect profile={profile}/>)} 
                     {profile && (<AddressExpect profile={profile}/>)}
                     {profile && (<ManageRecord />)}
+                    <ManageFindJob/>
+                    {profile && (<SettingProfile />)}
+                    {profile && (<Logout />)}
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     )
 }

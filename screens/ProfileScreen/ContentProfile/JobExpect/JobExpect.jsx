@@ -1,15 +1,20 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import HeadingContentProfile from '../HeadingContentProfile/HeadingContentProfile'
+import ModalUpdateJobExpect from './ModalUpdateJobExpect/ModalUpdateJobExpect'
 
 export default function JobExpect({ profile }) {
+    const [isOpenModalUpdateJobExpect, setIsOpenModalUpdateJobExpect] = React.useState(false)
+    const handleOpenModal = () => {
+        setIsOpenModalUpdateJobExpect(!isOpenModalUpdateJobExpect)
+    }
 
     return (
         <View style={styles.container}>
             <View style={{
                 paddingHorizontal: 10,
             }}>
-                <HeadingContentProfile left='Mong muốn công việc' right='Sửa' />
+                <HeadingContentProfile left='Mong muốn công việc' right='Sửa' handleOpenModal={handleOpenModal}/>
                 <View style={styles.wapper}>
                     {
                         profile && profile?.profileCategorie?.length > 0 ? profile?.profileCategories?.map((item, index) => {
@@ -20,10 +25,14 @@ export default function JobExpect({ profile }) {
                             )
                         }
                         ) : <View>
-                            <Text>Chưa cập nhật</Text>
+                            <Text style={{
+                                fontWeight: 'bold',
+                                color: 'blue',
+                            }}>Chưa cập nhật</Text>
                         </View>
                     }
                 </View>
+                <ModalUpdateJobExpect isOpenModal={isOpenModalUpdateJobExpect} handleOpenModal={handleOpenModal} /> 
             </View>
         </View>
     )
