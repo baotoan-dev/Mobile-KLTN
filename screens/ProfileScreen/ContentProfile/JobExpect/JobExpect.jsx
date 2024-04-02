@@ -5,11 +5,13 @@ import ModalUpdateJobExpect from './ModalUpdateJobExpect/ModalUpdateJobExpect'
 
 export default function JobExpect({ profile }) {
     const [isOpenModalUpdateJobExpect, setIsOpenModalUpdateJobExpect] = React.useState(false)
+    
     const handleOpenModal = () => {
         setIsOpenModalUpdateJobExpect(!isOpenModalUpdateJobExpect)
     }
 
     return (
+        
         <View style={styles.container}>
             <View style={{
                 paddingHorizontal: 10,
@@ -17,7 +19,7 @@ export default function JobExpect({ profile }) {
                 <HeadingContentProfile left='Mong muốn công việc' right='Sửa' handleOpenModal={handleOpenModal}/>
                 <View style={styles.wapper}>
                     {
-                        profile && profile?.profileCategorie?.length > 0 ? profile?.profileCategories?.map((item, index) => {
+                        profile && profile?.profileCategories?.length > 0 ? profile?.profileCategories?.map((item, index) => {
                             return (
                                 <View style={styles.item}>
                                     <Text>{item.fullName}</Text>
@@ -32,7 +34,7 @@ export default function JobExpect({ profile }) {
                         </View>
                     }
                 </View>
-                <ModalUpdateJobExpect isOpenModal={isOpenModalUpdateJobExpect} handleOpenModal={handleOpenModal} /> 
+                <ModalUpdateJobExpect profile={profile} isOpenModal={isOpenModalUpdateJobExpect} handleOpenModal={handleOpenModal} /> 
             </View>
         </View>
     )
@@ -47,6 +49,7 @@ const styles = StyleSheet.create({
     wapper: {
         flexDirection: 'row',
         alignItems: 'center',
+        flexWrap: 'wrap',
     },
     item: {
         borderBottomColor: 'gray',
@@ -56,5 +59,6 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 5,
         backgroundColor: 'white',
+        marginTop: 5,
     }
 })

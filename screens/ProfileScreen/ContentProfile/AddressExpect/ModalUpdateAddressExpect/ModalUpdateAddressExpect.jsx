@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Modal from 'react-native-modal';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function ModalUpdateAddressExpect({
   isOpenModal, handleOpenModal
@@ -22,7 +23,25 @@ export default function ModalUpdateAddressExpect({
           height: '80%',
           borderRadius: 10,
         }}>
-          <Text>ModalUpdateAddressExpect</Text>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 10,
+          }}>
+            <View>
+              <Text style={{
+                fontSize: 17,
+                fontWeight: 'bold',
+                padding: 10,
+              }}>Chọn vị trí công việc</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => handleOpenModal()}
+            >
+              <MaterialIcons name="cancel" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
@@ -31,8 +50,8 @@ export default function ModalUpdateAddressExpect({
 
 const styles = StyleSheet.create({
   bottomModal: {
-      justifyContent: 'flex-end',
-      margin: 0,
-      width: '100%',
+    justifyContent: 'flex-end',
+    margin: 0,
+    width: '100%',
   },
 });

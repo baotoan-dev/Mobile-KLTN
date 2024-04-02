@@ -34,7 +34,6 @@ const jobApi = {
             `limit=${limit}${threshold ? `&threshold=${threshold}` : ``}` +
             `&lang=${lang}`;
 
-        console.log(URL);
         return await axios.get(URL);
     },
     getPostbyId: async (params, lang) => {

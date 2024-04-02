@@ -22,8 +22,6 @@ export default function DetailBlog(prop) {
         fetchData();
     }, []);
 
-    console.log(detailBlog);
-
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>

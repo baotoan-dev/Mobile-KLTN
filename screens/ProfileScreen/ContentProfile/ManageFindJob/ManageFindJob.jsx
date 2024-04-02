@@ -3,6 +3,7 @@ import React from 'react'
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ManageFindJob() {
     return (
@@ -26,7 +27,7 @@ export default function ManageFindJob() {
                     marginLeft: '5%',
                 }]}>
                     <View style={styles.icon}>
-                        <AntDesign name="save" size={24} color="black" />
+                        <Entypo name="save" size={24} color="black" />
                     </View>
                     <View style={styles.content}>
                         <Text>
@@ -41,7 +42,7 @@ export default function ManageFindJob() {
                     marginTop: '5%',
                 }]}>
                     <View style={styles.icon}>
-                        <AntDesign name="checkcircle" size={24} color="black" />
+                        <Ionicons name="duplicate" size={24} color="black" />
                     </View>
                     <View style={styles.content}>
                         <Text>
@@ -57,11 +58,11 @@ export default function ManageFindJob() {
                     marginLeft: '5%',
                 }]}>
                     <View style={styles.icon}>
-                        <AntDesign name="checkcircle" size={24} color="black" />
+                        <Ionicons name="duplicate" size={24} color="black" />
                     </View>
                     <View style={styles.content}>
                         <Text>
-                            Phù hợp
+                            Công ty theo dõi
                         </Text>
                         <Text style={styles.count}>
                             0
@@ -121,7 +122,7 @@ const styles = StyleSheet.create(({
         borderWidth: 0.1,
         borderRadius: 2,
         backgroundColor: '#D2D2D2',
-        width: '45%',
+        width: '47%',
         height: 100,
         justifyContent: 'center',
     },

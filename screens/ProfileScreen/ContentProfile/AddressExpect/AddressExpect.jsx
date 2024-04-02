@@ -14,7 +14,7 @@ export default function AddressExpect({ profile }) {
             <View style={{
                 paddingHorizontal: 10,
             }}>
-                <HeadingContentProfile left='Mong muốn công việc' right='Sửa'
+                <HeadingContentProfile left='Địa điểm mong muốn' right='Sửa'
                     handleOpenModal={handleOpenModal}
                 />
                 <View style={styles.wapper}>
