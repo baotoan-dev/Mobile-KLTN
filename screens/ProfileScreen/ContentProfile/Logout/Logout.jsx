@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
+import * as SecureStore from 'expo-secure-store';
+import { useContext } from 'react';
+import { AuthContext } from '../../../../App';
 
 export default function Logout() {
-    
+    const { setAuth} = useContext(AuthContext);
     const handleLogout = () => {
         SecureStore.deleteItemAsync('token');
         SecureStore.deleteItemAsync('refreshToken');
@@ -11,7 +14,9 @@ export default function Logout() {
     }
     return (
         <View style={styles.container}>
-            <TouchableOpacity><Text style={styles.button}>Logout</Text></TouchableOpacity>
+            <TouchableOpacity 
+                onPress={handleLogout}
+            ><Text style={styles.button}>Logout</Text></TouchableOpacity>
         </View>
     )
 }

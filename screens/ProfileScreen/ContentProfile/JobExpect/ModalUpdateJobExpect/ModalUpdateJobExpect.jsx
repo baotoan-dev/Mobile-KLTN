@@ -7,7 +7,6 @@ import ListJobExpect from '../ListJobExpect/ListJobExpect';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LENGTH_JOB_EXPECT } from '../../../../../utils/LengthLocationAndCategory';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import { updateProfileCategoriesAction } from '../../../../../redux/store/Profile/ProfileCategories/Update/updateProfileCategories';
 import { getProfileAction } from '../../../../../redux/store/Profile/profileSilce';
 

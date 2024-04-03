@@ -6,6 +6,7 @@ import ModalUpdateAddressExpect from './ModalUpdateAddressExpect/ModalUpdateAddr
 export default function AddressExpect({ profile }) {
 
     const [isOpenModalUpdateAddress, setIsOpenModalUpdateAddress] = React.useState(false)
+    const [listAddressExpect, setListAddressExpect] = React.useState([])
     const handleOpenModal = () => {
         setIsOpenModalUpdateAddress(!isOpenModalUpdateAddress)
     }
@@ -35,7 +36,11 @@ export default function AddressExpect({ profile }) {
                     }
                 </View>
             </View>
-            <ModalUpdateAddressExpect isOpenModal={isOpenModalUpdateAddress} handleOpenModal={handleOpenModal} />
+            <ModalUpdateAddressExpect
+                listAddressExpect={listAddressExpect}
+                setListAddressExpect={setListAddressExpect}
+                isOpenModal={isOpenModalUpdateAddress}
+                handleOpenModal={handleOpenModal} />
         </View>
     )
 }
