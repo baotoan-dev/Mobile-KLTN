@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         borderTopColor: 'gray',
         borderTopWidth: 0.5,
         paddingTop: 10,
+        paddingBottom: 10,
     },
     wapper: {
         flexDirection: 'row',
