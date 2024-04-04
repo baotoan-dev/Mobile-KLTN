@@ -16,6 +16,8 @@ export default function HeaderProfile({ profile, isScrolling }) {
             quality: 1,
         });
 
+        console.log(result);
+
         if (!result.canceled) {
             setImage(result.assets[0].uri);
         }
@@ -146,6 +148,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
+        zIndex: 1000,
     },
     avatar: {
         width: 80,

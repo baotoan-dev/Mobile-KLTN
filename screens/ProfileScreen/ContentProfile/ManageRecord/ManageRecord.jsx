@@ -1,64 +1,68 @@
-import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
-import HeadingContentProfile from '../HeadingContentProfile/HeadingContentProfile'
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfileJobAction } from '../../../../redux/store/Profile/UpdateProfileJob/updateProfileJob';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
+import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import HeadingContentProfile from '../HeadingContentProfile/HeadingContentProfile';
 import { AntDesign } from '@expo/vector-icons';
 import ModalVerifytAction from './ModalVerifytAction/ModalVerifytAction';
-import { useDispatch, useSelector } from 'react-redux'
-import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
-import { updateProfileJobAction } from '../../../../redux/store/Profile/UpdateProfileJob/updateProfileJob';
+import { ToastAndroid } from 'react-native';
 
 export default function ManageRecord() {
-    const [showModalSearch, setShowModalSearch] = React.useState(false);
-    const [countCvSearch, setCountCvSearch] = React.useState(0);
-    const [checkedItems, setCheckedItems] = React.useState({});
-    const [cvIds, setCvIds] = React.useState([])
-    const disPatch = useDispatch()
-    const profile = useSelector(state => state.profile.profile)
+    const [showModalSearch, setShowModalSearch] = useState(false);
+    const [countCvSearch, setCountCvSearch] = useState(0);
+    const [checkedItems, setCheckedItems] = useState({});
+    const [isEnableSearch, setIsEnableSearch] = useState(false);
+    const [cvIds, setCvIds] = useState([]);
+    const dispatch = useDispatch();
+    const profile = useSelector(state => state.profile.profile);
+
+    useEffect(() => {
+        dispatch(getProfileAction('vi'));
+    }, [isEnableSearch]);
+
+    useEffect(() => {
+        if (profile && profile.isSearch === 1) {
+            setIsEnableSearch(true);
+        }
+    }, [profile]);
 
     const handleEnableSearch = () => {
         if (cvIds.length === 0) {
-            ToastAndroid.show('Vui lòng chọn ít nhất 1 CV', ToastAndroid.SHORT)
-            return
+            ToastAndroid.show('Vui lòng chọn ít nhất 1 CV', ToastAndroid.SHORT);
+            return;
         }
-        disPatch(updateProfileJobAction({
+        dispatch(updateProfileJobAction({
             cvIds: cvIds,
             isSearch: 1
-        }))
-        disPatch(getProfileAction('vi'))
-        setShowModalSearch(false)
+        })).then(() => {
+            dispatch(getProfileAction('vi'));
+            setIsEnableSearch(true);
+            setShowModalSearch(false);
+        });
     }
 
     const toggleSwitch = () => {
-        console.log('toggleSwitch', profile.isSearch);
         if (profile && profile.isSearch === 0) {
-            setShowModalSearch(true)
+            setShowModalSearch(true);
         }
         else {
-            disPatch(updateProfileJobAction({
+            dispatch(updateProfileJobAction({
                 cvIds: [],
                 isSearch: 0
-            }))
-            disPatch(getProfileAction('vi'))
-            setCheckedItems(checkedItems => {
-                return Object.keys(checkedItems).reduce((acc, key) => {
-                    acc[key] = false
-                    return acc
-                }, {})
-            }
-            )
+            })).then(() => {
+                setIsEnableSearch(false);
+                setCheckedItems({});
+            });
         }
     };
 
     useEffect(() => {
-        disPatch(getProfileAction('vi'))
-    }, [])
-
-    useEffect(() => {
         if (profile && profile.profilesCvs) {
-            const count = profile.profilesCvs.filter((item) => item.isPublic).length
-            setCountCvSearch(count)
+            const count = profile.profilesCvs.filter((item) => item.isPublic).length;
+            setCountCvSearch(count);
         }
-    }, [profile])
+    }, [profile]);
 
     return (
         <View style={styles.container}>
@@ -87,7 +91,7 @@ export default function ManageRecord() {
                                 thumbColor={profile.isSearch ? "#f5dd4b" : "#f4f3f4"}
                                 ios_backgroundColor="#3e3e3e"
                                 onValueChange={toggleSwitch}
-                                value={profile.isSearch === 1 ? true : false}
+                                value={profile.isSearch === 1}
                             />
                         </View>
                     </View>
@@ -143,6 +147,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         paddingBottom: 20,
         borderTopColor: 'gray',
-        borderTopWidth: 0.5,
+        borderTopWidth: 0.5
     }
-})
+});
