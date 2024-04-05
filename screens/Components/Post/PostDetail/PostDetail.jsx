@@ -6,10 +6,12 @@ import { Ionicons } from '@expo/vector-icons';
 import MoreInforComponent from './MoreInforComponent/MoreInforComponent';
 import TabPostComponent from './TabPostComponent.jsx/TabPostComponent';
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PostDetail(prop) {
     const id = prop.route.params.id;
-    const [fitOfPost, setFitOfPost] = useState(''); 
+    const navigation = useNavigation();
+    const [fitOfPost, setFitOfPost] = useState('');
     const [post, setPost] = useState({});
 
     const fetchDetailPost = async () => {
@@ -63,7 +65,7 @@ export default function PostDetail(prop) {
                             </TouchableOpacity>
                         </ImageBackground>
                     </View>
-                    <TabPostComponent post={post}/>
+                    <TabPostComponent post={post} />
                     <View
                         style={{
                             position: 'absolute',
@@ -101,18 +103,24 @@ export default function PostDetail(prop) {
                             height: '70%',
                             marginLeft: 10,
                         }}>
-                            <View style={{
-                                width: '90%',
-                                borderWidth: 0.5,
-                                padding: 10,
-                                backgroundColor: 'blue',
-                                borderRadius: 10,
-                            }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('Application', {
+                                        id: post.id
+                                    })
+                                }}
+                                style={{
+                                    width: '90%',
+                                    borderWidth: 0.5,
+                                    padding: 10,
+                                    backgroundColor: 'blue',
+                                    borderRadius: 10,
+                                }}>
                                 <Text style={{
                                     textAlign: 'center',
                                     color: 'white'
                                 }}> Ứng tuyển ngay</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>

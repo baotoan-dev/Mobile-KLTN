@@ -21,6 +21,7 @@ import DetailBlog from './screens/Components/Blog/DetailBlog/DetailBlog';
 import SeeAllBlog from './screens/Components/Blog/SeeAllBlog/SeeAllBlog';
 import MoreInforComponent from './screens/Components/Post/PostDetail/MoreInforComponent/MoreInforComponent';
 import MoreInforOfTopCompany from './screens/Components/Company/MoreInforOfTopCompany/MoreInforOfTopCompany';
+import Application from './screens/Components/Application/Application';
 
 const Tab = createBottomTabNavigator();
 
@@ -129,6 +130,11 @@ function Navigation() {
                     headerShown: false,
                 }} />
                 <Stack.Screen name="SeeAllBlog" component={SeeAllBlog} options={{
+                    headerShown: false,
+                }} />
+
+                {/* applicaton */}
+                <Stack.Screen name="Application" component={Application} options={{
                     headerShown: false,
                 }} />
 
