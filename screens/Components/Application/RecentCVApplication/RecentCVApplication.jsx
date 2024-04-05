@@ -53,7 +53,8 @@ export default function RecentCVApplication({
                                 }}>
                                     <Text style={{
                                         color: '#5755FE',
-                                        fontWeight: 'bold'
+                                        fontWeight: 'bold',
+                                        fontSize: 13
                                     }}>
                                         {listCv.name}
                                     </Text>
@@ -62,7 +63,8 @@ export default function RecentCVApplication({
                                     }}>
                                         <Text style={{
                                             color: '#5755FE',
-                                            fontWeight: 'bold'
+                                            fontWeight: 'bold',
+                                            fontSize: 13
                                         }}>
                                             Xem CV
                                         </Text>
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderWidth: 0.5,
         borderColor: 'gray',
-        borderRadius: 10,
+        borderRadius: 5,
         paddingVertical: 10,
         zIndex: 1000,
     },
@@ -135,8 +137,9 @@ const styles = StyleSheet.create({
     },
     content: {
         backgroundColor: '#CCD3CA',
-        padding: 20,
-        borderRadius: 10
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        borderRadius: 7
     },
     titleContent: {
         color: 'gray',

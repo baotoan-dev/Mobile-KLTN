@@ -60,6 +60,7 @@ export default function Application() {
           <AllCVFromProfile
             setIsCheckAllCV={setIsCheckAllCV}
             isCheckAllCV={isCheckAllCV}
+            profile={profile}
           />
           <UploadCVFromMobile
             setIsCheckUploadCV={setIsCheckUploadCV}

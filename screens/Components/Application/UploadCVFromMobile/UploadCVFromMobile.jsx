@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderWidth: 0.5,
         borderColor: 'gray',
-        borderRadius: 10,
+        borderRadius: 5,
         paddingVertical: 10,
     },
     flexItem: {
