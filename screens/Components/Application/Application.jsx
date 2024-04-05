@@ -36,7 +36,7 @@ export default function Application() {
     }
   }, [isCheckRecentCV, isCheckAllCV, isCheckUploadCV])
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => {
           navigation.goBack();
@@ -71,7 +71,26 @@ export default function Application() {
       <View style={styles.contentBottom}>
         <Notice />
       </View>
-    </ScrollView>
+      <View style={{
+        position: 'absolute',
+        bottom: 10,
+        width: '100%'
+      }}>
+        <TouchableOpacity style={{
+          backgroundColor: '#5755FE',
+          padding: 15,
+          alignItems: 'center',
+          marginHorizontal: 15,
+          borderRadius: 5,
+          marginTop: 20
+        }}>
+          <Text style={{
+            color: 'white',
+            fontWeight: 'bold'
+          }}>Ứng tuyển</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 
@@ -79,6 +98,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
+    position: 'relative',
+    height: '100%'
   },
   title: {
     fontWeight: 'bold',

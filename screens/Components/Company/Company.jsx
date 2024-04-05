@@ -33,16 +33,16 @@ export default function Company() {
             }}>
                 <Heading props={{ title: "Công ty nổi bật", extra: "Xem thêm" }} />
             </View>
-            <TouchableOpacity 
-            onPress={() => {
-                navigation.navigate('MoreInforOfTopCompany')
-            }}
-            style={{
-                paddingHorizontal: 10,
-                marginTop: 5,
-                flexDirection: 'row',
-                alignItems: 'center',
-            }}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate('MoreInforOfTopCompany')
+                }}
+                style={{
+                    paddingHorizontal: 10,
+                    marginTop: 5,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}>
                 <Text style={{
                     fontSize: 12,
                     color: 'rgba(105, 76, 232, 1)'
@@ -82,8 +82,7 @@ export default function Company() {
                                 </Text>
                             </TouchableOpacity>
                         )
-                    }
-                    )
+                    })
                 }
             </View>
         </View >

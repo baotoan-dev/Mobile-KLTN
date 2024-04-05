@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-
+import { AntDesign } from '@expo/vector-icons';
 export default function ListJobOfCompanyComponent({
     listJob, setCurrentPage, isOver
 }) {
@@ -33,9 +33,9 @@ export default function ListJobOfCompanyComponent({
     return (
         <View>
             {
-                listJob && listJob.postData && (
+                listJob && listJob.lenght > 0 ? (
                     <FlatList
-                        data={listJob.postData.data}
+                        data={listJob}
                         horizontal={false}
                         onEndReached={loadMoreItem}
                         onEndReachedThreshold={0}
@@ -100,7 +100,25 @@ export default function ListJobOfCompanyComponent({
                         )}
                         keyExtractor={item => item.id}
                     />
-                )
+                ) :
+                    (
+                        <View style={{
+                            flex: 1,
+                            height: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: 50
+                        }}>
+                            <AntDesign name="aliwangwang-o1" size={24} color="black" />
+                            <Text style={{
+                                marginTop: 10,
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }}>
+                                Không tìm thấy công việc
+                            </Text>
+                        </View>
+                    )
             }
         </View>
     )
@@ -130,10 +148,10 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     logo: {
-        width: '80%',
+        width: '90%',
         height: '100%',
         borderWidth: 0.5,
-        borderColor: 'black',
-        borderRadius: 18,
+        borderColor: 'gray',
+        borderRadius: 10,
     }
 })

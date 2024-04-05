@@ -19,25 +19,25 @@ export default function CompanyJob({ company }) {
         if (company.id) {
             dispatch(getAllPostCompanyAction(company.id, 10, currentPage))
         }
-    }, [])
+    }, [company.id])
 
     useEffect(() => {
-        if (getAllPostCompany) {
+        if (getAllPostCompany && getAllPostCompany.postData) {
             if (currentPage === 0) {
-                setListJob(getAllPostCompany)
+                setListJob(getAllPostCompany.postData.data)
             }
             else {
-                setListJob((prev) => [...prev, ...getAllPostCompany])
+                setListJob((prev) => [...prev, ...getAllPostCompany.postData.data])
             }
+            setIsOver(getAllPostCompany.postData.is_over)
         }
-        setIsOver(getAllPostCompany.postData.is_over)
     }, [getAllPostCompany])
 
 
     return (
         <View style={styles.container}>
             {
-                listJob.data ? (
+                listJob ? (
                     <ListJobOfCompanyComponent
                         listJob={listJob}
                         setCurrentPage={setCurrentPage}

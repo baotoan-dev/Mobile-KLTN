@@ -5,10 +5,12 @@ import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import RenderHtml from 'react-native-render-html';
 import { AntDesign } from '@expo/vector-icons';
+import ModalComment from '../ModalComment/ModalComment';
 
 export default function DetailBlog(prop) {
     const id = prop.route.params.id;
     const [detailBlog, setDetailBlog] = useState({});
+    const [showModalComment, setShowModalComment] = useState(false);
 
     const fetchData = async () => {
         const res = await communityApi.getDetailCommunity(id)
@@ -228,7 +230,11 @@ export default function DetailBlog(prop) {
                                 <View style={{
                                     width: '33%',
                                 }}>
-                                    <TouchableOpacity style={{
+                                    <TouchableOpacity 
+                                    onPress={() => {
+                                        setShowModalComment(true);
+                                    }}
+                                    style={{
                                         flexDirection: 'row',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -266,6 +272,18 @@ export default function DetailBlog(prop) {
                     )
                 }
             </ScrollView>
+            {
+                showModalComment && (
+                    <View>
+                        <ModalComment
+                            showModalComment={showModalComment}
+                            setShowModalComment={setShowModalComment}
+                            detailBlog={detailBlog}
+                        />
+                    </View>
+                )
+            
+            }
         </SafeAreaView>
     )
 }

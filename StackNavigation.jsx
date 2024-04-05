@@ -22,6 +22,10 @@ import SeeAllBlog from './screens/Components/Blog/SeeAllBlog/SeeAllBlog';
 import MoreInforComponent from './screens/Components/Post/PostDetail/MoreInforComponent/MoreInforComponent';
 import MoreInforOfTopCompany from './screens/Components/Company/MoreInforOfTopCompany/MoreInforOfTopCompany';
 import Application from './screens/Components/Application/Application';
+import NotifyScreen from './screens/NotifyScreen/NotifyScreen';
+import CVScreen from './screens/CVScreen/CVScreen';
+import ModifyPassword from './screens/ProfileScreen/ContentProfile/SettingProfile/ModifyPassword/ModifyPassword';
+import DisablePassAccount from './screens/ProfileScreen/ContentProfile/SettingProfile/DisablePassAccount/DisablePassAccount';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,6 +55,30 @@ function BottomTabs() {
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size, focused }) => (
                         focused ? <Foundation name="home" size={24} color={Color.primary} /> : <Foundation name="home" size={24} color={Color.secondary} />
+                    ),
+                    headerShown: false,
+                    tabBarLabelStyle: {
+                        fontSize: 13,
+                    },
+                }}
+            />
+            <Tab.Screen name="CV" component={CVScreen}
+                options={{
+                    tabBarLabel: 'CV',
+                    tabBarIcon: ({ color, size, focused }) => (
+                        focused ? <MaterialCommunityIcons name="file-document" size={24} color={Color.primary} /> : <MaterialCommunityIcons name="file-document" size={24} color={Color.secondary} />
+                    ),
+                    headerShown: false,
+                    tabBarLabelStyle: {
+                        fontSize: 13,
+                    },
+                }}
+            />
+             <Tab.Screen name="Notification" component={NotifyScreen}
+                options={{
+                    tabBarLabel: 'Notification',
+                    tabBarIcon: ({ color, size, focused }) => (
+                        focused ? <MaterialCommunityIcons name="bell" size={24} color={Color.primary} /> : <MaterialCommunityIcons name="bell" size={24} color={Color.secondary} />
                     ),
                     headerShown: false,
                     tabBarLabelStyle: {
@@ -135,6 +163,15 @@ function Navigation() {
 
                 {/* applicaton */}
                 <Stack.Screen name="Application" component={Application} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Setting profile */}
+                <Stack.Screen name="ModifyPassword" component={ModifyPassword} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name='DisablePassAccount' component={DisablePassAccount} options={{
                     headerShown: false,
                 }} />
 

@@ -1,17 +1,23 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SettingProfile() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Cài đặt tài khoản</Text>
             <View>
-                <TouchableOpacity style={styles.item}>
-                    <Text>Thông tin cá nhân</Text>
+                <TouchableOpacity style={styles.item} onPress={() => {
+                    navigation.navigate('ModifyPassword');
+                }}>
+                    <Text>Đổi mật khẩu</Text>
                     <MaterialIcons name="navigate-next" size={24} color="black" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.item}>
+                <TouchableOpacity style={styles.item} onPress={() => {
+                    navigation.navigate('DisablePassAccount');
+                }}>
                     <Text>Vô hiệu hóa tài khoản</Text>
                     <MaterialIcons name="navigate-next" size={24} color="black" />
                 </TouchableOpacity>
