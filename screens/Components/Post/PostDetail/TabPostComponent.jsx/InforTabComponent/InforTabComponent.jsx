@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import CommonInforTabComponent from './CommonInforTabComponent/CommonInforTabComponent'
@@ -7,7 +7,7 @@ import AddressComponent from './AddressComponent/AddressComponent'
 
 export default function InforTabComponent({ post }) {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={{
                 fontSize: 17,
                 fontWeight: 'bold',
@@ -31,12 +31,14 @@ export default function InforTabComponent({ post }) {
             }}>Địa chỉ làm việc</Text>
 
             <AddressComponent post={post} />
-        </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         padding: 10,
+        height: '100%',
+        marginBottom: 200,
     }
 })

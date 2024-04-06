@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Image, ScrollView, SafeAreaView, TouchableOpacity, Button } from 'react-native'
+import { View, Text, ImageBackground, Image, ScrollView, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import jobApi from '../../../../api/job/jobApi'
@@ -13,6 +13,7 @@ export default function PostDetail(prop) {
     const navigation = useNavigation();
     const [fitOfPost, setFitOfPost] = useState('');
     const [post, setPost] = useState({});
+    const [scrollY, setScrollY] = useState(false);
 
     const fetchDetailPost = async () => {
         const response = await jobApi.getPostbyId(id, 'vi');
@@ -23,16 +24,28 @@ export default function PostDetail(prop) {
         }
     }
 
+    const handleScroll = (e) => {
+        if (e.nativeEvent.contentOffset.y > 300) {
+            setScrollY(true);
+        }
+        else {
+            setScrollY(true);
+        }
+    }
+
     useEffect(() => {
         fetchDetailPost();
     }, [id])
 
     return (
         post ? (
-            <SafeAreaView>
-                <ScrollView style={styles.container}>
+            <View style={styles.container}>
+                <ScrollView onScroll={(e) => {
+                    handleScroll(e)
+                }}>
                     <View style={{
-                        height: 350,
+                        height: 300,
+                        width: '100%'
                     }}>
                         <ImageBackground style={styles.image} source={{ uri: 'https://quangcaonhat.com/wp-content/uploads/2020/08/Untitled-1-scaled.jpg' }} >
                             <View style={styles.wrapper}>
@@ -65,66 +78,70 @@ export default function PostDetail(prop) {
                             </TouchableOpacity>
                         </ImageBackground>
                     </View>
-                    <TabPostComponent post={post} />
-                    <View
-                        style={{
-                            position: 'absolute',
-                            bottom: -12,
-                            height: 70,
-                            width: '100%',
-                            backgroundColor: 'white',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            padding: 5,
-                            zIndex: 100,
-                        }}
-                    >
-                        <View style={{
-                            width: '15%',
-                            height: '70%',
-                            marginLeft: 10,
-                        }}>
-                            <View style={{
-                                borderWidth: 1,
-                                padding: 10,
-                                borderColor: 'blue',
-                                borderRadius: 10,
-                                width: '80%'
-                            }}>
-                                <Feather style={{
-                                    textAlign: 'center'
-                                }}
-
-                                    name="bookmark" size={24} color="black" />
-                            </View>
-                        </View>
-                        <View style={{
-                            width: '85%',
-                            height: '70%',
-                            marginLeft: 10,
-                        }}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate('Application', {
-                                        id: post.id
-                                    })
-                                }}
-                                style={{
-                                    width: '90%',
-                                    borderWidth: 0.5,
-                                    padding: 10,
-                                    backgroundColor: 'blue',
-                                    borderRadius: 10,
-                                }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: 'white'
-                                }}> Ứng tuyển ngay</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={{
+                        height: '85%',
+                        width: '100%',
+                    }}>
+                        <TabPostComponent post={post} />
                     </View>
                 </ScrollView>
-            </SafeAreaView>
+                <View
+                    style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        height: '10%',
+                        width: '100%',
+                        backgroundColor: 'white',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        zIndex: 100,
+                    }}
+                >
+                    <View style={{
+                        width: '15%',
+                        height: '70%',
+                        marginLeft: 10,
+                    }}>
+                        <View style={{
+                            borderWidth: 1,
+                            padding: 10,
+                            borderColor: 'blue',
+                            borderRadius: 10,
+                            width: '80%'
+                        }}>
+                            <Feather style={{
+                                textAlign: 'center'
+                            }}
+
+                                name="bookmark" size={24} color="black" />
+                        </View>
+                    </View>
+                    <View style={{
+                        width: '85%',
+                        height: '70%',
+                        marginLeft: 10,
+                    }}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('Application', {
+                                    id: post.id
+                                })
+                            }}
+                            style={{
+                                width: '90%',
+                                borderWidth: 0.5,
+                                padding: 13,
+                                backgroundColor: 'blue',
+                                borderRadius: 10,
+                            }}>
+                            <Text style={{
+                                textAlign: 'center',
+                                color: 'white'
+                            }}> Ứng tuyển ngay</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
         ) : (
             <></>
         )
@@ -133,25 +150,21 @@ export default function PostDetail(prop) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 30,
         flexDirection: 'column',
         height: '100%',
         width: '100%',
-        marginBottom: 100,
+        backgroundColor: 'white',
     },
     image: {
         height: 200,
-        position: 'relative',
     },
     wrapper: {
-        position: 'absolute',
         width: 300,
-        height: 260,
+        alignSelf: 'flex-start',
         backgroundColor: 'white',
-        bottom: -120,
+        bottom: '-30%',
         left: 50,
         borderRadius: 10,
-        // shadow
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -165,7 +178,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 20,
-        top: -50,
+        top: -40,
         left: 110,
         position: 'absolute'
     },
@@ -175,7 +188,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 0.7,
         borderColor: 'blue',
-        // shadow
         shadowColor: "blue",
         shadowOffset: {
             width: 0,
@@ -186,7 +198,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     titleContainer: {
-        marginTop: 60,
+        marginTop: 50,
         marginLeft: 10,
         paddingHorizontal: 10,
     },

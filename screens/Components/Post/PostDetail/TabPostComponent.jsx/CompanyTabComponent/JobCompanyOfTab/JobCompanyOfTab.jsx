@@ -32,7 +32,9 @@ export default function JobCompanyOfTab({ idCompany }) {
     }, [getAllPostCompany])
 
     return (
-        <View>
+        <View style={{
+            marginBottom: 20,
+        }}>
             {
                 listJob && (
                     <ListJobOfCompanyComponent

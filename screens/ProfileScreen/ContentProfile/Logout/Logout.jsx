@@ -10,7 +10,6 @@ export default function Logout() {
         SecureStore.deleteItemAsync('token');
         SecureStore.deleteItemAsync('refreshToken');
         setAuth(false);
-        setToken('');
     }
     return (
         <View style={styles.container}>

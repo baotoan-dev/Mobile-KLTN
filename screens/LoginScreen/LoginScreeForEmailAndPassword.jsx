@@ -1,8 +1,7 @@
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
-import { Checkbox } from 'react-native-paper';
 import { authCandidate } from '../../api/candidate/auth';
 import { AuthContext } from '../../App';
 import { useContext } from 'react';
@@ -13,6 +12,10 @@ export default function LoginScreeForEmailAndPassword() {
     const [password, setPassword] = useState("");
     const { auth, setAuth } = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
+    console.log(windowHeight, windowWidth);
 
     const handleLogin = async () => {
         try {
@@ -34,18 +37,23 @@ export default function LoginScreeForEmailAndPassword() {
         }
     }
     return (
-
         <View style={styles.container}>
-            <Image source={require('../../images/login.jpg')}
-                style={{
-                    width: '100%',
-                    height: '40%',
-                    marginTop: 30,
-                    borderRadius: 20,
-                }}>
-
-            </Image>
-
+            <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: windowHeight > 890 ? '45%' : '40%',
+            }}>
+                <Image source={require('../../images/login.jpg')}
+                    style={{
+                        textAlign: 'center',
+                        width: '100%',
+                        height: '100%',
+                        marginTop: 30,
+                        borderRadius: 20,
+                        objectFit: 'contain',
+                    }}>
+                </Image>
+            </View>
             <Text style={styles.title}>
                 Login
             </Text>

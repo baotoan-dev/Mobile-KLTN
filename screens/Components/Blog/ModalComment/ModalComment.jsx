@@ -1,18 +1,48 @@
-import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Image } from 'react-native'
+import React, { useEffect } from 'react'
 import Modal from 'react-native-modal'
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
+import { communityApi } from '../../../../api/community/communityApi';
+import ModalActionComment from './ModalActionComment/ModalActionComment';
 
 export default function ModalComment({
     showModalComment,
     setShowModalComment,
-    detailBlog
+    detailBlog,
+    fetchData,
 }) {
     const [comment, setComment] = React.useState('')
+    const [accountId, setAccountId] = React.useState('')
+    const [viewAction, setViewAction] = React.useState(false)
+    const [contentComment, setContentComment] = React.useState('')
+    const [commentId, setCommentId] = React.useState('')
+    const dispatch = useDispatch()
+    const profile = useSelector(state => state.profile.profile)
 
-    const handleComment = () => {
-        
+    useEffect(() => {
+        dispatch(getProfileAction('vi'))
+    }, [])
+
+    useEffect(() => {
+        if (profile) {
+            setAccountId(profile.accountId)
+        }
+    }, [profile])
+
+    const handleComment = async () => {
+        const response = await communityApi.postCommunityComment({
+            communicationId: detailBlog.id,
+            content: comment
+        })
+
+        if (response && response.data.status === 201) {
+            setComment('')
+            fetchData()
+        }
     }
     return (
         <View>
@@ -82,27 +112,58 @@ export default function ModalComment({
                                 flexDirection: 'row',
                                 padding: 10,
                                 borderBottomColor: 'gray',
-                                borderBottomWidth: 0.5
+                                borderBottomWidth: 0.5,
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                height: 90,
+                                zIndex: 200,
                             }}>
                                 <View style={{
-                                    width: 40,
-                                    height: 40,
-                                    borderRadius: 100,
-                                    backgroundColor: 'gray'
-                                }}></View>
-                                <View style={{
-                                    marginLeft: 10
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                 }}>
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: 'bold'
+                                    <View style={{
+                                        width: 40,
+                                        height: 40,
+                                        borderRadius: 100,
+                                        backgroundColor: 'gray'
                                     }}>
-                                        {item.profile.name}
-                                    </Text>
-                                    <Text>
-                                        {item.content}
-                                    </Text>
+                                        <Image source={{ uri: item.profile.avatar }} style={{
+                                            width: 40,
+                                            height: 40,
+                                            borderRadius: 100,
+                                        }} />
+                                    </View>
+                                    <View style={{
+                                        marginLeft: 10
+                                    }}>
+                                        <Text style={{
+                                            fontSize: 16,
+                                            fontWeight: 'bold'
+                                        }}>
+                                            {item.profile.name}
+                                        </Text>
+                                        <Text>
+                                            {item.content}
+                                        </Text>
+                                    </View>
                                 </View>
+                                {
+                                    item.profile.id === accountId && (
+                                        <TouchableOpacity
+                                            style={{
+                                                position: 'relative'
+                                            }}
+                                            onPress={() => {
+                                                setViewAction(!viewAction)
+                                                setCommentId(item.id)
+                                                setContentComment(item.content)
+                                            }}
+                                        >
+                                            <AntDesign name="ellipsis1" size={24} color="black" />
+                                        </TouchableOpacity>
+                                    )
+                                }
                             </View>
                         )}
                     />
@@ -130,6 +191,19 @@ export default function ModalComment({
                     </View>
                 </View>
             </Modal>
+            {
+                viewAction && (
+                    <ModalActionComment
+                        viewAction={viewAction}
+                        setViewAction={setViewAction}
+                        commentId={commentId}
+                        blogId = {detailBlog.id}
+                        fetchData={fetchData}
+                        contentComment={contentComment}
+                        profile={profile}
+                    />
+                )
+            }
         </View>
     )
 }

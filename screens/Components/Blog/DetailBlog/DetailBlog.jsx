@@ -20,6 +20,14 @@ export default function DetailBlog(prop) {
         }
     }
 
+    const handleLikeBlog = async () => {
+        const res = await communityApi.postCommunityLike(id);
+
+        if (res && (res.data.status === 200 || res.data.status === 201)) {
+            fetchData();
+        }
+    }
+
     React.useEffect(() => {
         fetchData();
     }, []);
@@ -193,14 +201,18 @@ export default function DetailBlog(prop) {
                                 }}>
                                     {
                                         detailBlog.liked ? (
-                                            <TouchableOpacity style={{
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                padding: 10,
-                                                borderRadius: 10,
-                                                marginTop: 10,
-                                            }}>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    handleLikeBlog();
+                                                }}
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    padding: 10,
+                                                    borderRadius: 10,
+                                                    marginTop: 10,
+                                                }}>
                                                 <AntDesign name="like1" size={24} color="black" />
                                                 <Text style={{
                                                     color: 'black',
@@ -210,14 +222,18 @@ export default function DetailBlog(prop) {
                                         )
                                             :
                                             (
-                                                <TouchableOpacity style={{
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    padding: 10,
-                                                    borderRadius: 10,
-                                                    marginTop: 10,
-                                                }}>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        handleLikeBlog();
+                                                    }}
+                                                    style={{
+                                                        flexDirection: 'row',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        padding: 10,
+                                                        borderRadius: 10,
+                                                        marginTop: 10,
+                                                    }}>
                                                     <AntDesign name="like2" size={24} color="black" />
                                                     <Text style={{
                                                         color: 'black',
@@ -230,18 +246,18 @@ export default function DetailBlog(prop) {
                                 <View style={{
                                     width: '33%',
                                 }}>
-                                    <TouchableOpacity 
-                                    onPress={() => {
-                                        setShowModalComment(true);
-                                    }}
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        padding: 10,
-                                        borderRadius: 10,
-                                        marginTop: 10,
-                                    }}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setShowModalComment(true);
+                                        }}
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            padding: 10,
+                                            borderRadius: 10,
+                                            marginTop: 10,
+                                        }}>
                                         <Ionicons name="chatbox" size={24} color="black" />
                                         <Text style={{
                                             color: 'black',
@@ -260,7 +276,7 @@ export default function DetailBlog(prop) {
                                         borderRadius: 10,
                                         marginTop: 10,
                                     }}>
-                                        <AntDesign name="link" size={24} color="black" />                                        
+                                        <AntDesign name="link" size={24} color="black" />
                                         <Text style={{
                                             color: 'black',
                                             marginLeft: 10,
@@ -279,10 +295,11 @@ export default function DetailBlog(prop) {
                             showModalComment={showModalComment}
                             setShowModalComment={setShowModalComment}
                             detailBlog={detailBlog}
+                            fetchData={fetchData}
                         />
                     </View>
                 )
-            
+
             }
         </SafeAreaView>
     )

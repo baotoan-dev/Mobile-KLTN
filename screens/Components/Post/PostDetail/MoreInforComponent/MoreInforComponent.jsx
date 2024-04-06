@@ -3,7 +3,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function MoreInforComponent({post, fitOfPost}) {
+export default function MoreInforComponent({ post, fitOfPost }) {
     return (
         <View style={styles.container}>
             <Text style={styles.line}></Text>
@@ -19,7 +19,12 @@ export default function MoreInforComponent({post, fitOfPost}) {
                     }}>
                         <Text
                             numberOfLines={1}
-                            style={styles.item}>{post.salary_min + ' - ' + post.salary_max + ' ' + post.money_type_text}</Text>
+                            style={styles.item}>
+                            {
+                                post.salary_min === 0 && post.salary_max === 0 ? 'Thỏa thuận' :
+                                    post.salary_min >= 0 && post.salary_max >= 1000000 ? (post.salary_min / 1000000 + 'tr' + ' - ' + post.salary_max / 1000000 + 'tr') : (post.salary_min + ' - ' + post.salary_max)
+                            }
+                        </Text>
                     </Text>
                 </View>
                 <View style={styles.address}>

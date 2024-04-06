@@ -148,7 +148,7 @@ export default function Filter() {
                                         borderColor: 'blue',
                                     }}>
                                         <Text>
-                                            {dataMoneyFilter.salaryMin + ' - ' + dataMoneyFilter.salaryMax + ' VND'}
+                                            {dataMoneyFilter.salaryMin  + ' - ' + dataMoneyFilter.salaryMax + ' VND'}
                                         </Text>
                                         <TouchableOpacity onPress={() => {
                                             setDataMoneyFilter({})

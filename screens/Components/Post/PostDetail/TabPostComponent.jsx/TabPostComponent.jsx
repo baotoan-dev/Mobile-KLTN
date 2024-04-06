@@ -11,9 +11,8 @@ export default function TabPostComponent({ post }) {
 
     return (
         <View style={{
-            height: 500,
+            height: '100%',
             backgroundColor: 'white',
-            overflow: 'scroll',
         }}>
             <Tab value={index} onChange={setIndex} dense>
                 <Tab.Item
@@ -34,13 +33,11 @@ export default function TabPostComponent({ post }) {
                     Công ty
                 </Tab.Item>
             </Tab>
-            <ScrollView style={{
-                marginBottom: 70
-            }}>
+            <View>
                 {index === 0 && <InforTabComponent post={post} />}
                 {index === 1 && <JobTabComponent post={post} />}
                 {index === 2 && <CompanyTabComponent post={post} />}
-            </ScrollView>
+            </View>
         </View>
     )
 }
