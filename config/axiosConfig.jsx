@@ -31,7 +31,7 @@ axiosConfig.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        if ((error.response.status === 403  || error.response.status === 400 ) && !originalRequest._retry) {
+        if ((error.response.status === 403  || error.response.status === 400 || error.response.status === 401) && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
@@ -39,6 +39,7 @@ axiosConfig.interceptors.response.use(
             const data = {
                 refreshToken: refreshToken,
             };
+
             return axiosConfig.post(URL, data).then((res) => {
                 if (res.data.code === 200) {
                     SecureStore.setItemAsync("token", res.data.data.accessToken);

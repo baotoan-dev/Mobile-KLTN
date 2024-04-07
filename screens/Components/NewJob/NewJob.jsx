@@ -19,7 +19,6 @@ export default function NewJob() {
     const [current, setCurrent] = useState(0);
 
     const getNewJob = async () => {
-
         const response = await jobApi.getPostNewest(
             null,
             null,
@@ -29,8 +28,6 @@ export default function NewJob() {
             85000,
             "vi"
         );
-
-
         if (response && response.data && response.data.status === 200) {
             setThresholdNewJob(thresholdNewJob + 4);
             const newData = [];
@@ -41,13 +38,17 @@ export default function NewJob() {
         }
     }
 
+    const handleSeeMore = () => {
+        navigation.navigate('AllPostNewest')
+    }
+
     useEffect(() => {
         getNewJob();
     }, [current])
 
     return (
         <View style={styles.container}>
-            <Heading props={{ title: 'Công việc mới nhất', extra: 'Xem thêm' }} />
+            <Heading props={{ title: 'Công việc mới nhất', extra: 'Xem thêm', handleSeeMore: handleSeeMore}} />
             <Carousel
                 data={newJob}
                 sliderWidth={SCREEN_WIDTH}

@@ -1,16 +1,21 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ManageFindJob() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Quản lý tìm việc</Text>
             <View style={styles.wapper}>
-                <TouchableOpacity style={styles.item}>
+                <TouchableOpacity 
+                onPress={
+                    () => navigation.navigate('ManageJobApplication')
+                }
+                style={styles.item}>
                     <View style={styles.icon}>
                         <FontAwesome name="shopping-bag" size={24} color="black" />
                     </View>

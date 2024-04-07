@@ -11,7 +11,6 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import LoginScreeForEmailAndPassword from './screens/LoginScreen/LoginScreeForEmailAndPassword';
 import { AuthContext } from './App';
 import { useContext } from 'react';
-import { useState } from 'react';
 import CompanyDetail from './screens/Components/Company/CompanyDetail/CompanyDetail';
 import PostDetail from './screens/Components/Post/PostDetail/PostDetail';
 import Search from './screens/Components/Search/Search';
@@ -19,13 +18,14 @@ import SearchResult from './screens/Components/Search/SearchResult/SearchResult'
 import Filter from './screens/Components/Search/Filter/Filter';
 import DetailBlog from './screens/Components/Blog/DetailBlog/DetailBlog';
 import SeeAllBlog from './screens/Components/Blog/SeeAllBlog/SeeAllBlog';
-import MoreInforComponent from './screens/Components/Post/PostDetail/MoreInforComponent/MoreInforComponent';
 import MoreInforOfTopCompany from './screens/Components/Company/MoreInforOfTopCompany/MoreInforOfTopCompany';
 import Application from './screens/Components/Application/Application';
 import NotifyScreen from './screens/NotifyScreen/NotifyScreen';
 import CVScreen from './screens/CVScreen/CVScreen';
 import ModifyPassword from './screens/ProfileScreen/ContentProfile/SettingProfile/ModifyPassword/ModifyPassword';
 import DisablePassAccount from './screens/ProfileScreen/ContentProfile/SettingProfile/DisablePassAccount/DisablePassAccount';
+import ManageJobApplication from './screens/ProfileScreen/ContentProfile/ManageFindJob/ManageJobApplication/ManageJobApplication';
+import AllPostNewest from './screens/Components/Post/AllPostNewest/AllPostNewest';
 
 const Tab = createBottomTabNavigator();
 
@@ -140,6 +140,10 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
+                <Stack.Screen name='AllPostNewest' component={AllPostNewest} options={{
+                    headerShown: false,
+                }} />
+
                 {/* search */}
                 <Stack.Screen name="Search" component={Search} options={{
                     headerShown: false,
@@ -172,6 +176,11 @@ function Navigation() {
                 }} />
 
                 <Stack.Screen name='DisablePassAccount' component={DisablePassAccount} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Manage Find Job */}
+                <Stack.Screen name="ManageJobApplication" component={ManageJobApplication} options={{
                     headerShown: false,
                 }} />
 

@@ -1,5 +1,5 @@
-import axios from "axios";
 import { CONST_API_V1 } from "../contants/urlContant";
+import axiosConfig from "../../config/axiosConfig";
 
 export const searchApi = {
     getSearchByQueryV2: async (
@@ -54,6 +54,6 @@ export const searchApi = {
             }` +
             `${lang ? `&lang=${lang}` : 'vi'}`;
 
-        return await axios.get(URL);
+        return await axiosConfig.get(URL);
     },
 }

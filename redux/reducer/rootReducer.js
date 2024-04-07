@@ -4,6 +4,7 @@ import searchReducer from "../store/Search/searchSlice";
 import locationReducer from "../store/Location/locationSlice";
 import getAllPostCompanyReducer from "../store/Company/GetAllPostCompany/getAllPostCompany";
 import categoriesReducer from "../store/Categories/categoriesSlice";
+import searchHistoryReducer from "../store/SearchHistory/getAllSearchHistorySlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     location: locationReducer,
     getAllPostCompany: getAllPostCompanyReducer,
     categories: categoriesReducer,
+    searchHistory: searchHistoryReducer,
 });
 
 export default rootReducer;

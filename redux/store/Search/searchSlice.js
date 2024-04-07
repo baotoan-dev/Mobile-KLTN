@@ -2,7 +2,7 @@ import { searchApi } from "../../../api/search/searchApi";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    search: {},
+    search: [],
     loading: false,
     error: false,
 };
@@ -43,12 +43,10 @@ export const getSearchAction = (
             district_ids,
             salary_type,
             lang,
-            page,
-            limit
         );
 
         if (response && response.data) {
-            dispatch(actions.getSearchSuccess(response.data.data.posts));
+            dispatch(actions.getSearchSuccess(response.data.data));
         }
     } catch (error) {
         console.log('error from getSearchAction', error.message);

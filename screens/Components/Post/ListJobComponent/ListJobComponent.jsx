@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
 
     const navation = useNavigation();
-
+    
     const renderLoader = () => {
         return (
             isOver ? (

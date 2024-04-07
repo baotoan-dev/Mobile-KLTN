@@ -11,8 +11,9 @@ export default function Search() {
   )
 }
 
-const styles =StyleSheet.create({
-    container: {
-        padding: 30,
-    }
+const styles = StyleSheet.create({
+  container: {
+    padding: 30,
+    height: '100%',
+  }
 })

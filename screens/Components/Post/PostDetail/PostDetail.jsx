@@ -17,7 +17,6 @@ export default function PostDetail(prop) {
 
     const fetchDetailPost = async () => {
         const response = await jobApi.getPostbyId(id, 'vi');
-
         if (response && response.data.code === 200) {
             setPost(response.data.data);
             setFitOfPost(response.data.data.fit);
@@ -45,7 +44,8 @@ export default function PostDetail(prop) {
                 }}>
                     <View style={{
                         height: 300,
-                        width: '100%'
+                        width: '100%',
+                        marginBottom: 10,
                     }}>
                         <ImageBackground style={styles.image} source={{ uri: 'https://quangcaonhat.com/wp-content/uploads/2020/08/Untitled-1-scaled.jpg' }} >
                             <View style={styles.wrapper}>

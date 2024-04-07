@@ -1,14 +1,20 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { StyleSheet } from 'react-native';
 import { Color } from '../../../utils/Color';
 
 export default function Heading({ props }) {
-    const { title, extra } = props;
+    const { title, extra, handleSeeMore } = props;
     return (
         <View style={styles.container}>
             <Text style={styles.left}>{title}</Text>
-            <Text style={styles.right}>{extra}</Text>
+            <TouchableOpacity
+                onPress={() => {
+                    handleSeeMore();
+                }}
+            >
+                <Text style={styles.right}>{extra}</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -25,7 +31,7 @@ const styles = StyleSheet.create({
         color: Color.primary
     },
     right: {
-        color: 'blue', 
+        color: 'blue',
         fontSize: 14
     }
 })
