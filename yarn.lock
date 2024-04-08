@@ -3575,6 +3575,11 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
+escape-string-regexp@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
+  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
+
 esprima@^4.0.0, esprima@~4.0.0:
   version "4.0.1"
   resolved "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz"
@@ -3735,10 +3740,22 @@ expo-font@~11.0.1:
   dependencies:
     fontfaceobserver "^2.1.0"
 
+expo-image-loader@~4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/expo-image-loader/-/expo-image-loader-4.0.0.tgz"
+  integrity sha512-hVMhXagsO1cSng5s70IEjuJAuHy2hX/inu5MM3T0ecJMf7L/7detKf22molQBRymerbk6Tzu+20h11eU0n/3jQ==
+
 expo-image-loader@~4.6.0:
   version "4.6.0"
   resolved "https://registry.npmjs.org/expo-image-loader/-/expo-image-loader-4.6.0.tgz"
   integrity sha512-RHQTDak7/KyhWUxikn2yNzXL7i2cs16cMp6gEAgkHOjVhoCJQoOJ0Ljrt4cKQ3IowxgCuOrAgSUzGkqs7omj8Q==
+
+expo-image-manipulator@~11.0.0:
+  version "11.0.0"
+  resolved "https://registry.npmjs.org/expo-image-manipulator/-/expo-image-manipulator-11.0.0.tgz"
+  integrity sha512-CDiqOrhN1TSWw/4t7Xo97U+Xzoc437oCHbZH7+4RhhmPBlu5/2b4UjoEiw/gPWu9DD7OS/TRvO027axod9QNDQ==
+  dependencies:
+    expo-image-loader "~4.0.0"
 
 expo-image-picker@^14.7.1:
   version "14.7.1"
@@ -3799,10 +3816,20 @@ expo-modules-core@1.1.1:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
+expo-print@~12.0.0:
+  version "12.0.0"
+  resolved "https://registry.npmjs.org/expo-print/-/expo-print-12.0.0.tgz"
+  integrity sha512-S9MD1iL3xicFuNwNEpfcIt0B4Afs9L+H2qLBDNGksv1b7gRCIf0NUSuDexVHkKkmWxhu0Rg7ClChtNpaB2AoOQ==
+
 expo-secure-store@~12.0.0:
   version "12.0.0"
   resolved "https://registry.npmjs.org/expo-secure-store/-/expo-secure-store-12.0.0.tgz"
   integrity sha512-Rz5lYr2NxrnFvIPwuWcseUSbdUjFxNZG0oVulqM9puuK7t5lDG3/SAy+J22ELBhaltuci2VVO6hCdFwRoRiG/Q==
+
+expo-sharing@~11.0.1:
+  version "11.0.1"
+  resolved "https://registry.npmjs.org/expo-sharing/-/expo-sharing-11.0.1.tgz"
+  integrity sha512-GlI2+fRxfdCNUftFPfqhbCSd6OQaVf/WNAADWZnRanRQRbQdQjM6L0oMmUTwQStc36cmzl+vGgNlouwdmTDseA==
 
 expo-status-bar@~1.11.1:
   version "1.11.1"
@@ -4434,7 +4461,7 @@ internal-ip@4.3.0:
     default-gateway "^4.2.0"
     ipaddr.js "^1.9.0"
 
-invariant@^2.2.4:
+invariant@^2.2.4, invariant@2.2.4:
   version "2.2.4"
   resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -6239,6 +6266,14 @@ react-native-vector-icons@*, react-native-vector-icons@>7.0.0:
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-webview@^13.8.4:
+  version "13.8.4"
+  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.8.4.tgz"
+  integrity sha512-dFoM9EfkAb++ZzycZyKRnjZtNUn85cf6bWp1iBlkgyNml7ULzR1gfaPT3qESoA3K1RfTmf5Xhw0M2In2A3a3wg==
+  dependencies:
+    escape-string-regexp "2.0.0"
+    invariant "2.2.4"
 
 react-native@*, react-native@^*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>= 0.62", react-native@>=0.6.0, react-native@>=0.65.0, react-native@>=0.69, react-native@0.73.6:
   version "0.73.6"

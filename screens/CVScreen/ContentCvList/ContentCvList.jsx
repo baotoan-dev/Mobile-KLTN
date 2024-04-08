@@ -18,7 +18,7 @@ export default function ContentCvList({ checkShow, profile }) {
                 checkShow ? (
                     <View style={styles.container}>
                         {
-                            listCvs.map((item, index) => (
+                            listCvs?.map((item, index) => (
                                 <View key={index} style={styles.item}>
                                     <TouchableOpacity style={styles.itemContainer}>
                                         <View style={{
@@ -90,7 +90,7 @@ export default function ContentCvList({ checkShow, profile }) {
                 ) : (
                     <View>
                         {
-                            listCvs.map((item, index) => (
+                            listCvs?.map((item, index) => (
                                 <TouchableOpacity style={styles.containerWidthSmall} key={index}>
                                     <View style={{
                                         width: '90%',

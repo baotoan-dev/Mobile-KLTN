@@ -15,8 +15,6 @@ export default function LoginScreeForEmailAndPassword() {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
-    console.log(windowHeight, windowWidth);
-
     const handleLogin = async () => {
         try {
             // baotoandd2016@gmail.com

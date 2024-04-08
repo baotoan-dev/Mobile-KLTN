@@ -27,6 +27,12 @@ import DisablePassAccount from './screens/ProfileScreen/ContentProfile/SettingPr
 import ManageJobApplication from './screens/ProfileScreen/ContentProfile/ManageFindJob/ManageJobApplication/ManageJobApplication';
 import AllPostNewest from './screens/Components/Post/AllPostNewest/AllPostNewest';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
+import PDFScreen from './screens/PDFScreen/PDFScreen';
+import ThemeCvList from './screens/CVScreen/ThemeCvList/ThemeCvList';
+import InforContentForCV from './screens/PDFScreen/InforContentForCV/InforContentForCV';
+import PersonalInformation from './screens/PDFScreen/InforContentForCV/PersonalInformation/PersonalInformation';
+import Project from './screens/PDFScreen/InforContentForCV/Project/Project';
+import Education from './screens/PDFScreen/InforContentForCV/Education/Education';
 
 const Tab = createBottomTabNavigator();
 
@@ -195,6 +201,34 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
+                {/* Create PDF */}
+                <Stack.Screen name="PDFScreen" component={PDFScreen} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name='ThemeCvList' component={ThemeCvList}  options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="InforContentForCV" component={InforContentForCV} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="PersonalInformation" component={PersonalInformation} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="Project" component={Project} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="Education" component={Education} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="Certification" component={Education} options={{
+                    headerShown: false,
+                }} />
             </Stack.Navigator>
         </NavigationContainer>
     )

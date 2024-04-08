@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Resume</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 30px;
+        }
+
+        /* Your existing CSS styles here */
+        /* Note: I'll keep the existing inline styles for brevity */
+    </style>
+</head>
+
+<body>
+    <div style="display: flex; flex-direction: row; width: 100%;">
+        <div style="width: 50%; height: 100%; display: flex; flex-direction: column;">
+            <div>
+                <div>
+                    <img id="avatar" style="width: 200px; height: 200px;" />
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div id="name" style="font-size: 20px;">Nguyễn Văn A</div>
+                    <div>Thuc tap sinh</div>
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 10px;">
+                    parsonal
+                </div>
+                <div>
+                    <div id="position" style="font-size: 20px;">Developer</div>
+                    <div id="role" style="font-size: 20px;">Frontend</div>
+                    <div id="skills" style="font-size: 20px;">React Native</div>
+                    <div id="skills" style="font-size: 20px;">React Native</div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 50%; height: 100%;">
+            <div>
+                <div style="font-weight: 600; margin-bottom: 10px;">EDUCATION</div>
+                <div id="education"></div>
+            </div>
+            <div>
+                <div style="font-weight: 600; margin-bottom: 10px;">CERTIFICATE</div>
+                <div id="certificate"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const education = [
+            {
+                school: 'Hanoi University of Science and Technology',
+                major: 'Information Technology',
+                from: '2016',
+                to: '2020'
+            },
+            {
+                school: 'Hanoi University of Science and Technology',
+                major: 'Information Technology',
+                from: '2016',
+                to: '2020'
+            }
+        ];
+
+        const certificate = [
+            {
+                name: 'React Native',
+                from: 'Udemy',
+                year: '2021'
+            },
+            {
+                name: 'React Native',
+                from: 'Udemy',
+                year: '2021'
+            }
+        ];
+
+        const avatar = 'https://www.w3schools.com/howto/img_avatar.png';
+
+        // Function to generate HTML for education
+        const educationHTML = education.map((item) => {
+            return `
+                <div>
+                    <div>${item.school}</div>
+                    <div>${item.major}</div>
+                    <div>${item.from} - ${item.to}</div>
+                </div>
+            `;
+        }).join('');
+
+        // Insert education HTML into the education div
+        document.getElementById('education').innerHTML = educationHTML;
+        document.getElementById('certificate').innerHTML = certificate.map((item) => {
+            return `
+                <div>
+                    <div>${item.name}</div>
+                    <div>${item.from}</div>
+                    <div>${item.year}</div>
+                </div>
+            `;
+        }).join('');
+        document.getElementById('avatar').src = avatar;
+    </script>
+</body>
+
+</html>
