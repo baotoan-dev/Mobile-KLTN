@@ -38,8 +38,24 @@ export default function ThemeCvList() {
                 </Text>
             </View>
             <View>
-                <View>
-
+                <View style={{
+                    paddingHorizontal: 20,
+                    marginTop: 10,
+                }}>
+                    {
+                        themeCv && (
+                            <View>
+                                <Text style={{
+                                    color: 'gray',
+                                    fontSize: 12
+                                }}>
+                                    {
+                                        `Tổng số mẫu CV: ${themeCv.length}`
+                                    }
+                                </Text>
+                            </View>
+                        )
+                    }
                 </View>
                 <ScrollView style={{
                     marginBottom: 50
@@ -47,7 +63,6 @@ export default function ThemeCvList() {
                     <View style={{
                         flexDirection: 'row',
                         flexWrap: 'wrap',
-                        justifyContent: 'center',
                         alignItems: 'center',
                     }}>
                         {themeCv?.map((item, index) => {
@@ -55,8 +70,8 @@ export default function ThemeCvList() {
                                 <View key={index} style={{
                                     width: '44%',
                                     height: 200,
-                                    borderWidth: 0.2,
-                                    borderRadius: 5,
+                                    borderWidth: 0.3,
+                                    borderRadius: 3,
                                     margin: 10,
                                 }}>
                                     <TouchableOpacity
@@ -73,7 +88,7 @@ export default function ThemeCvList() {
                                             <Image source={{ uri: item.image }} style={{
                                                 width: '100%',
                                                 height: '100%',
-                                                borderRadius: 5
+                                                borderRadius: 5,
                                             }} />
                                         </View>
                                         <View style={{
