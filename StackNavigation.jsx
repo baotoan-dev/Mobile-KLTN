@@ -26,6 +26,7 @@ import ModifyPassword from './screens/ProfileScreen/ContentProfile/SettingProfil
 import DisablePassAccount from './screens/ProfileScreen/ContentProfile/SettingProfile/DisablePassAccount/DisablePassAccount';
 import ManageJobApplication from './screens/ProfileScreen/ContentProfile/ManageFindJob/ManageJobApplication/ManageJobApplication';
 import AllPostNewest from './screens/Components/Post/AllPostNewest/AllPostNewest';
+import ChatScreen from './screens/ChatScreen/ChatScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -74,7 +75,17 @@ function BottomTabs() {
                     },
                 }}
             />
-             <Tab.Screen name="Notification" component={NotifyScreen}
+            <Tab.Screen name="Chat" component={ChatScreen} options={{
+                tabBarLabel: 'Chat',
+                tabBarIcon: ({ color, size, focused }) => (
+                    focused ? <MaterialCommunityIcons name="chat" size={24} color={Color.primary} /> : <MaterialCommunityIcons name="chat" size={24} color={Color.secondary} />
+                ),
+                headerShown: false,
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                },
+            }} />
+            <Tab.Screen name="Notification" component={NotifyScreen}
                 options={{
                     tabBarLabel: 'Notification',
                     tabBarIcon: ({ color, size, focused }) => (
