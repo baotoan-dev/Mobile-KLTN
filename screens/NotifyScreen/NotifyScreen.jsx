@@ -1,10 +1,36 @@
-import { View, Text, StyleSheet, Image, ScrollView, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { notificationApi } from '../../api/notification/notificationApi'
+import { useNavigation } from '@react-navigation/native'
+import moment from 'moment'
 
 export default function NotifyScreen() {
+  const navigation = useNavigation()
   const [dataNotify, setDataNotify] = React.useState([])
   const [isOver, setIsOver] = React.useState(false)
+
+  const handleClickNoty = (
+    postId,
+    commentId,
+    applicationId,
+    typeText
+  ) => {
+    if (typeText === "recruiter") {
+
+    }
+    if (typeText === "applicator") {
+      navigation.navigate('PostDetail', {
+        id: postId
+      })
+    }
+    if (typeText === "communicationComment") {
+      navigation.navigate('DetailBlog', {
+        id: commentId
+      })
+    }
+  };
+
+
   const fetchData = async () => {
     const response = await notificationApi.getNotification('vi')
 
@@ -13,8 +39,6 @@ export default function NotifyScreen() {
       setDataNotify(response.data.data.notifications)
     }
   }
-
-  console.log(dataNotify);
 
   React.useEffect(() => {
     fetchData()
@@ -33,18 +57,32 @@ export default function NotifyScreen() {
               data={dataNotify}
               keyExtractor={(item) => item.data.notificationId.toString()}
               renderItem={({ item }) => (
-                <View style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: '#ddd',
-                }}>
+                <TouchableOpacity style={styles.item}
+                  onPress={() => handleClickNoty(
+                    item.data.postId,
+                    item.data.communicationId,
+                    item.data.applicationId,
+                    item.data.typeText
+                  )}
+                >
                   <Text style={{
-                    fontSize: 16,
                     fontWeight: 'bold',
-                    color: '#333',
+                    fontSize: 14,
                   }}>
+                    {item.content.title}
+                  </Text>
+                  <Text>
                     {item.content.body}
                   </Text>
-                </View>
+                  <Text style={{
+                    color: 'gray',
+                    fontSize: 12, 
+                  }}>
+                    {
+                      moment(item.created_at).format('DD/MM/YYYY HH:mm:ss')
+                    }
+                  </Text>
+                </TouchableOpacity>
               )}
             />
           </ScrollView>
@@ -88,5 +126,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     padding: 10,
     backgroundColor: 'white',
+  },
+  item: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    borderRadius: 10,
+    padding: 10,
+    margin: 10,   
+    backgroundColor: '#FEFDED',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   }
 })

@@ -102,7 +102,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                                 height: '100%',
                                             }}
                                         >
-                                            <Image source={{ uri: item.imageURL }} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            <Image source={{ uri: item.imageURL }} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                                         </View>
                                         <View style={{
                                             marginLeft: 10,
@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
     item: {
         width: '48%',
         height: 200,
-        borderWidth: 0.5,
         borderColor: 'gray',
         marginVertical: 5,
         borderRadius: 5,
@@ -189,6 +188,7 @@ const styles = StyleSheet.create({
     image: {
         height: '100%',
         width: '100%',
+        objectFit: 'contain',
     },
     content: {
         height: '30%',
@@ -204,7 +204,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 80,
-        borderWidth: 0.2,
         borderColor: '#B4B4B8',
         marginVertical: 5,
         borderRadius: 5,

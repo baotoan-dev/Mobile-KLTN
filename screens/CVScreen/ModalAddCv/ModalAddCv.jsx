@@ -55,8 +55,8 @@ export default function ModalAddCv({
                             }}
                         >
                             <View style={{
-                                borderWidth: 0.5,
-                                borderRadius: 10,
+                                borderWidth: 0.2,
+                                borderRadius: 5,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 padding: 10,
@@ -74,8 +74,8 @@ export default function ModalAddCv({
                         <TouchableOpacity>
                             <View style={{
                                 padding: 10,
-                                borderWidth: 0.5,
-                                borderRadius: 10,
+                                borderWidth: 0.2,
+                                borderRadius: 5,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 marginTop: 10

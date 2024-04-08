@@ -61,13 +61,16 @@ export default function CVScreen() {
         </View>
       </ScrollView>
       {
-        showModalAddCv && <ModalAddCv
+        showModalAddCv === true && 
+        <ModalAddCv
           showModalAddCv={showModalAddCv}
           setShowModalAddCv={setShowModalAddCv}
         />
       }
       <FAB
-        onPress={() => setShowModalAddCv(true)}
+        onPress={() => {
+          setShowModalAddCv(true)
+        }}
         placement="right"
         buttonStyle={{
           backgroundColor: '#FF6347'
