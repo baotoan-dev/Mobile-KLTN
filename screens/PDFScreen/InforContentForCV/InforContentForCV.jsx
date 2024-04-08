@@ -17,9 +17,10 @@ export default function InforContentForCV() {
                 <Text style={{
                     fontWeight: 'bold',
                     textAlign: 'center',
-                    fontSize: 20,
+                    fontSize: 18,
                     borderBottomColor: 'gray',
                     borderBottomWidth: 0.5,
+                    marginLeft: 5,
                 }}>
                     Thông tin cơ bản
                 </Text>

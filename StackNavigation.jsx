@@ -33,6 +33,11 @@ import InforContentForCV from './screens/PDFScreen/InforContentForCV/InforConten
 import PersonalInformation from './screens/PDFScreen/InforContentForCV/PersonalInformation/PersonalInformation';
 import Project from './screens/PDFScreen/InforContentForCV/Project/Project';
 import Education from './screens/PDFScreen/InforContentForCV/Education/Education';
+import AddEducation from './screens/PDFScreen/InforContentForCV/Education/AddEducation/AddEducation';
+import UpdateEducation from './screens/PDFScreen/InforContentForCV/Education/UpdateEducation/UpdateEducation';
+import Certification from './screens/PDFScreen/InforContentForCV/Certification/Certification';
+import AddCertification from './screens/PDFScreen/InforContentForCV/Certification/AddCertification/AddCertification';
+import UpdateCertification from './screens/PDFScreen/InforContentForCV/Certification/UpdateCertification/UpdateCertification';
 
 const Tab = createBottomTabNavigator();
 
@@ -226,7 +231,27 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
-                <Stack.Screen name="Certification" component={Education} options={{
+                <Stack.Screen name="Certification" component={Certification} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Education */}
+
+                <Stack.Screen name="AddEducation" component={AddEducation} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="UpdateEducation" component={UpdateEducation} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Cetification */}
+
+                <Stack.Screen name="AddCertification" component={AddCertification} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name='UpdateCertification' component={UpdateCertification} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>
