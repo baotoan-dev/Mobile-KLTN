@@ -29,11 +29,11 @@ export default function InforContentForCV() {
                 {
                     ContentEditForCv.map((item, index) => {
                         return (
-                            <TouchableOpacity 
-                            onPress={() => {
-                                navigation.navigate(item.screen)
-                            }}
-                            style={styles.item} key={index}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate(item.screen)
+                                }}
+                                style={styles.item} key={index}>
                                 {
                                     item.icon
                                 }
