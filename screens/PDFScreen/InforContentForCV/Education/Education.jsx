@@ -6,28 +6,10 @@ import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function Education() {
+export default function Education({data}) {
     const navigation = useNavigation();
     const [listEducation, setListEducation] = useState([]);
 
-    useEffect(() => {
-        setListEducation([
-            {
-                position: 'Trưởng phòng',
-                time: '2018 - 2022',
-                company: 'Công ty ABC',
-                description: 'Mô tả công việc',
-                index: 0,
-            },
-            {
-                position: 'Trưởng phong',
-                time: '2018 - 2022',
-                company: 'Công ty ABC',
-                description: 'Mô tả công việc',
-                index: 1,
-            },
-        ]);
-    }, []);
     return (
         <View style={styles.container}>
             <View style={styles.header}>

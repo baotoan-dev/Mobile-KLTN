@@ -5,33 +5,49 @@ import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCvProjectAction, deleteCvProjectAction, getCvProjectAction } from '../../../../redux/store/CvProject/cvProjectSlice';
+import { createCvListProject } from '../Education/helpers/CreateCvListProject';
+import { createCvProject, createMoreCvProject } from '../Education/helpers/CreateCvProject';
 
 export default function Project() {
     const navigation = useNavigation();
-    const [listProject, setListProject] = useState([]);
+    const dispatch = useDispatch();
+    const [listProject, setListProject] = useState([])
+    const cvProject = useSelector(state => state.cvProject.cvProject);
 
     useEffect(() => {
-        setListProject([
-            {
-                title: 'Dự án 1',
-                time: '2018 - 2022',
-                link: 'https://www.google.com',
-                participant: 'Nguyễn Văn A, Nguyễn Văn B',
-                position: 'Trưởng phòng',
-                functionality: 'Mô tả chức năng',
-                technology: 'React Native, NodeJS',
-            },
-            {
-                title: 'Dự án 2',
-                time: '2018 - 2022',
-                link: 'https://www.google.com',
-                participant: 'Nguyễn Văn A, Nguyễn Văn B',
-                position: 'Trưởng phòng',
-                functionality: 'Mô tả chức năng',
-                technology: 'React Native, NodeJS',
-            },
-        ]);
-    }, []);
+        dispatch(getCvProjectAction(0))
+    }, [])
+
+    useEffect(() => {
+        const data = createCvListProject(cvProject);
+
+        setListProject(data);
+
+    }, [cvProject]);
+
+    const handleDeleteProject = async (id) => {
+        const newListProject = listProject.filter(item => +item.id !== +id);
+
+        const newCvProjectData = newListProject.map((item, index) => {
+            const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, index);
+            return createCvProject(item.type, 0, 0, 0, 0, createMoreCvProjectData);
+        });
+
+        if (newListProject && newListProject.length > 0) {
+            dispatch(createCvProjectAction(newCvProjectData)).then(() => {
+                dispatch(getCvProjectAction(0));
+            });
+        }
+        if (newListProject && newListProject.length === 0) {
+            dispatch(deleteCvProjectAction(0)).then(() => {
+                dispatch(getCvProjectAction(0));
+            })
+        }
+    };
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -59,7 +75,16 @@ export default function Project() {
                                 }}>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            navigation.navigate('UpdateProject')
+                                            navigation.navigate('UpdateProject', {
+                                                idParent: item.id,
+                                                typeParent: item.type,
+                                                timeParent: item.time,
+                                                linkParent: item.link,
+                                                participantParent: item.participant,
+                                                positionParent: item.position,
+                                                functionalityParent: item.functionality,
+                                                technologyParent: item.technology,
+                                            })
                                         }}
                                     >
                                         <Entypo name="dial-pad" size={24} color="black" />
@@ -73,7 +98,7 @@ export default function Project() {
                                                 fontWeight: 'bold',
                                                 fontSize: 16,
                                             }}>
-                                            {`Tên dự án: ${item.title}`}
+                                            {`Tên dự án: ${item.type}`}
                                         </Text>
                                         <Text
                                             numberOfLines={1}
@@ -118,11 +143,24 @@ export default function Project() {
                                                 marginTop: 2,
                                                 color: 'gray'
                                             }}>
+                                            {`Công nghệ: ${item.technology}`}
+                                        </Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{
+                                                fontSize: 12,
+                                                marginTop: 2,
+                                                color: 'gray'
+                                            }}>
                                             {`Thời gian: ${item.time}`}
                                         </Text>
                                     </View>
                                 </View>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        handleDeleteProject(item.id)
+                                    }}
+                                >
                                     <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
                                 </TouchableOpacity>
                             </View>

@@ -38,6 +38,8 @@ import UpdateEducation from './screens/PDFScreen/InforContentForCV/Education/Upd
 import Certification from './screens/PDFScreen/InforContentForCV/Certification/Certification';
 import AddCertification from './screens/PDFScreen/InforContentForCV/Certification/AddCertification/AddCertification';
 import UpdateCertification from './screens/PDFScreen/InforContentForCV/Certification/UpdateCertification/UpdateCertification';
+import UpdateProject from './screens/PDFScreen/InforContentForCV/Project/UpdateProject/UpdateProject';
+import AddProject from './screens/PDFScreen/InforContentForCV/Project/AddProject/AddProject';
 
 const Tab = createBottomTabNavigator();
 
@@ -252,6 +254,16 @@ function Navigation() {
                 }} />
 
                 <Stack.Screen name='UpdateCertification' component={UpdateCertification} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Project */}
+
+                <Stack.Screen name='UpdateProject' component={UpdateProject} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="AddProject" component={AddProject} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>
