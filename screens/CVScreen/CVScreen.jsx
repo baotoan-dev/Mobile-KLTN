@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -8,8 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
 import { FAB } from 'react-native-elements';
 import ModalAddCv from './ModalAddCv/ModalAddCv';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CVScreen() {
+  const navigation = useNavigation()
   const [checkShow, setCheckShow] = React.useState(false)
   const profile = useSelector(state => state.profile.profile)
   const [showModalAddCv, setShowModalAddCv] = React.useState(false)
@@ -23,7 +25,11 @@ export default function CVScreen() {
   return (
     <View>
       <View style={styles.header}>
-        <Ionicons name="arrow-back" size={24} color="black" />
+        <TouchableOpacity onPress={() => {
+          navigation.goBack()
+        }}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
         <Text style={{
           fontSize: 16,
           marginLeft: 10,
@@ -61,7 +67,7 @@ export default function CVScreen() {
         </View>
       </ScrollView>
       {
-        showModalAddCv === true && 
+        showModalAddCv === true &&
         <ModalAddCv
           showModalAddCv={showModalAddCv}
           setShowModalAddCv={setShowModalAddCv}

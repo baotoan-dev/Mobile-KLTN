@@ -9,9 +9,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvProjectAction, getCvProjectAction } from '../../../../../redux/store/CvProject/cvProjectSlice';
-import { createCvListProject } from '../../Education/helpers/CreateCvListProject';
 import { useState, useEffect } from 'react';
-import { createCvProject, createMoreCvProject } from '../../Education/helpers/CreateCvProject';
+import { createCvListProject } from '../helpers/CreateCvListProject';
+import { createCvProject, createMoreCvProject } from '../helpers/CreateCvProject';
 
 export default function AddProject() {
   const dispatch = useDispatch();

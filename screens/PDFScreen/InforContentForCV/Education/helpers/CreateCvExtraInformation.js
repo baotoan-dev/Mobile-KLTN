@@ -10,7 +10,7 @@ export function CreateCvExtraInformation(type, row, col, cvIndex, part, moreCvEx
 }
 
 
-export function createMoreCvExtraInformation(position, time, company, description, index) {
+export function CreateMoreCvExtraInformation(position, time, company, description, index) {
     return {
         position: position,
         time: time,

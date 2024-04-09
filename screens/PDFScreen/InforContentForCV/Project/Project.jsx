@@ -7,8 +7,8 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvProjectAction, deleteCvProjectAction, getCvProjectAction } from '../../../../redux/store/CvProject/cvProjectSlice';
-import { createCvListProject } from '../Education/helpers/CreateCvListProject';
-import { createCvProject, createMoreCvProject } from '../Education/helpers/CreateCvProject';
+import { createCvListProject } from './helpers/CreateCvListProject';
+import { createCvProject, createMoreCvProject } from './helpers/CreateCvProject';
 
 export default function Project() {
     const navigation = useNavigation();
