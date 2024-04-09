@@ -4,8 +4,10 @@ import * as SecureStore from 'expo-secure-store';
 
 export const cvApi = {
     createCvExtraInformation: (data) => {
-        const URL = `${CONST_API}/api/v3/api/v3/cv-extra-information`;
-        return axiosConfig.post(URL, data, {
+        const URL = `${CONST_API}/api/v3/cv-extra-information`;
+        return axiosConfig.post(URL, {
+            data: data
+        }, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
                 'Content-Type': 'application/json',
@@ -15,6 +17,14 @@ export const cvApi = {
     getCvExtraInformation: (cvIndex) => {
         const URL = `${CONST_API}/api/v3/cv-extra-information?cvIndex=${cvIndex}`;
         return axiosConfig.get(URL, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+            },
+        });
+    },
+    deleteCvExtraInformation: (cvIndex) => {
+        const URL = `${CONST_API}/api/v3/cv-extra-information`;
+        return axiosConfig.delete(URL, { data: { cvindex: cvIndex } }, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
@@ -39,7 +49,7 @@ export const cvApi = {
     },
     deleteCvProject: (cvIndex) => {
         const URL = `${CONST_API}/api/v3/cv-project`;
-        return axiosConfig.delete(URL,  { data: { cvindex: cvIndex }}, {
+        return axiosConfig.delete(URL, { data: { cvindex: cvIndex } }, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },

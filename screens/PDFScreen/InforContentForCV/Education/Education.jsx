@@ -5,10 +5,47 @@ import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
+import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
+import { CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 
-export default function Education({data}) {
+export default function Education() {
     const navigation = useNavigation();
-    const [listEducation, setListEducation] = useState([]);
+    const dispatch = useDispatch();
+    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+    const [listExtraInformation, setListExtraInformation] = useState([]);
+
+    useEffect(() => {
+        dispatch(getCvExtraInformationAction(0))
+    }, [])
+
+    useEffect(() => {
+        const data = createCvListExtraInformaion(cvExtraInformation);
+
+        setListExtraInformation(data);
+
+    }, [cvExtraInformation])
+
+    const handleDeleteExtraInformation = async (id) => {
+        const newListExtraInformation = listExtraInformation.filter(item => +item.id !== +id);
+
+        const newCvExtraInformationData = newListExtraInformation.map((item, index) => {
+            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, index);
+            return CreateMoreCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
+        });
+
+        if (newListExtraInformation && newListExtraInformation.length > 0) {
+            dispatch(createCvExtraInformationAction(newCvExtraInformationData)).then(() => {
+                dispatch(getCvExtraInformationAction(0));
+            });
+        }
+        if (newListExtraInformation && newListExtraInformation.length === 0) {
+            dispatch(deleteCvExtraInformationAction(0)).then(() => {
+                dispatch(getCvExtraInformationAction(0));
+            })
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -28,7 +65,7 @@ export default function Education({data}) {
             </View>
             <ScrollView>
                 {
-                    listEducation && listEducation.length > 0 && listEducation.map((item, index) => {
+                    listExtraInformation && listExtraInformation.length > 0 && listExtraInformation.map((item, index) => {
                         return (
                             <View style={styles.item} key={index}>
                                 <View style={{
@@ -82,7 +119,9 @@ export default function Education({data}) {
                                         </Text>
                                     </View>
                                 </View>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    handleDeleteExtraInformation(item.id)
+                                }}>
                                     <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
                                 </TouchableOpacity>
                             </View>

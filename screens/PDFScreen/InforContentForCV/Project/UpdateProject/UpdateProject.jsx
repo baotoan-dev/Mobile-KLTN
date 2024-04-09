@@ -9,9 +9,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createCvListProject } from '../../Education/helpers/CreateCvListProject';
 import { createCvProjectAction, getCvProjectAction } from '../../../../../redux/store/CvProject/cvProjectSlice';
-import { createCvProject, createMoreCvProject } from '../../Education/helpers/CreateCvProject';
+import { createCvListProject } from '../helpers/CreateCvListProject';
+import { createCvProject, createMoreCvProject } from '../helpers/CreateCvProject';
 
 export default function UpdateProject(prop) {
   const navigation = useNavigation();

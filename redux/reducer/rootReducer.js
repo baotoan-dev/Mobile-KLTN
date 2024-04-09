@@ -6,6 +6,7 @@ import getAllPostCompanyReducer from "../store/Company/GetAllPostCompany/getAllP
 import categoriesReducer from "../store/Categories/categoriesSlice";
 import searchHistoryReducer from "../store/SearchHistory/getAllSearchHistorySlice";
 import cvProjectReducer from "../store/CvProject/cvProjectSlice";
+import cvExtraInformationReducer from "../store/CvExtraInformation/CvExtraInformationSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     getAllPostCompany: getAllPostCompanyReducer,
     categories: categoriesReducer,
     searchHistory: searchHistoryReducer,
-    cvProject: cvProjectReducer
+    cvProject: cvProjectReducer,
+    cvExtraInformation: cvExtraInformationReducer,
 });
 
 export default rootReducer;
