@@ -5,9 +5,58 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { useState, useEffect } from 'react';
+import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from '../helpers/CreateCvExtraInformation';
+import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
+import { createCvListExtraInformaion } from '../helpers/CreateCvListExtraInformation';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function AddEducation() {
     const navigation = useNavigation();
+    const [listExtraInformation, setListExtraInformation] = useState([]);
+    const dispatch = useDispatch();
+    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+    const [company, setCompany] = useState('');
+    const [position, setPosition] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [description, setDescription] = useState('');
+
+    useEffect(() => {
+        if (cvExtraInformation) {
+            const data = createCvListExtraInformaion(cvExtraInformation);
+
+            setListExtraInformation(data);
+        }
+        else {
+            setListExtraInformation([]);
+        }
+    }, [cvExtraInformation])
+
+
+    const handleSaveExtraInformation = async () => {
+        const newListExtraInformation = [...listExtraInformation, {
+            id: listExtraInformation.length + 1,
+            type: 'education',
+            position: position,
+            time: `${startTime} - ${endTime}`,
+            company: company,
+            description: description,
+        }];
+
+        const newCvExtraInformationData = newListExtraInformation.map((item, index) => {
+            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, index);
+            return CreateCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
+        });
+
+        if (newListExtraInformation && newListExtraInformation.length > 0) {
+            dispatch(createCvExtraInformationAction(newCvExtraInformationData)).then(() => {
+                dispatch(getCvExtraInformationAction(0));
+            });
+        }
+
+        navigation.goBack();
+    };
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -25,13 +74,19 @@ export default function AddEducation() {
                         marginLeft: 5,
                     }}>Thêm học vấn
                 </Text>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 16,
-                    color: 'blue',
-                }}>
-                    Lưu
-                </Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        handleSaveExtraInformation();
+                    }}
+                >
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                        color: 'blue',
+                    }}>
+                        Lưu
+                    </Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.content}>
                 {/* company */}
@@ -53,6 +108,9 @@ export default function AddEducation() {
                                 marginLeft: 5,
                             }}
                             placeholder="Trường học"
+                            onChangeText={(text) => {
+                                setCompany(text)
+                            }}
                         >
                         </TextInput>
                     </View>
@@ -77,6 +135,9 @@ export default function AddEducation() {
                                 marginLeft: 5,
                             }}
                             placeholder="Chuyên ngành"
+                            onChangeText={(text) => {
+                                setPosition(text)
+                            }}
                         >
                         </TextInput>
                     </View>
@@ -98,6 +159,9 @@ export default function AddEducation() {
                                 marginLeft: 5,
                             }}
                             placeholder="Thời gian bắt đầu"
+                            onChangeText={(text) => {
+                                setStartTime(text)
+                            }}
                         >
                         </TextInput>
                     </View>
@@ -119,6 +183,9 @@ export default function AddEducation() {
                                 marginLeft: 5,
                             }}
                             placeholder="Thời gian kết thúc"
+                            onChangeText={(text) => {
+                                setEndTime(text)
+                            }}
                         >
                         </TextInput>
                     </View>
@@ -140,6 +207,9 @@ export default function AddEducation() {
                                 marginLeft: 5,
                             }}
                             placeholder="Mô tả"
+                            onChangeText={(text) => {
+                                setDescription(text)
+                            }}
                         >
                         </TextInput>
                     </View>

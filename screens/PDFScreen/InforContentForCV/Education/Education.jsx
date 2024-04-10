@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
-import { CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
+import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 
 export default function Education() {
     const navigation = useNavigation();
@@ -21,10 +21,14 @@ export default function Education() {
     }, [])
 
     useEffect(() => {
-        const data = createCvListExtraInformaion(cvExtraInformation);
+        if (cvExtraInformation) {
+            const data = createCvListExtraInformaion(cvExtraInformation);
 
-        setListExtraInformation(data);
-
+            setListExtraInformation(data);
+        }
+        else{
+            setListExtraInformation([]);
+        }
     }, [cvExtraInformation])
 
     const handleDeleteExtraInformation = async (id) => {
@@ -32,7 +36,7 @@ export default function Education() {
 
         const newCvExtraInformationData = newListExtraInformation.map((item, index) => {
             const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, index);
-            return CreateMoreCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
+            return CreateCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
         });
 
         if (newListExtraInformation && newListExtraInformation.length > 0) {
@@ -65,69 +69,79 @@ export default function Education() {
             </View>
             <ScrollView>
                 {
-                    listExtraInformation && listExtraInformation.length > 0 && listExtraInformation.map((item, index) => {
-                        return (
-                            <View style={styles.item} key={index}>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            navigation.navigate('UpdateEducation')
-                                        }}
-                                    >
-                                        <Entypo name="dial-pad" size={24} color="black" />
-                                    </TouchableOpacity>
+                    listExtraInformation &&
+                    listExtraInformation
+                        .filter(item => item.type === 'education')
+                        .map((item, index) => {
+                            return (
+                                <View style={styles.item} key={index}>
                                     <View style={{
-                                        marginLeft: 10
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
                                     }}>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontWeight: 'bold',
-                                                fontSize: 16,
-                                            }}>
-                                            {`Tên vị trí: ${item.position}`}
-                                        </Text>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: 14,
-                                                marginTop: 5,
-                                            }}>
-                                            {`Công ty: ${item.company}`}
-                                        </Text>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: 12,
-                                                marginTop: 2,
-                                                color: 'gray'
-                                            }}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                navigation.navigate('UpdateEducation', {
+                                                    idParent: index,
+                                                    typeParent: item.type,
+                                                    positionParent: item.position,
+                                                    companyParent: item.company,
+                                                    descriptionParent: item.description,
+                                                    timeParent: item.time,
+                                                })
+                                            }}
+                                        >
+                                            <Entypo name="dial-pad" size={24} color="black" />
+                                        </TouchableOpacity>
+                                        <View style={{
+                                            marginLeft: 10
+                                        }}>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontWeight: 'bold',
+                                                    fontSize: 16,
+                                                }}>
+                                                {`Tên vị trí: ${item.position}`}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 14,
+                                                    marginTop: 5,
+                                                }}>
+                                                {`Công ty: ${item.company}`}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 12,
+                                                    marginTop: 2,
+                                                    color: 'gray'
+                                                }}>
 
-                                            {`Mô tả: ${item.description}`}
-                                        </Text>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: 12,
-                                                marginTop: 2,
-                                                color: 'gray'
-                                            }}>
-                                            {`Thời gian: ${item.time}`}
-                                        </Text>
+                                                {`Mô tả: ${item.description}`}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 12,
+                                                    marginTop: 2,
+                                                    color: 'gray'
+                                                }}>
+                                                {`Thời gian: ${item.time}`}
+                                            </Text>
+                                        </View>
                                     </View>
+                                    <TouchableOpacity onPress={() => {
+                                        handleDeleteExtraInformation(item.id)
+                                    }}>
+                                        <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
+                                    </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity onPress={() => {
-                                    handleDeleteExtraInformation(item.id)
-                                }}>
-                                    <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
-                                </TouchableOpacity>
-                            </View>
+                            )
+                        }
                         )
-                    }
-                    )
                 }
             </ScrollView>
             <View>
