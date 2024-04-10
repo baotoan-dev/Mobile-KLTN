@@ -5,29 +5,54 @@ import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
+import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
+import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 
 export default function Certification() {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [listCertification, setListCertification] = useState([]);
+    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+
 
     useEffect(() => {
-        setListCertification([
-            {
-                position: 'Trưởng phòng',
-                time: '2018 - 2022',
-                company: 'Công ty ABC',
-                description: 'Mô tả công việc',
-                index: 0,
-            },
-            {
-                position: 'Trưởng phong',
-                time: '2018 - 2022',
-                company: 'Công ty ABC',
-                description: 'Mô tả công việc',
-                index: 1,
-            },
-        ]);
-    }, []);
+        dispatch(getCvExtraInformationAction(0))
+    }, [])
+
+    useEffect(() => {
+        if (cvExtraInformation) {
+            const data = createCvListExtraInformaion(cvExtraInformation);
+
+            setListCertification(data);
+        }
+        else{
+            setListCertification([]);
+        }
+    }, [cvExtraInformation])
+
+
+    const handleDeleteExtraInformation = async (id) => {
+        const newListExtraInformation = listCertification.filter(item => +item.id !== +id);
+
+        const newCvExtraInformationData = newListExtraInformation.map((item, index) => {
+            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, index);
+            return CreateCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
+        });
+
+        if (newListExtraInformation && newListExtraInformation.length > 0) {
+            dispatch(createCvExtraInformationAction(newCvExtraInformationData)).then(() => {
+                dispatch(getCvExtraInformationAction(0));
+            });
+        }
+        if (newListExtraInformation && newListExtraInformation.length === 0) {
+            dispatch(deleteCvExtraInformationAction(0)).then(() => {
+                dispatch(getCvExtraInformationAction(0))
+            })
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -46,67 +71,81 @@ export default function Certification() {
             </View>
             <ScrollView>
                 {
-                    listCertification && listCertification.length > 0 && listCertification.map((item, index) => {
-                        return (
-                            <View style={styles.item} key={index}>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}>
+                    listCertification &&
+                    listCertification
+                        .filter(item => item.type === 'certification')
+                        .map((item, index) => {
+                            return (
+                                <View style={styles.item} key={index}>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                navigation.navigate('UpdateCertification', {
+                                                    idParent: index,
+                                                    typeParent: item.type,
+                                                    positionParent: item.position,
+                                                    companyParent: item.company,
+                                                    descriptionParent: item.description,
+                                                    timeParent: item.time,
+                                                })
+                                            }}
+                                        >
+                                            <Entypo name="dial-pad" size={24} color="black" />
+                                        </TouchableOpacity>
+                                        <View style={{
+                                            marginLeft: 10
+                                        }}>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontWeight: 'bold',
+                                                    fontSize: 16,
+                                                }}>
+                                                {`Tên chứng chỉ: ${item.position}`}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 14,
+                                                    marginTop: 5,
+                                                }}>
+                                                {`Tổ chức: ${item.company}`}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 12,
+                                                    marginTop: 2,
+                                                    color: 'gray'
+                                                }}>
+
+                                                {`Mô tả: ${item.description}`}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 12,
+                                                    marginTop: 2,
+                                                    color: 'gray'
+                                                }}>
+                                                {`Thời gian: ${item.time}`}
+                                            </Text>
+                                        </View>
+                                    </View>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            navigation.navigate('UpdateCertification')
+                                            handleDeleteExtraInformation(item.id);
                                         }}
                                     >
-                                        <Entypo name="dial-pad" size={24} color="black" />
+                                        <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
                                     </TouchableOpacity>
-                                    <View style={{
-                                        marginLeft: 10
-                                    }}>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontWeight: 'bold',
-                                                fontSize: 16,
-                                            }}>
-                                            {`Tên chứng chỉ: ${item.position}`}
-                                        </Text>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: 14,
-                                                marginTop: 5,
-                                            }}>
-                                            {`Tổ chức: ${item.company}`}
-                                        </Text>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: 12,
-                                                marginTop: 2,
-                                                color: 'gray'
-                                            }}>
-
-                                            {`Mô tả: ${item.description}`}
-                                        </Text>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: 12,
-                                                marginTop: 2,
-                                                color: 'gray'
-                                            }}>
-                                            {`Thời gian: ${item.time}`}
-                                        </Text>
-                                    </View>
                                 </View>
-                                <TouchableOpacity>
-                                    <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
-                                </TouchableOpacity>
-                            </View>
+                            )
+                        }
                         )
-                    }
-                    )
                 }
             </ScrollView>
             <View>

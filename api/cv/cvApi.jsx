@@ -23,7 +23,7 @@ export const cvApi = {
         });
     },
     deleteCvExtraInformation: (cvIndex) => {
-        const URL = `${CONST_API}/api/v3/cv-extra-information`;
+        const URL = `${CONST_API}/api/v3/cv-extra-information`
         return axiosConfig.delete(URL, { data: { cvindex: cvIndex } }, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,

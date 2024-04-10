@@ -1,7 +1,7 @@
 export function createCvListExtraInformaion(cvExtraInformation) {
   if (cvExtraInformation && cvExtraInformation.length > 0) {
     const newExtraInformationList = cvExtraInformation.map((item, index) => ({
-      id: item.id,
+      id: index,
       type: item.type,
       time: item.moreCvExtraInformations[0].time,
       position: item.moreCvExtraInformations[0].position,

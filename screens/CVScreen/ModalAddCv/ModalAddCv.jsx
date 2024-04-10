@@ -26,7 +26,10 @@ export default function ModalAddCv({
                         flexDirection: 'row',
                         alignItems: 'center',
                         paddingHorizontal: 20,
-                        marginTop: 10,
+                        paddingVertical: 10,
+                        borderBottomWidth: 0.2,
+                        borderBottomColor: 'gray',
+                        backgroundColor: '#FFF2E1',
                     }}>
 
                         <Text style={{
@@ -56,7 +59,7 @@ export default function ModalAddCv({
                         >
                             <View style={{
                                 borderWidth: 0.2,
-                                borderRadius: 5,
+                                borderRadius: 3,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 padding: 10,
@@ -75,7 +78,7 @@ export default function ModalAddCv({
                             <View style={{
                                 padding: 10,
                                 borderWidth: 0.2,
-                                borderRadius: 5,
+                                borderRadius: 3,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 marginTop: 10

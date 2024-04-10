@@ -5,9 +5,74 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
+import { createCvListExtraInformaion } from '../../Education/helpers/CreateCvListExtraInformation';
+import { CreateMoreCvExtraInformation } from '../helpers/CreateCvExtraInformation';
+import { CreateCvExtraInformation } from '../../Education/helpers/CreateCvExtraInformation';
 
-export default function UpdateCertification() {
+export default function UpdateCertification(prop) {
     const navigation = useNavigation();
+    const dispatch = useDispatch()
+    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+    const { idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
+    const [listExtraInformation, setListExtraInformation] = useState([]);
+    const [type, setType] = useState('');
+    const [company, setCompany] = useState('');
+    const [position, setPosition] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [description, setDescription] = useState('');
+
+
+    useEffect(() => {
+        dispatch(getCvExtraInformationAction(0));
+        setType(typeParent);
+        setCompany(companyParent);
+        setPosition(positionParent);
+        setStartTime(timeParent.split(' - ')[0]);
+        setEndTime(timeParent.split(' - ')[1]);
+        setDescription(descriptionParent);
+    }, [])
+
+    useEffect(() => {
+        if (cvExtraInformation.length === 0) {
+            setListExtraInformation([]);
+        }
+        else {
+            const data = createCvListExtraInformaion(cvExtraInformation);
+
+            const newListCvExtraInformation = data.filter(item => item.id === idParent)
+
+            setListExtraInformation(newListCvExtraInformation)
+        }
+    }, [cvExtraInformation])
+
+
+    const handleUpdate = () => {
+        const newListExtraInformation = [...listExtraInformation, {
+            id: listExtraInformation.length + 1,
+            type: 'certification',
+            position: position,
+            time: `${startTime} - ${endTime}`,
+            company: company,
+            description: description
+        }];
+
+        const newCvExtraInformationData = newListExtraInformation.map((item, index) => {
+            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, index);
+            return CreateCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
+        });
+
+        dispatch(createCvExtraInformationAction(newCvExtraInformationData)).then(() => {
+            dispatch(getCvExtraInformationAction(0));
+        });
+
+        navigation.goBack()
+    }
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -25,13 +90,17 @@ export default function UpdateCertification() {
                         marginLeft: 5,
                     }}>Cập nhật chứng chỉ
                 </Text>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 16,
-                    color: 'blue',
-                }}>
-                    Lưu
-                </Text>
+                <TouchableOpacity
+                    onPress={handleUpdate}
+                >
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                        color: 'blue',
+                    }}>
+                        Lưu
+                    </Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.content}>
                 {/* company */}
@@ -53,6 +122,10 @@ export default function UpdateCertification() {
                                 marginLeft: 5,
                             }}
                             placeholder="Tên chứng chỉ"
+                            onChangeText={(text) => {
+                                setPosition(text)
+                            }}
+                            value={position}
                         >
                         </TextInput>
                     </View>
@@ -77,6 +150,10 @@ export default function UpdateCertification() {
                                 marginLeft: 5,
                             }}
                             placeholder="Tổ chức"
+                            onChangeText={(text) => {
+                                setCompany(text)
+                            }}
+                            value={company}
                         >
                         </TextInput>
                     </View>
@@ -98,6 +175,10 @@ export default function UpdateCertification() {
                                 marginLeft: 5,
                             }}
                             placeholder="Thời gian bắt đầu"
+                            onChangeText={(text) => {
+                                setStartTime(text)
+                            }}
+                            value={startTime}
                         >
                         </TextInput>
                     </View>
@@ -119,6 +200,10 @@ export default function UpdateCertification() {
                                 marginLeft: 5,
                             }}
                             placeholder="Thời gian kết thúc"
+                            onChangeText={(text) => {
+                                setEndTime(text)
+                            }}
+                            value={endTime}
                         >
                         </TextInput>
                     </View>
@@ -140,6 +225,10 @@ export default function UpdateCertification() {
                                 marginLeft: 5,
                             }}
                             placeholder="Mô tả"
+                            onChangeText={(text) => {
+                                setDescription(text)
+                            }}
+                            value={description}
                         >
                         </TextInput>
                     </View>
