@@ -7,6 +7,7 @@ import categoriesReducer from "../store/Categories/categoriesSlice";
 import searchHistoryReducer from "../store/SearchHistory/getAllSearchHistorySlice";
 import cvProjectReducer from "../store/CvProject/cvProjectSlice";
 import cvExtraInformationReducer from "../store/CvExtraInformation/CvExtraInformationSlice";
+import profileAnalyticReducer from "../store/Profile/ProfileAnalytic/profileAnalyticSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     searchHistory: searchHistoryReducer,
     cvProject: cvProjectReducer,
     cvExtraInformation: cvExtraInformationReducer,
+    profileAnalytic: profileAnalyticReducer,
 });
 
 export default rootReducer;

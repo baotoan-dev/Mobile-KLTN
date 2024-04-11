@@ -24,6 +24,17 @@ const profileApi = {
                 Authorization: `Bearer ${token}`,
             },
         });
+    },
+    getAnalytics: async () => {
+        const URL = `${CONST_API}/api/v3/profiles/analytics`;
+
+        const token = await SecureStore.getItemAsync("token");
+
+        return await axios.get(URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     }
 }
 
