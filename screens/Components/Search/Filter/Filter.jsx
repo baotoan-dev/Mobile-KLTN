@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Entypo } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import TypeComponent from './TypeComponent/TypeComponent';
 import MoneyComponent from './MoneyComponent/MoneyComponent';
 import CatogoryComponent from './CatogoryComponent/CatogoryComponent';
 import LocationComponent from './LocationComponent/LocationComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Filter() {
     const navigation = useNavigation();
@@ -21,6 +22,47 @@ export default function Filter() {
     const [dataMoneyFilter, setDataMoneyFilter] = React.useState({})
     const [dataCategoryFilter, setDataCategoryFilter] = React.useState([])
     const [dataLocationFilter, setDataLocationFilter] = React.useState([])
+
+    useEffect(() => {
+        const fetchDataCategoryFilter = async () => {
+            const dataCategoryFilter = await AsyncStorage.getItem('dataCategoryFilter')
+            if (dataCategoryFilter) {
+                setDataCategoryFilter(JSON.parse(dataCategoryFilter))
+            }
+        }
+        fetchDataCategoryFilter()
+    }, [])
+
+    useEffect(() => {
+        const fetchDataMoneyFilter = async () => {
+            const dataMoneyFilter = await AsyncStorage.getItem('dataMoneyFilter')
+            if (dataMoneyFilter) {
+                setDataMoneyFilter(JSON.parse(dataMoneyFilter))
+            }
+        }
+        fetchDataMoneyFilter()
+    }, [])
+
+    useEffect(() => {
+        const fetchDataTypeFilter = async () => {
+            const dataTypeFilter = await AsyncStorage.getItem('dataTypeFilter')
+            if (dataTypeFilter) {
+                const data = JSON.parse(dataTypeFilter)
+                setDataTypeFilter(data)
+            }
+        }
+        fetchDataTypeFilter()
+    }, [])
+
+    useEffect(() => {
+        const fetchDataLocationFilter = async () => {
+            const dataLocationFilter = await AsyncStorage.getItem('dataLocationFilter')
+            if (dataLocationFilter) {
+                setDataLocationFilter(JSON.parse(dataLocationFilter))
+            }
+        }
+        fetchDataLocationFilter()
+    }, [])
 
     return (
         <View style={{
@@ -96,15 +138,16 @@ export default function Filter() {
                                                 <Text>
                                                     {item.name}
                                                 </Text>
-                                                <TouchableOpacity onPress={() => {
-                                                    setDataLocationFilter(
-                                                        dataLocationFilter.filter((ward) => ward.id !== item.id)
-                                                    )
+                                                <TouchableOpacity onPress={async () => {
+                                                    const newDataLocationFilter = dataLocationFilter.filter((ward) => +ward.id !== +item.id);
+                                                    setDataLocationFilter(newDataLocationFilter);
+                                                    await AsyncStorage.setItem('dataLocationFilter', JSON.stringify(newDataLocationFilter))
                                                 }} style={{
                                                     marginLeft: 5
                                                 }}>
                                                     <MaterialIcons name="delete-outline" size={24} color="blue" />
                                                 </TouchableOpacity>
+
                                             </View>
                                         ))
                                     }
@@ -148,10 +191,11 @@ export default function Filter() {
                                         borderColor: 'blue',
                                     }}>
                                         <Text>
-                                            {dataMoneyFilter.salaryMin  + ' - ' + dataMoneyFilter.salaryMax + ' VND'}
+                                            {dataMoneyFilter.salaryMin + ' - ' + dataMoneyFilter.salaryMax + ' VND'}
                                         </Text>
-                                        <TouchableOpacity onPress={() => {
+                                        <TouchableOpacity onPress={async () => {
                                             setDataMoneyFilter({})
+                                            await AsyncStorage.setItem('dataMoneyFilter', JSON.stringify({}))
                                         }} style={{
                                             marginLeft: 5
                                         }}>
@@ -205,10 +249,10 @@ export default function Filter() {
                                                 <Text>
                                                     {item.name}
                                                 </Text>
-                                                <TouchableOpacity onPress={() => {
-                                                    setDataCategoryFilter(
-                                                        dataCategoryFilter.filter((ward) => ward.id !== item.id)
-                                                    )
+                                                <TouchableOpacity onPress={async () => {
+                                                    const newDataCategoryFilter = dataCategoryFilter.filter((ward) => ward.id !== item.id);
+                                                    setDataCategoryFilter(newDataCategoryFilter);
+                                                    await AsyncStorage.setItem('dataCategoryFilter', JSON.stringify(newDataCategoryFilter))
                                                 }} style={{
                                                     marginLeft: 5
                                                 }}>
@@ -259,8 +303,9 @@ export default function Filter() {
                                         <Text>
                                             {dataTypeFilter.name}
                                         </Text>
-                                        <TouchableOpacity onPress={() => {
+                                        <TouchableOpacity onPress={async () => {
                                             setDataTypeFilter({})
+                                            await AsyncStorage.setItem('dataTypeFilter', JSON.stringify({}))
                                         }} style={{
                                             marginLeft: 5
                                         }}>
@@ -283,11 +328,15 @@ export default function Filter() {
                 padding: 5,
             }}>
                 <TouchableOpacity
-                    onPress={() => {
+                    onPress={async () => {
                         setDataMoneyFilter({})
                         setDataCategoryFilter([])
                         setDataTypeFilter({})
                         setDataLocationFilter([])
+                        await AsyncStorage.setItem('dataMoneyFilter', JSON.stringify({}))
+                        await AsyncStorage.setItem('dataCategoryFilter', JSON.stringify([]))
+                        await AsyncStorage.setItem('dataTypeFilter', JSON.stringify({}))
+                        await AsyncStorage.setItem('dataLocationFilter', JSON.stringify([]))
                     }}
                     style={{
                         flexDirection: 'row',
@@ -305,7 +354,11 @@ export default function Filter() {
                         Xóa lọc
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{
+                <TouchableOpacity 
+                onPress={() => {
+                    navigation.navigate('SearchResult')
+                }}
+                style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     borderWidth: 0.2,
@@ -324,8 +377,8 @@ export default function Filter() {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <TypeComponent dataTypeFilter={dataTypeFilter} setDataTypeFilter={setDataTypeFilter} showModalType={showModalType} setShowModalType={setShowModalType} />
-            <MoneyComponent setDataMoneyFilter={setDataMoneyFilter} dataMoneyFilter={dataMoneyFilter} showModalMoney={showModalMoney} setShowModalMoney={setShowModalMoney} />
+            <TypeComponent isCheckClickType={false} dataTypeFilter={dataTypeFilter} setDataTypeFilter={setDataTypeFilter} showModalType={showModalType} setShowModalType={setShowModalType} />
+            <MoneyComponent isCheckClickMoney={false} setDataMoneyFilter={setDataMoneyFilter} dataMoneyFilter={dataMoneyFilter} showModalMoney={showModalMoney} setShowModalMoney={setShowModalMoney} />
             <CatogoryComponent setDataCategoryFilter={setDataCategoryFilter} dataCategoryFilter={dataCategoryFilter} showModalCategory={showModalCategory} setShowModalCategory={setShowModalCategory} />
             <LocationComponent dataLocationFilter={dataLocationFilter} setDataLocationFilter={setDataLocationFilter} showModalLocation={showModalLocation} setShowModalLocation={setShowModalLocation} />
         </View>

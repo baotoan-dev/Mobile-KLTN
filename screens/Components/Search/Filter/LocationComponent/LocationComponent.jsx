@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import Modal from 'react-native-modal';
 import { StyleSheet } from 'react-native';
@@ -13,6 +13,7 @@ export default function LocationComponent({
 }) {
     const [isCheckClickProvince, setIsCheckClickProvince] = React.useState(false)
     const [idProvince, setIdProvince] = React.useState('')
+
     return (
         <View>
             <Modal

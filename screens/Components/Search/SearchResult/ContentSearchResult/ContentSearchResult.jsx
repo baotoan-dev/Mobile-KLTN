@@ -1,26 +1,48 @@
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSearchAction } from '../../../../../redux/store/Search/searchSlice';
 import LoaderComponent from '../../../LoaderComponent/LoaderComponent';
 import { Feather } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
-export default function ContentSearchResult() {
+
+export default function ContentSearchResult(prop) {
     const dispatch = useDispatch();
     const search = useSelector(state => state.search.search);
     const [listFilterJob, setListFilterJob] = React.useState([]);
     const [currentPage, setCurrentPage] = React.useState(0);
     const [q, setQ] = React.useState('');
+    const [categoryId, setCategoryId] = React.useState(null);
+    const [locationId, setLocationId] = React.useState(null);
+    const [jobTypeId, setJobTypeId] = React.useState([]);
+    const [salaryMin, setSalaryMin] = React.useState(null);
+    const [salaryMax, setSalaryMax] = React.useState(null);
     const [isOver, setIsOver] = React.useState(false);
     const [total, setTotal] = React.useState(0);
 
     useEffect(async () => {
-        const keyword = await AsyncStorage.getItem('keyword');
-
-        if (keyword) {
-            setQ(keyword);
-        }
+        await AsyncStorage.getItem('keyword').then((data) => {
+            setQ(data);
+        });
+        await AsyncStorage.getItem('dataCategoryFilter').then((data) => {
+            data = JSON.parse(data);
+            setCategoryId(data.map((item) => item.id));
+        });
+        await AsyncStorage.getItem('dataLocationFilter').then((data) => {
+            data = JSON.parse(data);
+            setLocationId(data.map((item) => item.id));
+        });
+        await AsyncStorage.getItem('dataJobTypeFilter').then((data) => {
+            data = JSON.parse(data);
+            setJobTypeId(data.map((item) => item.id));
+        });
+        await AsyncStorage.getItem('dataMoneyFilter').then((data) => {
+            data = JSON.parse(data);
+            setSalaryMin(data.salaryMin);
+            setSalaryMax(data.salaryMax);
+        })
     }, []);
 
     useEffect(() => {
@@ -45,24 +67,27 @@ export default function ContentSearchResult() {
             null,
             null,
             null,
+            salaryMin,
+            salaryMax,
             null,
             null,
-            null,
-            null,
-            [],
-            [],
-            null,
+            jobTypeId,
+            categoryId,
+            locationId,
             null,
             'vi',
-        ));
-        if (currentPage === 0) {
-            setListFilterJob(search.posts)
-        }
-        else {
-            setListFilterJob([...listFilterJob, ...search.posts])
-        }
-        setIsOver(search.is_over);
-    }, [currentPage]);
+        )).then(
+            () => {
+                if (currentPage === 0) {
+                    setListFilterJob(search.posts)
+                }
+                else {
+                    setListFilterJob([...listFilterJob, ...search.posts])
+                }
+            }
+        );
+        setIsOver(search.is_over)
+    }, [currentPage])
     return (
         <View>
             {

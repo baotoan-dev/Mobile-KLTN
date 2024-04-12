@@ -1,18 +1,28 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { updatedDataMoney } from './data/data';
 import Modal from 'react-native-modal';
 import { StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MoneyComponent({
     showModalMoney,
     setShowModalMoney,
     setDataMoneyFilter,
     dataMoneyFilter,
+    isCheckClickType
 }) {
-
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await AsyncStorage.getItem('dataMoneyFilter')
+            if (data) {
+                setDataMoneyFilter(JSON.parse(data))
+            }
+        }
+        fetchData()
+    }, [])
     return (
         <View>
             <Modal
@@ -54,17 +64,25 @@ export default function MoneyComponent({
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => {
+                                onPress={async () => {
                                     if (dataMoneyFilter.id === item.id) {
                                         setDataMoneyFilter({})
                                         return
-                                    }
+                                    };
                                     setDataMoneyFilter({
                                         salaryMin: item.slaryMin,
                                         salaryMax: item.slaryMax,
                                         id: item.id,
                                     })
+                                    await AsyncStorage.setItem('dataMoneyFilter', JSON.stringify({
+                                        salaryMin: item.slaryMin,
+                                        salaryMax: item.slaryMax,
+                                        id: item.id,
+                                    }))
                                     setShowModalMoney(false)
+                                    if (isCheckClickType) {
+                                        navigation.navigate('SearchResult');
+                                    }
                                 }}
                                 style={{
                                     padding: 20,

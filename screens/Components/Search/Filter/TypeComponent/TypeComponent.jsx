@@ -5,8 +5,9 @@ import { StyleSheet } from 'react-native';
 import { jobTypeApi } from '../../../../../api/job-type/jobTypeApi';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function TypeComponent({ showModalType, setShowModalType, setDataTypeFilter, dataTypeFilter }) {
+export default function TypeComponent({ showModalType, setShowModalType, setDataTypeFilter, dataTypeFilter, isCheckClickMoney }) {
     const [jobType, setJobType] = React.useState([])
     const fetchData = async () => {
         const res = await jobTypeApi.getJobType('vi')
@@ -17,6 +18,17 @@ export default function TypeComponent({ showModalType, setShowModalType, setData
     }
 
     useEffect(() => {
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await AsyncStorage.getItem('dataTypeFilter')
+            if (data) {
+                const data = JSON.parse(data)
+                setDataTypeFilter(data)
+            }
+        }
         fetchData()
     }, [])
 
@@ -61,7 +73,7 @@ export default function TypeComponent({ showModalType, setShowModalType, setData
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => {
+                                onPress={async () => {
                                     if (item.id === dataTypeFilter.id) {
                                         setDataTypeFilter({})
                                         return
@@ -71,6 +83,10 @@ export default function TypeComponent({ showModalType, setShowModalType, setData
                                         id: item.id,
                                         name: item.name
                                     })
+                                    await AsyncStorage.setItem('dataTypeFilter', JSON.stringify({
+                                        id: item.id,
+                                        name: item.name
+                                    }))
                                 }}
                                 style={{
                                     padding: 20,

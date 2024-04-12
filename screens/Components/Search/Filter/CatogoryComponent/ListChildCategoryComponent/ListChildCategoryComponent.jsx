@@ -4,6 +4,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { LENGTH_CATEGORY } from '../../../../../../utils/LengthLocationAndCategory';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ListChildCategoryComponent({
     categories,
@@ -29,6 +30,14 @@ export default function ListChildCategoryComponent({
             setChildCategories(categories[0].childs)
         }
     }, [search])
+
+
+    useEffect(() => {
+        const setDataCategoryFilter = async () => {
+            await AsyncStorage.setItem('dataCategoryFilter', JSON.stringify(dataCategoryFilter))
+        }
+        setDataCategoryFilter()
+    }, [dataCategoryFilter])
 
     const showToastWithGravity = () => {
         ToastAndroid.showWithGravity(
