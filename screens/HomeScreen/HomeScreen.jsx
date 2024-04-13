@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 20,
-    marginTop: 20,
+    paddingTop: 30,
   },
   header: {
     height: 100,

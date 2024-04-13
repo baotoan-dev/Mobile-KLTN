@@ -40,6 +40,7 @@ import AddCertification from './screens/PDFScreen/InforContentForCV/Certificatio
 import UpdateCertification from './screens/PDFScreen/InforContentForCV/Certification/UpdateCertification/UpdateCertification';
 import UpdateProject from './screens/PDFScreen/InforContentForCV/Project/UpdateProject/UpdateProject';
 import AddProject from './screens/PDFScreen/InforContentForCV/Project/AddProject/AddProject';
+import ChatDetail from './screens/ChatScreen/ChatDetail/ChatDetail';
 
 const Tab = createBottomTabNavigator();
 
@@ -264,6 +265,12 @@ function Navigation() {
                 }} />
 
                 <Stack.Screen name="AddProject" component={AddProject} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Chat */}
+
+                <Stack.Screen name='ChatDetail' component={ChatDetail} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

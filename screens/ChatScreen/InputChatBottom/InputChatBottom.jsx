@@ -1,0 +1,74 @@
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+
+export default function InputChatBottom() {
+    const [checkClick, setCheckClick] = React.useState(false)
+    const [messageText, setMessageText] = React.useState('')
+    return (
+        <View style={styles.container}>
+            {
+                !checkClick && (
+                    <View style={styles.left}>
+                        <MaterialIcons name="keyboard-voice" size={24} color="black" />
+                        <AntDesign name="camerao" size={24} color="black" />
+                        <AntDesign name="picture" size={24} color="black" />
+                    </View>
+                )
+            }
+            <View style={[styles.right, {
+                width: !checkClick ? '70%' : '100%'
+            }]}>
+                <TextInput
+                    onTouchStart={() =>
+                        setCheckClick(true)
+                    }
+                    onBlur={() =>
+                        setCheckClick(false)
+                    }
+                    placeholder="Nhập tin nhắn"
+                    onChangeText={text => setMessageText(text)}
+                />
+                {
+                    messageText.length > 0 && (
+                        <TouchableOpacity
+                            onPress={() => setMessageText('')}
+                        >
+                            <Ionicons name="send-sharp" size={24} color="black" />
+                        </TouchableOpacity>
+                    )
+                }
+            </View>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: 10,
+    },
+    left: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        width: '30%'
+    },
+    right: {
+        borderWidth: 0.5,
+        borderRadius: 50,
+        padding: 5,
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    }
+})

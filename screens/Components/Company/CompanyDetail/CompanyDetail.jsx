@@ -7,10 +7,13 @@ import CompanyJob from './CompanyJob/CompanyJob';
 import Information from './Information/Information';
 import OurCompany from '../OurCompany/OurCompany';
 import { Ionicons } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { createFollowCompanyAction } from '../../../../redux/store/FollowCompany/followCompanySlice';
 
 export default function CompanyDetail(prop) {
 
     const id = prop.route.params.id;
+    const dispatch = useDispatch();
     const [company, setCompany] = useState();
     const [index, setIndex] = useState(0);
 
@@ -25,6 +28,16 @@ export default function CompanyDetail(prop) {
     useEffect(() => {
         fetchInforCompany()
     }, [id])
+
+    const handleCreateFollowCompany = async () => {
+        try {
+            dispatch(createFollowCompanyAction(id)).then(() => {
+                fetchInforCompany();
+            })
+        } catch (error) {
+            throw error;
+        }
+    }
 
     return (
         <SafeAreaView>
@@ -75,9 +88,16 @@ export default function CompanyDetail(prop) {
                         }}>
                             {company.countFollowCompany} người theo dõi
                         </Text>
-                        <Text style={styles.follow}>
-                            Theo dõi
-                        </Text>
+                        <TouchableOpacity 
+                        onPress={() => {
+                            handleCreateFollowCompany()
+                        }}
+                        style={styles.follow}>
+                            <Text style={{
+                                color: 'white',
+                                textAlign: 'center',
+                            }}>Theo dõi</Text>
+                        </TouchableOpacity>
 
                         <View style={{
                             marginTop: 10,
@@ -139,14 +159,12 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
     },
     follow: {
-        textAlign: 'center',
         marginTop: 10,
         borderWidth: 0.2,
         marginHorizontal: '10%',
         padding: 10,
         borderRadius: 5,
         backgroundColor: '#0b61ae',
-        color: 'white',
         marginBottom: 20,
     }
 })

@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
+import ListUserChat from './ListUserChat/ListUserChat';
 
 export default function ChatScreen() {
   return (
@@ -9,6 +10,7 @@ export default function ChatScreen() {
       }>
         Tin nhắn
       </Text>
+      <ListUserChat />
     </View>
   )
 }
@@ -16,9 +18,9 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
   },
   header: {
+    paddingTop: 30,
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',

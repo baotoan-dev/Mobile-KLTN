@@ -9,7 +9,9 @@ export default function ManageJobApplication() {
     const [index, setIndex] = React.useState(0);
 
     return (
-        <View>
+        <View style={{
+            paddingTop: 20,
+        }}>
             <View style={styles.header}>
                 <View style={{
                     flexDirection: 'row',

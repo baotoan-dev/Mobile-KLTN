@@ -8,6 +8,7 @@ import searchHistoryReducer from "../store/SearchHistory/getAllSearchHistorySlic
 import cvProjectReducer from "../store/CvProject/cvProjectSlice";
 import cvExtraInformationReducer from "../store/CvExtraInformation/CvExtraInformationSlice";
 import profileAnalyticReducer from "../store/Profile/ProfileAnalytic/profileAnalyticSlice";
+import messageReducer from "../store/Chat/chatSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     cvProject: cvProjectReducer,
     cvExtraInformation: cvExtraInformationReducer,
     profileAnalytic: profileAnalyticReducer,
+    chat: messageReducer,
 });
 
 export default rootReducer;
