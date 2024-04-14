@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { EvilIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { LENGTH_LOCATION } from '../../../../../../utils/LengthLocationAndCategory';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ListWardComponent({
   idProvince,
@@ -34,6 +35,13 @@ export default function ListWardComponent({
     });
     setFilteredName(filtered);
   }, [search]);
+
+  useEffect(() => {
+    const setDataLocationFilter = async () => {
+      await AsyncStorage.setItem('dataLocationFilter', JSON.stringify(dataLocationFilter))
+    }
+    setDataLocationFilter()
+  }, [dataLocationFilter])
 
   const showToastWithGravity = () => {
     ToastAndroid.showWithGravity(

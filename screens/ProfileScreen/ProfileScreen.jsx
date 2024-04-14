@@ -42,9 +42,9 @@ export default function ProfileScreen() {
 
   return (
     <View>
-      <HeaderProfile profile={profile} isScrolling={isScrolling} />
-      <ScrollView onScroll={handleScroll} style={styles.container}>
-        <ContentProfile profile={profile} setIsScrolling={setIsScrolling} isScrolling={isScrolling} />
+      <HeaderProfile profile={profile} isScrolling={isScrolling}/>
+      <ScrollView showsVerticalScrollIndicator={false} onScroll={handleScroll} style={styles.container}>
+        <ContentProfile profile={dataProfile} setIsScrolling={setIsScrolling} isScrolling={isScrolling} />
       </ScrollView>
     </View>
   )

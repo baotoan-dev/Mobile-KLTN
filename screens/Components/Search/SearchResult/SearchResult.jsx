@@ -5,7 +5,6 @@ import HeaderSearchResult from './HeaderSearchResult/HeaderSearchResult';
 import ContentSearchResult from './ContentSearchResult/ContentSearchResult';
 
 export default function SearchResult() {
-
   return (
     <View style={styles.container}>
       <View style={{

@@ -76,7 +76,7 @@ export default function NotifyScreen() {
                   </Text>
                   <Text style={{
                     color: 'gray',
-                    fontSize: 12, 
+                    fontSize: 12,
                   }}>
                     {
                       moment(item.created_at).format('DD/MM/YYYY HH:mm:ss')
@@ -112,7 +112,6 @@ export default function NotifyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
   },
   image: {
     width: 100,
@@ -120,6 +119,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 18,
+    paddingTop: 30,
     fontWeight: 'bold',
     color: '#333',
     borderBottomColor: 'gray',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     color: '#333',
     borderRadius: 10,
     padding: 10,
-    margin: 10,   
+    margin: 10,
     backgroundColor: '#FEFDED',
     shadowColor: "#000",
     shadowOffset: {

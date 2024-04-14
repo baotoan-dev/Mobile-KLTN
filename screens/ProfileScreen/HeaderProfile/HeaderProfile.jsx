@@ -1,5 +1,5 @@
 import { View, StyleSheet, ImageBackground, Image, Text, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,7 +11,6 @@ export default function HeaderProfile({ profile, isScrolling }) {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            base64: true,
             aspect: [4, 3],
             quality: 1,
         });
@@ -23,8 +22,8 @@ export default function HeaderProfile({ profile, isScrolling }) {
         }
     };
 
-    return (
-        !isScrolling ? (
+    const renderHeader = () => {
+        return (
             <View style={{
                 flex: 1,
                 flexDirection: 'column',
@@ -89,7 +88,11 @@ export default function HeaderProfile({ profile, isScrolling }) {
                     </View>
                 </ImageBackground>
             </View>
-        ) : (
+        )
+    }
+
+    const renderFixedHeader = () => {
+        return (
             <View style={{
                 // fixed in top of screen
                 position: 'absolute',
@@ -134,6 +137,14 @@ export default function HeaderProfile({ profile, isScrolling }) {
                 </View>
             </View>
         )
+    }
+
+    return (
+        <View>
+            {
+                isScrolling ? renderFixedHeader() : renderHeader()
+            }
+        </View>
     )
 }
 
@@ -157,6 +168,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         borderColor: 'red',
         borderWidth: 0.6,
-        position: 'relative',
+        position: 'relative'
     },
 })

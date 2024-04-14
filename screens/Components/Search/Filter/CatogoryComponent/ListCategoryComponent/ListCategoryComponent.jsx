@@ -90,7 +90,6 @@ export default function ListCategoryComponent({
                                 />
                             </ScrollView>
                         </View>
-
                     )
                     :
                     (

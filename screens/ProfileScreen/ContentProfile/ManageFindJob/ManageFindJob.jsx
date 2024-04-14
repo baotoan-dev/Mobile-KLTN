@@ -1,21 +1,37 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileAnalyticsAction } from '../../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice';
 
 export default function ManageFindJob() {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const profileAnalytic = useSelector(state => state.profileAnalytic.profileAnalytic);
+    const [listProfileAnalytic, setListProfileAnalytic] = React.useState([]);
+
+    useEffect(() => {
+        dispatch(getProfileAnalyticsAction());
+    }, [])
+
+    useEffect(() => {
+        if (profileAnalytic) {
+            setListProfileAnalytic(profileAnalytic);
+        }
+    }, [profileAnalytic])
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Quản lý tìm việc</Text>
             <View style={styles.wapper}>
-                <TouchableOpacity 
-                onPress={
-                    () => navigation.navigate('ManageJobApplication')
-                }
-                style={styles.item}>
+                <TouchableOpacity
+                    onPress={
+                        () => navigation.navigate('ManageJobApplication')
+                    }
+                    style={styles.item}>
                     <View style={styles.icon}>
                         <FontAwesome name="shopping-bag" size={24} color="black" />
                     </View>
@@ -24,7 +40,7 @@ export default function ManageFindJob() {
                             Đã ứng tuyển
                         </Text>
                         <Text style={styles.count}>
-                            0
+                            {listProfileAnalytic.totalApplication}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -39,7 +55,7 @@ export default function ManageFindJob() {
                             Đã lưu
                         </Text>
                         <Text style={styles.count}>
-                            0
+                            {listProfileAnalytic.totalBookmark}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -54,27 +70,36 @@ export default function ManageFindJob() {
                             Phù hợp
                         </Text>
                         <Text style={styles.count}>
-                            0
+                            {listProfileAnalytic.totalPost}
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.item, {
-                    marginTop: '5%',
-                    marginLeft: '5%',
-                }]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('CompanyFollowing');
+                    }}
+                    style={[styles.item, {
+                        marginTop: '5%',
+                        marginLeft: '5%',
+                    }]}>
                     <View style={styles.icon}>
                         <Ionicons name="duplicate" size={24} color="black" />
                     </View>
-                    <View style={styles.content}>
+                    <View
+                        style={styles.content}>
                         <Text>
                             Công ty theo dõi
                         </Text>
                         <Text style={styles.count}>
-                            0
+                            {listProfileAnalytic.totalFollowCompany}
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.item]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('ViewProfile');
+                    }}
+                    style={[styles.item]}>
                     <View style={styles.icon}>
                         <Entypo name="eye" size={24} color="black" />
                     </View>
@@ -83,7 +108,7 @@ export default function ManageFindJob() {
                             NTD xem hồ sơ
                         </Text>
                         <Text style={styles.count}>
-                            0
+                            {listProfileAnalytic.totalViewProfile}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -98,7 +123,9 @@ export default function ManageFindJob() {
                             Thông báo việc làm
                         </Text>
                         <Text style={styles.count}>
-                            0
+                            {
+                                listProfileAnalytic.totalKeywordNotification
+                            }
                         </Text>
                     </View>
                 </TouchableOpacity>

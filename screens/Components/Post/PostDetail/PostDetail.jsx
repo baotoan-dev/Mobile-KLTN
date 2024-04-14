@@ -119,26 +119,52 @@ export default function PostDetail(prop) {
                     <View style={{
                         width: '85%',
                         height: '70%',
-                        marginLeft: 10,
                     }}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate('Application', {
-                                    id: post.id
-                                })
-                            }}
+                        <View
                             style={{
-                                width: '90%',
-                                borderWidth: 0.5,
-                                padding: 13,
-                                backgroundColor: 'blue',
-                                borderRadius: 10,
-                            }}>
-                            <Text style={{
-                                textAlign: 'center',
-                                color: 'white'
-                            }}> Ứng tuyển ngay</Text>
-                        </TouchableOpacity>
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('Application', {
+                                        id: post.id
+                                    })
+                                }}
+                                style={{
+                                    width: '30%',
+                                    borderWidth: 0.5,
+                                    padding: 13,
+                                    backgroundColor: 'blue',
+                                    borderRadius: 10,
+                                }}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white'
+                                }}> Nhắn tin</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('Application', {
+                                        id: post.id
+                                    })
+                                }}
+                                style={{
+                                    width: '60%',
+                                    borderWidth: 0.5,
+                                    padding: 13,
+                                    backgroundColor: 'blue',
+                                    borderRadius: 10,
+                                    marginLeft: 10
+                                }}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: 'white'
+                                }}> Ứng tuyển ngay</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

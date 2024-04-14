@@ -10,6 +10,7 @@ export default function CatogoryComponent({
     setDataCategoryFilter,
     dataCategoryFilter
 }) {
+
     return (
         <View>
             <Modal
@@ -30,7 +31,7 @@ export default function CatogoryComponent({
                     <View style={{
                         paddingHorizontal: 20,
                     }}>
-                        <ListCategoryComponent dataCategoryFilter={dataCategoryFilter} setDataCategoryFilter={setDataCategoryFilter} setShowModalCategory={setShowModalCategory}/>
+                        <ListCategoryComponent dataCategoryFilter={dataCategoryFilter} setDataCategoryFilter={setDataCategoryFilter} setShowModalCategory={setShowModalCategory} />
                     </View>
                 </View>
             </Modal>

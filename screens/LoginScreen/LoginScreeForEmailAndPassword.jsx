@@ -22,6 +22,7 @@ export default function LoginScreeForEmailAndPassword() {
             const response = await authCandidate.signInCandidate(email, password);
 
             if (response.code === 200) {
+                SecureStore.setItemAsync("accountId", response.data.accountId);
                 SecureStore.setItemAsync("token", response.data.accessToken);
                 SecureStore.setItemAsync("refreshToken", response.data.refreshToken);
                 console.log("Login success");

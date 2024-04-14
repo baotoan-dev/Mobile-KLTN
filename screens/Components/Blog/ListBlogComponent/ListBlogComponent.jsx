@@ -8,6 +8,7 @@ export default function ListBlogComponent({ blog }) {
     <View>
       <FlatList
         data={blog}
+        showsHorizontalScrollIndicator={false}
         horizontal={true}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {

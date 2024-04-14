@@ -1,5 +1,7 @@
 import axios from "axios";
 import { CONST_API } from "../contants/urlContant";
+import * as SecureStore from 'expo-secure-store';
+import axiosConfig from "../../config/axiosConfig";
 
 export const companyApi = {
     getAllCompany: (page, limit) => {
@@ -17,7 +19,7 @@ export const companyApi = {
             { companyId, star, comment },
             {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
                 },
             },
         );
@@ -26,7 +28,7 @@ export const companyApi = {
         const URL = `${CONST_API}/api/v3/company-ratings/account/company/${id}?lang=${lang}`;
         return axios.get(URL, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         });
     },
@@ -38,7 +40,7 @@ export const companyApi = {
         const URL = `${CONST_API}/api/v3/company-ratings/account/company/${id}`;
         return axios.delete(URL, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         });
     },
@@ -46,9 +48,25 @@ export const companyApi = {
         const URL = `${CONST_API}/api/v3/companies/by-name?name=${name}`;
         return axios.get(URL);
     },
-    getAllPostByCompanyId : (id, page, limit) => {
+    getAllPostByCompanyId: (id, page, limit) => {
         const URL = `${CONST_API}/api/v3/companies/all-post/${id}?page=${page}&limit=${limit}`;
         return axios.get(URL);
+    },
+    createFollowCompanyApi: async (companyId) => {
+        const URL = `${CONST_API}/api/v3/follow-companies`;
+        return await axiosConfig.post(URL, { companyId }, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+            },
+        });
+    },
+    getFollowCompanyApi: async () => {
+        const URL = `${CONST_API}/api/v3/follow-companies`;
+        return await axiosConfig.get(URL, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+            },
+        });
     }
 }
 
