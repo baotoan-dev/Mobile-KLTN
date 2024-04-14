@@ -28,7 +28,7 @@ export const getFollowCompanyAction = () => {
             dispatch(getFollowCompany());
             const response = await companyApi.getFollowCompanyApi();
             if (response.status === 200) {
-                dispatch(getFollowCompanySuccess(response.data));
+                dispatch(getFollowCompanySuccess(response.data.data));
             }
         } catch (error) {
             console.log('error', error);

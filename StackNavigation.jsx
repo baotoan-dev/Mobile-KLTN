@@ -41,6 +41,8 @@ import UpdateCertification from './screens/PDFScreen/InforContentForCV/Certifica
 import UpdateProject from './screens/PDFScreen/InforContentForCV/Project/UpdateProject/UpdateProject';
 import AddProject from './screens/PDFScreen/InforContentForCV/Project/AddProject/AddProject';
 import ChatDetail from './screens/ChatScreen/ChatDetail/ChatDetail';
+import ViewProfile from './screens/ViewProfile/ViewProfile';
+import CompanyFollowingScreen from './screens/CompanyFollowingScreen/CompanyFollowingScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -271,6 +273,18 @@ function Navigation() {
                 {/* Chat */}
 
                 <Stack.Screen name='ChatDetail' component={ChatDetail} options={{
+                    headerShown: false,
+                }} />
+
+                {/* View profile */}
+
+                <Stack.Screen name="ViewProfile" component={ViewProfile} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Company is following */}
+
+                <Stack.Screen name="CompanyFollowing" component={CompanyFollowingScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

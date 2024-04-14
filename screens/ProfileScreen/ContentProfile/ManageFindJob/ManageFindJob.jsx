@@ -27,11 +27,11 @@ export default function ManageFindJob() {
         <View style={styles.container}>
             <Text style={styles.title}>Quản lý tìm việc</Text>
             <View style={styles.wapper}>
-                <TouchableOpacity 
-                onPress={
-                    () => navigation.navigate('ManageJobApplication')
-                }
-                style={styles.item}>
+                <TouchableOpacity
+                    onPress={
+                        () => navigation.navigate('ManageJobApplication')
+                    }
+                    style={styles.item}>
                     <View style={styles.icon}>
                         <FontAwesome name="shopping-bag" size={24} color="black" />
                     </View>
@@ -74,14 +74,19 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.item, {
-                    marginTop: '5%',
-                    marginLeft: '5%',
-                }]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('CompanyFollowing');
+                    }}
+                    style={[styles.item, {
+                        marginTop: '5%',
+                        marginLeft: '5%',
+                    }]}>
                     <View style={styles.icon}>
                         <Ionicons name="duplicate" size={24} color="black" />
                     </View>
-                    <View style={styles.content}>
+                    <View
+                        style={styles.content}>
                         <Text>
                             Công ty theo dõi
                         </Text>
@@ -90,7 +95,11 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.item]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('ViewProfile');
+                    }}
+                    style={[styles.item]}>
                     <View style={styles.icon}>
                         <Entypo name="eye" size={24} color="black" />
                     </View>

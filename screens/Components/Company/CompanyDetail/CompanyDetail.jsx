@@ -9,6 +9,7 @@ import OurCompany from '../OurCompany/OurCompany';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { createFollowCompanyAction } from '../../../../redux/store/FollowCompany/followCompanySlice';
+import { getProfileAnalyticsAction } from '../../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice';
 
 export default function CompanyDetail(prop) {
 
@@ -34,6 +35,7 @@ export default function CompanyDetail(prop) {
             dispatch(createFollowCompanyAction(id)).then(() => {
                 fetchInforCompany();
             })
+            dispatch(getProfileAnalyticsAction());
         } catch (error) {
             throw error;
         }
@@ -88,15 +90,19 @@ export default function CompanyDetail(prop) {
                         }}>
                             {company.countFollowCompany} người theo dõi
                         </Text>
-                        <TouchableOpacity 
-                        onPress={() => {
-                            handleCreateFollowCompany()
-                        }}
-                        style={styles.follow}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                handleCreateFollowCompany()
+                            }}
+                            style={styles.follow}>
                             <Text style={{
                                 color: 'white',
                                 textAlign: 'center',
-                            }}>Theo dõi</Text>
+                            }}>
+                                {
+                                    company.isFollowed === true ? 'Đã theo dõi' : 'Theo dõi'
+                                }
+                            </Text>
                         </TouchableOpacity>
 
                         <View style={{

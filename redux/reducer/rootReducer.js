@@ -9,6 +9,7 @@ import cvProjectReducer from "../store/CvProject/cvProjectSlice";
 import cvExtraInformationReducer from "../store/CvExtraInformation/CvExtraInformationSlice";
 import profileAnalyticReducer from "../store/Profile/ProfileAnalytic/profileAnalyticSlice";
 import messageReducer from "../store/Chat/chatSlice";
+import followCompanyReducer from "../store/FollowCompany/followCompanySlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     cvExtraInformation: cvExtraInformationReducer,
     profileAnalytic: profileAnalyticReducer,
     chat: messageReducer,
+    follow: followCompanyReducer,
 });
 
 export default rootReducer;
