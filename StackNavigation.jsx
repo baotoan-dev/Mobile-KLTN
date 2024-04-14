@@ -43,6 +43,7 @@ import AddProject from './screens/PDFScreen/InforContentForCV/Project/AddProject
 import ChatDetail from './screens/ChatScreen/ChatDetail/ChatDetail';
 import ViewProfile from './screens/ViewProfile/ViewProfile';
 import CompanyFollowingScreen from './screens/CompanyFollowingScreen/CompanyFollowingScreen';
+import CreateNotificationScreen from './screens/CreateNotificationScreen/CreateNotificationScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -285,6 +286,12 @@ function Navigation() {
                 {/* Company is following */}
 
                 <Stack.Screen name="CompanyFollowing" component={CompanyFollowingScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* CreateNotificationScreen */}
+
+                <Stack.Screen name='CreateNotification' component={CreateNotificationScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function HomeScreen() {
   const navigation = useNavigation();
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View
         style={styles.container}
       >
