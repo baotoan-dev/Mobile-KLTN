@@ -85,9 +85,18 @@ export default function ViewProfile() {
     return (
         <Animated.View>
             <HeaderOfScreen title='Xem hồ sơ' />
-
             {listViewProfile && listViewProfile.length > 0 ? (
                 <Animated.View>
+                    <Text style={{
+                        fontSize: 13,
+                        fontWeight: 'bold',
+                        marginTop: 10,
+                        paddingHorizontal: 10
+                    }}>
+                        {
+                            `Tìm thấy ${listViewProfile.length} nhà tuyển dụng`
+                        }
+                    </Text>
                     <FlatList
                         data={listViewProfile}
                         keyExtractor={item => item.id}

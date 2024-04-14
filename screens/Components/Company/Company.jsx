@@ -12,8 +12,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function Company() {
     const [company, setCompany] = useState([]);
-    const [selectItem, setSelectItem] = useState(0);
-    const navigation = useNavigation();
+    const navigation = useNavigation()
 
     const getCompany = async () => {
         const response = await companyApi.getAllCompany();
@@ -64,12 +63,9 @@ export default function Company() {
                             <TouchableOpacity
                                 key={index}
                                 onPress={() => {
-                                    console.log(item.id);
                                     navigation.navigate('CompanyDetail', { id: item.id })
                                 }}
-                                style={[styles.item, {
-                                    borderColor: selectItem === index ? Color.primary : 'white',
-                                }]}
+                                style={[styles.item]}
                             >
                                 <Image
                                     style={styles.image}
@@ -115,7 +111,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 5,
         marginTop: 14,
-        shadowColor: "black",
+        shadowColor: "#97E7E1",
         shadowOffset: {
             width: 0,
             height: 2,
@@ -124,6 +120,8 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 4,
         borderRadius: 10,
+        borderColor: '#97E7E1',
+        borderWidth: 0.5,
     },
     image: {
         height: '70%',

@@ -34,7 +34,11 @@ const jobApi = {
             `limit=${limit}${threshold ? `&threshold=${threshold}` : ``}` +
             `&lang=${lang}`;
 
-        return await axios.get(URL);
+        return await axios.get(URL, {
+            headers: {
+                Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,
+            },
+        });
     },
     getPostbyId: async (params, lang) => {
         const URL = `${CONST_API_V1}/api/v1/posts/${params}?lang=${lang}`;

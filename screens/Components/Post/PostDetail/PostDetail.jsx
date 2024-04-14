@@ -64,15 +64,17 @@ export default function PostDetail(prop) {
 
                                 <MoreInforComponent post={post} fitOfPost={fitOfPost} />
                             </View>
-                            <TouchableOpacity style={{
-                                position: 'absolute',
-                                left: 10,
-                                top: 10,
-                                backgroundColor: 'gray',
-                                borderRadius: 20,
-                                padding: 5
-                            }}
-                                onPress={() => prop.navigation.goBack()}
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    left: 10,
+                                    top: 10,
+                                    backgroundColor: 'gray',
+                                    borderRadius: 20,
+                                    padding: 5,
+                                    zIndex: 10000,
+                                }}
+                                onPress={() => navigation.goBack()}
                             >
                                 <Ionicons name="arrow-back" size={24} color="black" />
                             </TouchableOpacity>

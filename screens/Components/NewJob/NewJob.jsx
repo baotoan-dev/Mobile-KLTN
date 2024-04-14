@@ -8,7 +8,10 @@ import jobApi from '../../../api/job/jobApi'
 import { Color } from '../../../utils/Color'
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel'
+import { Ionicons } from '@expo/vector-icons';
+import { bookmarksApi } from '../../../api/bookmarks/bookmarksApi'
+import * as SecureStore from 'expo-secure-store';
 
 const SCREEN_WIDTH = Dimensions.get("screen").width - 45;
 
@@ -17,6 +20,10 @@ export default function NewJob() {
     const [thresholdNewJob, setThresholdNewJob] = useState(0);
     const navigation = useNavigation();
     const [current, setCurrent] = useState(0);
+    const isCarousel = React.useRef(null)
+    const [index, setIndex] = React.useState(0)
+    const [accountId, setAccountId] = useState('');
+
 
     const getNewJob = async () => {
         const response = await jobApi.getPostNewest(
@@ -38,6 +45,14 @@ export default function NewJob() {
         }
     }
 
+    useEffect(() => {
+        const getAccountId = async () => {
+            const accountId = await SecureStore.getItemAsync('accountId');
+            setAccountId(accountId)
+        }
+        getAccountId();
+    }, [])
+
     const handleSeeMore = () => {
         navigation.navigate('AllPostNewest')
     }
@@ -46,21 +61,48 @@ export default function NewJob() {
         getNewJob();
     }, [current])
 
+    const handleCreateBookmark = async (postId) => {
+        try {
+            const res = await bookmarksApi.createBookMark(postId);
+
+            if (res && res.data && res.data.code === 200) {
+                getNewJob();
+            }
+        } catch (error) {
+            console.error("Error in handleCreateBookmark:", error);
+        }
+    };
+
+
+    const handleDeleteBookmark = async (postId) => {
+        try {
+            const res = await bookmarksApi.deleteBookMark(postId);
+
+            if (res && res.data && res.data.code === 200) {
+                getNewJob();
+            }
+        } catch (error) {
+            console.error("Error in handleDeleteBookmark:", error);
+        }
+    }
+
     return (
         <View style={styles.container}>
-            <Heading props={{ title: 'Công việc mới nhất', extra: 'Xem thêm', handleSeeMore: handleSeeMore}} />
+            <Heading props={{ title: 'Công việc mới nhất', extra: 'Xem thêm', handleSeeMore: handleSeeMore }} />
             <Carousel
                 data={newJob}
                 sliderWidth={SCREEN_WIDTH}
                 itemWidth={SCREEN_WIDTH}
                 layout={'default'}
+                ref={isCarousel}
+                useScrollView={true}
                 // loop={true}
-                autoplay={false}
                 // autoplayInterval={5000}
                 onSnapToItem={(index) => {
                     if (index === newJob.length - 1) {
                         getNewJob();
                     }
+                    setIndex(index)
                 }}
                 renderItem={({ item, index }) => (
                     <FlatList
@@ -122,9 +164,25 @@ export default function NewJob() {
                                             </Text>
                                         </View>
                                     </View>
-                                    <View>
-                                        <Feather name="bookmark" size={24} color="black" />
-                                    </View>
+                                    {
+                                        item.accountId !== accountId && (
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    if (item.bookmarked) {
+                                                        handleDeleteBookmark(item.id)
+                                                        return
+                                                    }
+                                                    else {
+                                                        handleCreateBookmark(item.id)
+                                                        return
+                                                    }
+                                                }}
+                                            >
+                                                {item.bookmarked === true ? <Ionicons name="bookmark" size={24} color="black" /> : <Feather name="bookmark" size={24} color="black" />}
+                                            </TouchableOpacity>
+                                        )
+                                    }
+
                                 </View>
                             </TouchableOpacity>
                         )}
@@ -133,7 +191,23 @@ export default function NewJob() {
                 }
             >
             </Carousel>
-
+            <Pagination
+                dotsLength={newJob.length}
+                activeDotIndex={index}
+                carouselRef={isCarousel}
+                dotStyle={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    backgroundColor: '#6AD4DD',
+                }}
+                tappableDots={true}
+                inactiveDotStyle={{
+                    backgroundColor: 'black',
+                }}
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+            />
         </View>
     )
 }
@@ -146,7 +220,8 @@ const styles = StyleSheet.create({
     },
     item: {
         borderWidth: 0.2,
-        borderColor: 'gray',
+        borderColor: '#97E7E1',
+        borderWidth: 0.5,
         padding: 10,
         display: 'flex',
         flexDirection: 'row',
@@ -154,6 +229,7 @@ const styles = StyleSheet.create({
         margin: 5,
         width: SCREEN_WIDTH - 5,
         justifyContent: 'space-between',
+        backgroundColor: 'white',
     },
     image: {
         width: 70,
@@ -170,23 +246,23 @@ const styles = StyleSheet.create({
     extraInfor: {
         fontSize: 10,
         color: 'gray',
-        borderWidth: 0.1,
         padding: 3,
         borderRadius: 2,
-        // backgroundColor: 'rgba(0, 0, 0, 0.1)',
         fontWeight: 'bold',
         marginRight: 10,
+        backgroundColor: '#DFF5FF',
     },
     textSalary: {
         fontSize: 10,
         color: 'gray',
         marginTop: 5,
-        borderWidth: 0.2,
         padding: 3,
         // blue
-        backgroundColor: 'rgba(0, 0, 255, 0.1)',
+        backgroundColor: '#F1EEDC',
         borderRadius: 2,
         width: 60,
-        borderBlockColor: 'gray',
-    }
+        borderColor: '#C4E4FF',
+        borderRadius: 5,
+        fontWeight: 'bold',
+    },
 })
