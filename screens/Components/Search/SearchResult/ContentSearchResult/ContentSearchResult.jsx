@@ -86,7 +86,7 @@ export default function ContentSearchResult(prop) {
                 }
             }
         );
-        setIsOver(search.is_over)
+        setIsOver(search.is_over);
     }, [currentPage])
     return (
         <View>
@@ -182,9 +182,10 @@ const styles = StyleSheet.create({
     item: {
         width: '100%',
         flexDirection: 'row',
-        borderWidth: 0.2,
-        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderColor: '#97E7E1',
         borderRadius: 10,
+        backgroundColor: 'white',
     },
     left: {
         width: '30%',

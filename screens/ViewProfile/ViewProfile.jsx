@@ -85,9 +85,18 @@ export default function ViewProfile() {
     return (
         <Animated.View>
             <HeaderOfScreen title='Xem hồ sơ' />
-
             {listViewProfile && listViewProfile.length > 0 ? (
                 <Animated.View>
+                    <Text style={{
+                        fontSize: 13,
+                        fontWeight: 'bold',
+                        marginTop: 10,
+                        paddingHorizontal: 10
+                    }}>
+                        {
+                            `Tìm thấy ${listViewProfile.length} nhà tuyển dụng`
+                        }
+                    </Text>
                     <FlatList
                         data={listViewProfile}
                         keyExtractor={item => item.id}
@@ -172,6 +181,8 @@ const styles = StyleSheet.create({
         borderBottomColor: '#f0f0f0',
         alignItems: 'center',
         backgroundColor: 'white',
+        borderColor: '#97E7E1',
+        borderWidth: 0.5,
         marginTop: 10,
         marginHorizontal: 10,
         borderRadius: 10,

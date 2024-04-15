@@ -41,6 +41,7 @@ export default function DetailBlog(prop) {
                             <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
+                                paddingTop: 5,
                             }}>
                                 <TouchableOpacity
                                     onPress={() => {
@@ -100,7 +101,7 @@ export default function DetailBlog(prop) {
                                     <View>
                                         <Image source={{ uri: detailBlog?.image[0].image }} style={{
                                             width: '100%',
-                                            height: 180,
+                                            height: 160,
                                             borderRadius: 10,
                                             shadowColor: "#000",
                                             shadowOffset: {

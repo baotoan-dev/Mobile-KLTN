@@ -64,15 +64,17 @@ export default function PostDetail(prop) {
 
                                 <MoreInforComponent post={post} fitOfPost={fitOfPost} />
                             </View>
-                            <TouchableOpacity style={{
-                                position: 'absolute',
-                                left: 10,
-                                top: 10,
-                                backgroundColor: 'gray',
-                                borderRadius: 20,
-                                padding: 5
-                            }}
-                                onPress={() => prop.navigation.goBack()}
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    left: 10,
+                                    top: 20,
+                                    backgroundColor: 'gray',
+                                    borderRadius: 20,
+                                    padding: 5,
+                                    zIndex: 1000000,
+                                }}
+                                onPress={() => navigation.goBack()}
                             >
                                 <Ionicons name="arrow-back" size={24} color="black" />
                             </TouchableOpacity>
@@ -94,7 +96,6 @@ export default function PostDetail(prop) {
                         backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        zIndex: 100,
                     }}
                 >
                     <View style={{
@@ -183,6 +184,8 @@ const styles = StyleSheet.create({
     },
     image: {
         height: 200,
+        position: 'relative',
+        zIndex: -1,
     },
     wrapper: {
         width: 300,

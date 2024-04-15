@@ -157,7 +157,7 @@ export default function PopularKeyowrd() {
                                                 flexDirection: 'row',
                                                 alignItems: 'center',
                                             }}>
-                                                <EvilIcons name="search" size={24} color="black" />
+                                                <EvilIcons name="search" size={20} color="black" />
                                                 <Text style={{
                                                     marginLeft: 10,
                                                 }}>{item.keyword}</Text>
@@ -166,7 +166,7 @@ export default function PopularKeyowrd() {
                                                 setNameHistory(item.keyword);
                                                 handleDeleteHistory();
                                             }}>
-                                                <AntDesign name="delete" size={24} color="black" />
+                                                <AntDesign name="delete" size={20} color="black" />
                                             </TouchableOpacity>
                                         </View>
                                     </TouchableOpacity>

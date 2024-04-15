@@ -44,6 +44,8 @@ import ChatDetail from './screens/ChatScreen/ChatDetail/ChatDetail';
 import ViewProfile from './screens/ViewProfile/ViewProfile';
 import CompanyFollowingScreen from './screens/CompanyFollowingScreen/CompanyFollowingScreen';
 import CreateNotificationScreen from './screens/CreateNotificationScreen/CreateNotificationScreen';
+import BookmarkScreen from './screens/BookmarkScreen/BookmarkScreen';
+import NotifyJobProfileScreen from './screens/NotifyJobProfileScreen/NotifyJobProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -292,6 +294,18 @@ function Navigation() {
                 {/* CreateNotificationScreen */}
 
                 <Stack.Screen name='CreateNotification' component={CreateNotificationScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Bookmark Screen */}
+
+                <Stack.Screen name='Bookmark' component={BookmarkScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* NotifyJobProfileScreen */}
+
+                <Stack.Screen name="NotifyJobProfile" component={NotifyJobProfileScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>
