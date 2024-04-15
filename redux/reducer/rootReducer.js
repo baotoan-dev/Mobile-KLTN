@@ -13,6 +13,7 @@ import followCompanyReducer from "../store/FollowCompany/followCompanySlice";
 import viewProfileReducer from "../store/ViewProfile/viewProfileSlice";
 import bookmarkReducer from "../store/Bookmark/bookmarkSlice";
 import submitApplyReducer from "../store/SubmitAppy/submitApplySlice";
+import newPostReducer from "../store/NewPost/newPostSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
     follow: followCompanyReducer,
     viewProfile: viewProfileReducer,
     bookmark : bookmarkReducer,
-    submitApply: submitApplyReducer
+    submitApply: submitApplyReducer,
+    newPost: newPostReducer,
 });
 
 export default rootReducer;

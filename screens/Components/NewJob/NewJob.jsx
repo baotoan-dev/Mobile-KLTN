@@ -12,38 +12,46 @@ import Carousel, { Pagination } from 'react-native-snap-carousel'
 import { Ionicons } from '@expo/vector-icons';
 import { bookmarksApi } from '../../../api/bookmarks/bookmarksApi'
 import * as SecureStore from 'expo-secure-store';
+import { useDispatch } from 'react-redux';
+import { getProfileAnalyticsAction } from '../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice'
+import { getNewPostAction } from '../../../redux/store/NewPost/newPostSlice'
+import { useSelector } from 'react-redux'
 
 const SCREEN_WIDTH = Dimensions.get("screen").width - 45;
 
 export default function NewJob() {
     const [newJob, setNewJob] = useState([]);
-    const [thresholdNewJob, setThresholdNewJob] = useState(0);
     const navigation = useNavigation();
-    const [current, setCurrent] = useState(0);
+    const dispatch = useDispatch();
+    const [currentPage, setCurrentPage] = useState(0);
     const isCarousel = React.useRef(null)
     const [index, setIndex] = React.useState(0)
     const [accountId, setAccountId] = useState('');
-
+    const newPost = useSelector(state => state.newPost.newPost);
 
     const getNewJob = async () => {
-        const response = await jobApi.getPostNewest(
+        dispatch(getNewPostAction(
             null,
             null,
             null,
             null,
             16,
-            85000,
-            "vi"
-        );
-        if (response && response.data && response.data.status === 200) {
-            setThresholdNewJob(thresholdNewJob + 4);
+            null,
+            "vi",
+            currentPage
+        ))
+    }
+
+    useEffect(() => {
+        if (newPost && newPost.data && newPost.data.length > 0) {
             const newData = [];
-            for (let i = 0; i < response.data.data.length; i += 4) {
-                newData.push(response.data.data.slice(i, i + 4));
+            for (let i = 0; i < newPost.data.length; i += 4) {
+                newData.push(newPost.data.slice(i, i + 4));
             }
             setNewJob(newData);
+
         }
-    }
+    }, [newPost])
 
     useEffect(() => {
         const getAccountId = async () => {
@@ -59,7 +67,7 @@ export default function NewJob() {
 
     useEffect(() => {
         getNewJob();
-    }, [current])
+    }, [currentPage])
 
     const handleCreateBookmark = async (postId) => {
         try {
@@ -67,6 +75,7 @@ export default function NewJob() {
 
             if (res && res.data && res.data.code === 200) {
                 getNewJob();
+                dispatch(getProfileAnalyticsAction())
             }
         } catch (error) {
             console.error("Error in handleCreateBookmark:", error);
@@ -80,6 +89,7 @@ export default function NewJob() {
 
             if (res && res.data && res.data.code === 200) {
                 getNewJob();
+                dispatch(getProfileAnalyticsAction())
             }
         } catch (error) {
             console.error("Error in handleDeleteBookmark:", error);
