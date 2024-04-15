@@ -23,7 +23,6 @@ export default function SearchResult() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
     height: '100%',
   }
 })

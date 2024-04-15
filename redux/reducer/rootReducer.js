@@ -11,6 +11,8 @@ import profileAnalyticReducer from "../store/Profile/ProfileAnalytic/profileAnal
 import messageReducer from "../store/Chat/chatSlice";
 import followCompanyReducer from "../store/FollowCompany/followCompanySlice";
 import viewProfileReducer from "../store/ViewProfile/viewProfileSlice";
+import bookmarkReducer from "../store/Bookmark/bookmarkSlice";
+import submitApplyReducer from "../store/SubmitAppy/submitApplySlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
     chat: messageReducer,
     follow: followCompanyReducer,
     viewProfile: viewProfileReducer,
+    bookmark : bookmarkReducer,
+    submitApply: submitApplyReducer
 });
 
 export default rootReducer;

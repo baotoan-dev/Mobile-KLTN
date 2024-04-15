@@ -16,7 +16,7 @@ export default function ContentCvList({ checkShow, profile }) {
         if (profile) {
             setListCvs(profile.profilesCvs);
         }
-    }, [profile]);
+    }, [profile])
 
     useEffect(() => {
         Animated.timing(itemOpacity, {
@@ -37,27 +37,33 @@ export default function ContentCvList({ checkShow, profile }) {
         <Animated.View style={styles.container}>
             {checkShow ? (
                 listCvs?.map((item, index) => (
-                    <Animated.View key={index} style={[styles.item, {
-                        opacity: itemOpacity,
-                        transform: [{ scale: itemScale }]
-                    }]}>
+                    <Animated.View key={index}
+
+                        style={[styles.item,
+                        {
+                            opacity: itemOpacity,
+                            transform: [{ scale: itemScale }]
+                        }
+                        ]}
+
+                    >
                         <TouchableOpacity style={styles.itemContainer}>
                             <View style={{
                                 height: '70%',
                                 width: '100%',
-                                position: 'relative'
+                                position: 'relative',
                             }}>
                                 <Image source={{ uri: item.imageURL }} style={styles.image} />
                                 <TouchableOpacity
                                     style={{
                                         position: 'absolute',
-                                        top: 10,
+                                        top: 5,
                                         right: 10,
                                         backgroundColor: '#B4B4B8',
                                         padding: 5,
                                         borderRadius: 15,
-                                        width: 30,
-                                        height: 30,
+                                        width: 25,
+                                        height: 25,
                                     }}
                                 >
                                     {item.status === 0 ? (
@@ -65,13 +71,13 @@ export default function ContentCvList({ checkShow, profile }) {
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             textAlign: 'center'
-                                        }} name="staro" size={18} color="white" />
+                                        }} name="staro" size={15} color="white" />
                                     ) : (
                                         <AntDesign style={{
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             textAlign: 'center'
-                                        }} name="star" size={18} color="#F7C566" />
+                                        }} name="star" size={15} color="#F7C566" />
                                     )}
                                 </TouchableOpacity>
                             </View>
@@ -145,35 +151,37 @@ export default function ContentCvList({ checkShow, profile }) {
                                     backgroundColor: '#B4B4B8',
                                     padding: 5,
                                     borderRadius: 15,
-                                    width: 30,
-                                    height: 30,
+                                    width: 25,
+                                    height: 25,
                                     marginTop: 5,
+                                    alignItems: 'center',
                                 }}>
                                 {item.status === 0 ? (
                                     <AntDesign style={{
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         textAlign: 'center'
-                                    }} name="staro" size={18} color="white" />
+                                    }} name="staro" size={15} color="white" />
                                 ) : (
                                     <AntDesign style={{
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         textAlign: 'center'
-                                    }} name="star" size={18} color="#F7C566" />
+                                    }} name="star" size={15} color="#F7C566" />
                                 )}
-                                <TouchableOpacity 
-                                onPress={() => {
-                                    setShowModalActionCv(true);
-                                    setNameCv(item.name);
-                                    setStatusCv(item.status);
-                                }}
-                                style={{
-                                    marginTop: 5,
-                                }}>
+                            
+                            </View>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setShowModalActionCv(true);
+                                        setNameCv(item.name);
+                                        setStatusCv(item.status);
+                                    }}
+                                    style={{
+                                        marginTop: 5,
+                                    }}>
                                     <AntDesign name="ellipsis1" size={24} color="black" />
                                 </TouchableOpacity>
-                            </View>
                         </View>
                     </TouchableOpacity>
                 ))
@@ -189,7 +197,7 @@ const styles = StyleSheet.create({
     item: {
         width: '48%',
         height: 200,
-        borderColor: 'gray',
+        flexWrap: 'wrap',
         marginVertical: 5,
         borderRadius: 5,
         backgroundColor: 'white',

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { companyApi } from '../../../../../../api/company/companyApi'
@@ -38,62 +38,85 @@ export default function CompanyTabComponent({ post }) {
 
   return (
     <SafeAreaView>
-      <ScrollView style={styles.container}>
-        {
-          detailCompany.name && (
-            <>
-              <View style={{
-                paddingHorizontal: 30
-              }}>
-                <View>
-                  <Text style={styles.nameCompany}>{detailCompany.name}</Text>
-                </View>
-                <View style={styles.item}>
-                  <View style={styles.icon}>
-                    <Entypo name="address" size={24} color="black" />
-                  </View>
+      {
+        detailCompany.name ? (
+          <ScrollView style={styles.container}>
+            {
+              detailCompany.name && (
+                <>
                   <View style={{
-                    marginLeft: 10
+                    paddingHorizontal: 30
                   }}>
-                    <Text style={styles.contentTitle}>Đia chỉ công ty</Text>
-                    <Text>{detailCompany.address}</Text>
+                    <View>
+                      <Text style={styles.nameCompany}>{detailCompany.name}</Text>
+                    </View>
+                    <View style={styles.item}>
+                      <View style={styles.icon}>
+                        <Entypo name="address" size={24} color="black" />
+                      </View>
+                      <View style={{
+                        marginLeft: 10
+                      }}>
+                        <Text style={styles.contentTitle}>Đia chỉ công ty</Text>
+                        <Text>{detailCompany.address}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.item}>
+                      <View style={styles.icon}>
+                        <Fontisto name="arrow-resize" size={24} color="black" />
+                      </View>
+                      <View style={{
+                        marginLeft: 10
+                      }}>
+                        <Text style={styles.contentTitle}>Quy mô công ty</Text>
+                        <Text>{detailCompany.companySizeInfomation.nameText}</Text>
+                      </View>
+                    </View>
+                    <View>
+                      <Text style={styles.desc}>Mô tả công ty</Text>
+                      <Text>{detailCompany.description}</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.item}>
-                  <View style={styles.icon}>
-                    <Fontisto name="arrow-resize" size={24} color="black" />
-                  </View>
-                  <View style={{
-                    marginLeft: 10
-                  }}>
-                    <Text style={styles.contentTitle}>Quy mô công ty</Text>
-                    <Text>{detailCompany.companySizeInfomation.nameText}</Text>
-                  </View>
-                </View>
-                <View>
-                  <Text style={styles.desc}>Mô tả công ty</Text>
-                  <Text>{detailCompany.description}</Text>
-                </View>
-              </View>
 
-              <View style={styles.jobOfCompany}>
-                <View style={{
-                  marginTop: 10,
-                }}>
-                  <Text style={{
-                    fontSize: 17,
-                    fontWeight: 'bold',
-                    paddingHorizontal: 30,
-                  }}>
-                    Việc làm của công ty
-                  </Text>
-                  <JobCompanyOfTab idCompany={detailCompany.id} />
-                </View>
-              </View>
-            </>
-          )
-        }
-      </ScrollView>
+                  <View style={styles.jobOfCompany}>
+                    <View style={{
+                      marginTop: 10,
+                    }}>
+                      <Text style={{
+                        fontSize: 17,
+                        fontWeight: 'bold',
+                        paddingHorizontal: 30,
+                      }}>
+                        Việc làm của công ty
+                      </Text>
+                      <JobCompanyOfTab idCompany={detailCompany.id} />
+                    </View>
+                  </View>
+                </>
+              )
+            }
+          </ScrollView>
+        ) : (
+          <>
+            <Image
+              source={require('../../../../../../images/company.png')}
+              style={{
+                width: 200,
+                height: 200,
+                alignSelf: 'center',
+                marginTop: 100
+              }}
+            />
+            <Text style={{
+              textAlign: 'center',
+              fontSize: 17,
+              marginTop: 20,
+              fontWeight: 'bold'
+            }}>Không có thông tin công ty</Text>
+          </>
+        )
+      }
+
     </SafeAreaView>
   )
 }

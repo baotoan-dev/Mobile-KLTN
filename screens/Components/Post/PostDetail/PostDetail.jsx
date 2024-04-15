@@ -68,11 +68,11 @@ export default function PostDetail(prop) {
                                 style={{
                                     position: 'absolute',
                                     left: 10,
-                                    top: 10,
+                                    top: 20,
                                     backgroundColor: 'gray',
                                     borderRadius: 20,
                                     padding: 5,
-                                    zIndex: 10000,
+                                    zIndex: 1000000,
                                 }}
                                 onPress={() => navigation.goBack()}
                             >
@@ -96,7 +96,6 @@ export default function PostDetail(prop) {
                         backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        zIndex: 100,
                     }}
                 >
                     <View style={{
@@ -185,6 +184,8 @@ const styles = StyleSheet.create({
     },
     image: {
         height: 200,
+        position: 'relative',
+        zIndex: -1,
     },
     wrapper: {
         width: 300,

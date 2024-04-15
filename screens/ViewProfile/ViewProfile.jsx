@@ -181,6 +181,8 @@ const styles = StyleSheet.create({
         borderBottomColor: '#f0f0f0',
         alignItems: 'center',
         backgroundColor: 'white',
+        borderColor: '#97E7E1',
+        borderWidth: 0.5,
         marginTop: 10,
         marginHorizontal: 10,
         borderRadius: 10,

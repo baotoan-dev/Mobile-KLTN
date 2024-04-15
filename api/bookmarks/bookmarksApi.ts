@@ -18,7 +18,6 @@ export const bookmarksApi = {
             }
         )
     },
-
     deleteBookMark: async (postId: number) => {
         const URL = `${CONST_API_V1}/api/v1/bookmarks`
         return await axiosConfig.delete(URL, {
@@ -30,5 +29,13 @@ export const bookmarksApi = {
             },
         })
     },
+    getAllBookmark: async (threshold: number, limit: number, page: number, lang: string) => {
+        const URL = `${CONST_API_V1}/api/v1/posts/bookmark?threshold=${threshold}&limit=${limit}&lang=${lang}&page=${page}`
+        return await axiosConfig.get(URL, {
+          headers: {
+            Authorization: `Bearer ${SecureStore.getItemAsync('token')}`,
+          },
+        })
+      },
 }
 

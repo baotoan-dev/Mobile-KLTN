@@ -44,7 +44,11 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.item, {
+                <TouchableOpacity 
+                onPress={() => {
+                    navigation.navigate('Bookmark');
+                }}
+                style={[styles.item, {
                     marginLeft: '5%',
                 }]}>
                     <View style={styles.icon}>
@@ -112,7 +116,11 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.item, {
+                <TouchableOpacity 
+                onPress={() => {
+                    navigation.navigate('NotifyJobProfile');
+                }}
+                style={[styles.item, {
                     marginLeft: '5%',
                 }]}>
                     <View style={styles.icon}>

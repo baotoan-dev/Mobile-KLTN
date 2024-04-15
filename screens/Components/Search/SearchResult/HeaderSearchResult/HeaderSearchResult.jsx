@@ -63,7 +63,7 @@ export default function HeaderSearchResult() {
     return (
         <View style={{
             backgroundColor: 'white',
-            paddingTop: 20,
+            paddingTop: 40,
         }}>
             <View style={{
                 flexDirection: 'row',
