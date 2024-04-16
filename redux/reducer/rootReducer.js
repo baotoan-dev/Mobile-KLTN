@@ -14,6 +14,7 @@ import viewProfileReducer from "../store/ViewProfile/viewProfileSlice";
 import bookmarkReducer from "../store/Bookmark/bookmarkSlice";
 import submitApplyReducer from "../store/SubmitAppy/submitApplySlice";
 import newPostReducer from "../store/NewPost/newPostSlice";
+import nearbyReducer from "../store/Nearby/nearbySlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     bookmark : bookmarkReducer,
     submitApply: submitApplyReducer,
     newPost: newPostReducer,
+    nearby: nearbyReducer,
 });
 
 export default rootReducer;

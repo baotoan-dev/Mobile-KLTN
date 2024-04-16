@@ -46,6 +46,7 @@ import CompanyFollowingScreen from './screens/CompanyFollowingScreen/CompanyFoll
 import CreateNotificationScreen from './screens/CreateNotificationScreen/CreateNotificationScreen';
 import BookmarkScreen from './screens/BookmarkScreen/BookmarkScreen';
 import NotifyJobProfileScreen from './screens/NotifyJobProfileScreen/NotifyJobProfileScreen';
+import JobFitScreen from './screens/JobFitScreen/JobFitScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -219,7 +220,7 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
-                <Stack.Screen name='ThemeCvList' component={ThemeCvList}  options={{
+                <Stack.Screen name='ThemeCvList' component={ThemeCvList} options={{
                     headerShown: false,
                 }} />
 
@@ -306,6 +307,12 @@ function Navigation() {
                 {/* NotifyJobProfileScreen */}
 
                 <Stack.Screen name="NotifyJobProfile" component={NotifyJobProfileScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* JobFitScreen */}
+
+                <Stack.Screen name="JobFit" component={JobFitScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

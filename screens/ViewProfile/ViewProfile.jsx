@@ -100,7 +100,8 @@ export default function ViewProfile() {
                     <FlatList
                         data={listViewProfile}
                         keyExtractor={item => item.id}
-                        loadMoreItem={loadMoreItem}
+                        onEndReached={loadMoreItem}
+                        onEndReachedThreshold={1}
                         ListFooterComponentStyle={LoaderComponent}
                         renderItem={({ item }) => (
                             <TouchableOpacity

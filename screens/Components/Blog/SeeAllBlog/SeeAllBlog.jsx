@@ -86,8 +86,8 @@ export default function SeeAllBlog(prop) {
                         data={blog}
                         horizontal={false}
                         onEndReached={loadMoreItem}
+                        onEndReachedThreshold={1}
                         ListFooterComponentStyle={renderLoader}
-                        onEndReachedThreshold={0}
                         ListFooterComponent={() => (
                             <View style={{
                                 height: 100,

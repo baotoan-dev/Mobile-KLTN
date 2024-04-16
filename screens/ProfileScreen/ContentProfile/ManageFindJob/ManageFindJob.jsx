@@ -63,7 +63,11 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.item, {
+                <TouchableOpacity 
+                onPress={() => {
+                    navigation.navigate('JobFit');
+                }}
+                style={[styles.item, {
                     marginTop: '5%',
                 }]}>
                     <View style={styles.icon}>

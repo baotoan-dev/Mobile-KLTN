@@ -105,7 +105,7 @@ export default function ContentSearchResult(prop) {
                 horizontal={false}
                 onEndReached={loadMoreItem}
                 ListFooterComponentStyle={LoaderComponent}
-                onEndReachedThreshold={0}
+                onEndReachedThreshold={1}
                 ListFooterComponent={() => (
                     <View style={{
                         height: 100,

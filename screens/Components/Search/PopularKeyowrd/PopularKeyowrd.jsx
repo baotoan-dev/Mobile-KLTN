@@ -142,7 +142,7 @@ export default function PopularKeyowrd() {
                                 data={listSearchHistory}
                                 keyExtractor={item => item.keyword.toString()}
                                 loadMoreItem={loadMoreItem}
-                                onEndReachedThreshold={0}
+                                onEndReachedThreshold={1}
                                 ListFooterComponentStyle={LoaderComponent}
                                 renderItem={({ item }) => (
                                     <TouchableOpacity onPress={() => {

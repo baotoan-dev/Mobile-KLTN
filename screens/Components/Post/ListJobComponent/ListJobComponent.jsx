@@ -38,7 +38,7 @@ export default function ListJobComponent({ listJob, setCurrentPage, isOver }) {
                         horizontal={false}
                         onEndReached={loadMoreItem}
                         ListFooterComponentStyle={renderLoader}
-                        onEndReachedThreshold={0}
+                        onEndReachedThreshold={1}
                         ListFooterComponent={() => (
                             <View style={{
                                 height: 100,
