@@ -3,6 +3,8 @@ import React, { useEffect } from 'react'
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { avatarApi } from '../../../api/profile/avatar/avatarApi';
+import { Buffer } from "buffer";
 
 export default function HeaderProfile({ profile, isScrolling }) {
     const [image, setImage] = useState(null);
@@ -12,13 +14,32 @@ export default function HeaderProfile({ profile, isScrolling }) {
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
+            base64: true,
             quality: 1,
         });
 
-        console.log(result);
+        if (!result.cancelled) {
+            const buffer = Buffer.from(result.assets[0].base64, 'base64');
+            console.log(buffer.data);
 
-        if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            const dataUpload = {
+                filenames: 'images',
+                originalname: result.assets[0].uri.split('/').pop(),
+                encoding: '7bit',
+                mimetype: 'image/jpeg',
+                buffer: new Buffer(result.assets[0].base64, 'base64').data,
+                size: result.assets[0].base64.length,
+            }
+
+            console.log(dataUpload);
+
+            const data = new FormData();
+
+            data.append('files', [JSON.stringify(dataUpload)]);
+
+            // const res = await avatarApi.updateAvatar(data);
+
+            console.log('res', res);
         }
     };
 

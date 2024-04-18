@@ -4,7 +4,6 @@ import Heading from '../Heading/Heading'
 import { StyleSheet } from 'react-native'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import jobApi from '../../../api/job/jobApi'
 import { Color } from '../../../utils/Color'
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';

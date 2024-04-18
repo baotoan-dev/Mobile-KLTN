@@ -115,6 +115,7 @@ export default function PopularKeyowrd() {
                             flexDirection: 'row',
                             flexWrap: 'wrap',
                             justifyContent: 'space-between',
+                            paddingHorizontal: 10,
                         }}>
                             <Text style={{
                                 fontSize: 15,
@@ -206,10 +207,11 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
         color: 'black',
         marginTop: 10,
+        paddingHorizontal: 10,
     },
     item: {
         fontSize: 16,

@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSearchAction } from '../../../../../redux/store/Search/searchSlice';
-import LoaderComponent from '../../../LoaderComponent/LoaderComponent';
 import { Feather } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
-
+import { useNavigation } from '@react-navigation/native';
+import { bookmarksApi } from '../../../../../api/bookmarks/bookmarksApi';
+import { getProfileAnalyticsAction } from '../../../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ContentSearchResult(prop) {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const [accountId, setAccountId] = useState('');
     const search = useSelector(state => state.search.search);
     const [listFilterJob, setListFilterJob] = React.useState([]);
     const [currentPage, setCurrentPage] = React.useState(0);
@@ -21,6 +24,14 @@ export default function ContentSearchResult(prop) {
     const [salaryMax, setSalaryMax] = React.useState(null);
     const [isOver, setIsOver] = React.useState(false);
     const [total, setTotal] = React.useState(0);
+
+    useEffect(() => {
+        const getAccountId = async () => {
+            const accountId = await SecureStore.getItemAsync('accountId');
+            setAccountId(accountId)
+        }
+        getAccountId();
+    }, [])
 
     useEffect(async () => {
         await AsyncStorage.getItem('keyword').then((data) => {
@@ -86,8 +97,54 @@ export default function ContentSearchResult(prop) {
                 }
             }
         );
-        setIsOver(search.is_over);
     }, [currentPage])
+
+
+    const handleCreateBookmark = async (postId) => {
+        try {
+            const res = await bookmarksApi.createBookMark(postId);
+
+            if (res && res.data && res.data.code === 200) {
+                const newListJob = listFilterJob.map((item) => {
+                    if (item.id === postId) {
+                        return {
+                            ...item,
+                            bookmarked: true
+                        }
+                    }
+                    return item
+                })
+                setListFilterJob(newListJob);
+                dispatch(getProfileAnalyticsAction())
+            }
+        } catch (error) {
+            console.error("Error in handleCreateBookmark:", error);
+        }
+    };
+
+
+    const handleDeleteBookmark = async (postId) => {
+        try {
+            const res = await bookmarksApi.deleteBookMark(postId);
+
+            if (res && res.data && res.data.code === 200) {
+                const newListJob = listFilterJob.map((item) => {
+                    if (item.id === postId) {
+                        return {
+                            ...item,
+                            bookmarked: false
+                        }
+                    }
+                    return item
+                })
+                setListFilterJob(newListJob);
+                dispatch(getProfileAnalyticsAction())
+            }
+        } catch (error) {
+            console.error("Error in handleDeleteBookmark:", error);
+        }
+    }
+
     return (
         <View>
             {
@@ -104,7 +161,6 @@ export default function ContentSearchResult(prop) {
                 data={listFilterJob}
                 horizontal={false}
                 onEndReached={loadMoreItem}
-                ListFooterComponentStyle={LoaderComponent}
                 onEndReachedThreshold={1}
                 ListFooterComponent={() => (
                     <View style={{
@@ -117,7 +173,7 @@ export default function ContentSearchResult(prop) {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => {
-                            navation.navigate('PostDetail', {
+                            navigation.navigate('PostDetail', {
                                 id: item.id
                             })
                         }}
@@ -132,13 +188,15 @@ export default function ContentSearchResult(prop) {
                             </View>
                             <View style={styles.center}>
                                 <Text
-                                    numberOfLines={2}
+                                    numberOfLines={1}
                                     style={{
                                         fontWeight: 'bold',
                                     }}>
                                     {item.title}
                                 </Text>
-                                <Text>
+                                <Text
+                                    numberOfLines={1}
+                                >
                                     {item.company_name}
                                 </Text>
                                 <View style={{
@@ -147,27 +205,45 @@ export default function ContentSearchResult(prop) {
                                 }}>
                                     <Text style={{
                                         fontSize: 12,
-                                        borderWidth: 0.2,
-                                        borderRadius: 4,
+                                        borderWidth: 0.1,
+                                        borderRadius: 2,
                                         padding: 3,
-                                        backgroundColor: '#f0f0f0',
+                                        backgroundColor: '#DFF5FF',
                                     }}>
                                         {item.district_name}
                                     </Text>
                                     <Text style={{
                                         marginLeft: 10,
                                         fontSize: 12,
-                                        borderWidth: 0.2,
-                                        borderRadius: 4,
+                                        borderWidth: 0.1,
+                                        borderRadius: 2,
                                         padding: 3,
-                                        backgroundColor: '#f0f0f0',
+                                        backgroundColor: '#DFF5FF',
                                     }}>
                                         {item.job_type.job_type_name}
                                     </Text>
                                 </View>
                             </View>
                             <View style={styles.right}>
-                                <Feather name="bookmark" size={24} color="black" />
+                                {
+                                    item.accountId !== accountId && (
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                if (item.bookmarked) {
+                                                    handleDeleteBookmark(item.id)
+                                                    return
+                                                }
+                                                else {
+                                                    handleCreateBookmark(item.id)
+                                                    return
+                                                }
+                                            }}
+                                        >
+                                            {item.bookmarked === true ? <Ionicons name="bookmark" size={24} color="black" /> : <Feather name="bookmark" size={24} color="black" />}
+                                        </TouchableOpacity>
+                                    )
+                                }
+
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -188,12 +264,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     left: {
-        width: '30%',
+        width: '25%',
         height: 100,
         padding: 10,
     },
     center: {
-        width: '60%',
+        width: '65%',
         height: 100,
         marginTop: 10,
     },
@@ -205,8 +281,14 @@ const styles = StyleSheet.create({
     logo: {
         width: '80%',
         height: '100%',
-        borderWidth: 0.5,
-        borderColor: 'black',
         borderRadius: 18,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
     }
 })

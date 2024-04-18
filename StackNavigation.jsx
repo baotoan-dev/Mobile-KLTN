@@ -315,6 +315,12 @@ function Navigation() {
                 <Stack.Screen name="JobFit" component={JobFitScreen} options={{
                     headerShown: false,
                 }} />
+
+                {/* MoreInforOfTopCompanyScreen */}
+
+                <Stack.Screen name="MoreInforOfTopCompanyScreen" component={MoreInforOfTopCompany} options={{
+                    headerShown: false,
+                }} />
             </Stack.Navigator>
         </NavigationContainer>
     )

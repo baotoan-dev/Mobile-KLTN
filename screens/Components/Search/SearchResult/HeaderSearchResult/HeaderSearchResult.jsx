@@ -7,9 +7,12 @@ import { AntDesign } from '@expo/vector-icons';
 import MoneyComponent from '../../Filter/MoneyComponent/MoneyComponent';
 import TypeComponent from '../../Filter/TypeComponent/TypeComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { getSearchAction } from '../../../../../redux/store/Search/searchSlice';
 
 export default function HeaderSearchResult() {
     const navigation = useNavigation();
+    const dispatch = useDispatch()
     const [q, setQ] = React.useState('')
     const [showModalSalary, setShowModalSalary] = React.useState(false)
     const [showModalType, setShowModalType] = React.useState(false)
@@ -60,6 +63,26 @@ export default function HeaderSearchResult() {
         fetchData()
     }, [])
 
+    useEffect(() => {
+        dispatch(getSearchAction(
+            q,
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            [],
+            [],
+            [],
+            null,
+            'vi',
+        ))
+    }, [q])
+
     return (
         <View style={{
             backgroundColor: 'white',
@@ -96,7 +119,7 @@ export default function HeaderSearchResult() {
                     <EvilIcons name="search" size={24} color="black" />
                     <TextInput
                         placeholder="Tìm kiếm"
-                        value={q}
+                        onChangeText={(text) => setQ(text)}
                     />
                 </View>
             </View>
@@ -118,18 +141,20 @@ export default function HeaderSearchResult() {
                         style={{
                             borderWidth: 1,
                             padding: 5,
-                            borderColor: 'gray',
+                            borderColor: 'blue',
                             borderRadius: 20,
                             marginRight: 10,
                         }}>
-                        <AntDesign name="filter" size={24} color="black" />
+                        <AntDesign name="filter" size={24} color="blue" />
                     </TouchableOpacity>
                     <View style={{
                         borderRightWidth: 1,
                         paddingRight: 10,
-                        borderColor: 'gray',
+                        borderColor: 'black',
                     }}>
-                        <Text>Lọc</Text>
+                        <Text style={{
+                            color: 'blue'
+                        }}>Lọc</Text>
                     </View>
                 </View>
                 <View
@@ -193,6 +218,8 @@ export default function HeaderSearchResult() {
                 dataTypeFilter={dataTypeFilter}
                 setDataTypeFilter={setDataTypeFilter}
                 isCheckClickMoney={isCheckClickMoney}
+                type={true}
+     
             />
             <MoneyComponent
                 showModalMoney={showModalSalary}
@@ -200,6 +227,7 @@ export default function HeaderSearchResult() {
                 dataMoneyFilter={dataMoneyFilter}
                 setDataMoneyFilter={setDataMoneyFilter}
                 isCheckClickType={isCheckClickType}
+                type={true}
             />
         </View>
     )

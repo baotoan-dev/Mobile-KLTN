@@ -18,7 +18,7 @@ export const getNewPostAction = (
     page
 ) => async (dispatch) => {
     try {
-        dispatch(getNewPostRequest());
+        dispatch(actions.getNewPostRequest());
         const res = await jobApi.getPostNewest(
             childrenCategoryId,
             parentCategoryId,
@@ -29,9 +29,9 @@ export const getNewPostAction = (
             lang,
             page
         );
-        dispatch(getNewPostSuccess(res.data));
+        dispatch(actions.getNewPostSuccess(res.data));
     } catch (error) {
-        dispatch(getNewPostFailure(error));
+        dispatch(actions.getNewPostFailure(error));
     }
 }
 
