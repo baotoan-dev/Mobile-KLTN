@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -11,9 +11,12 @@ import MoneyComponent from './MoneyComponent/MoneyComponent';
 import CatogoryComponent from './CatogoryComponent/CatogoryComponent';
 import LocationComponent from './LocationComponent/LocationComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { getSearchAction } from '../../../../redux/store/Search/searchSlice';
 
 export default function Filter() {
     const navigation = useNavigation();
+    const dispatch = useDispatch()
     const [showModalType, setShowModalType] = React.useState(false)
     const [showModalMoney, setShowModalMoney] = React.useState(false)
     const [showModalCategory, setShowModalCategory] = React.useState(false)
@@ -89,7 +92,9 @@ export default function Filter() {
                         Bộ lọc
                     </Text>
                 </View>
-                <View style={{
+                <ScrollView 
+                showsVerticalScrollIndicator={false}
+                style={{
                     width: '100%',
                     height: '83%',
                 }}>
@@ -316,7 +321,7 @@ export default function Filter() {
                             )
                         }
                     </View>
-                </View>
+                </ScrollView>
             </View>
             <View style={{
                 flexDirection: 'row',
@@ -354,21 +359,38 @@ export default function Filter() {
                         Xóa lọc
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={() => {
-                    navigation.navigate('SearchResult')
-                }}
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    borderWidth: 0.2,
-                    padding: 5,
-                    width: '65%',
-                    height: '50%',
-                    justifyContent: 'center',
-                    borderRadius: 5,
-                    backgroundColor: '#337DFF',
-                }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        dispatch(getSearchAction(
+                            '',
+                            0,
+                            null,
+                            null,
+                            null,
+                            null,
+                            dataMoneyFilter.salaryMin,
+                            dataMoneyFilter.salaryMax,
+                            null,
+                            null,
+                            [dataTypeFilter.id],
+                            dataCategoryFilter.map((item) => item.id),
+                            dataLocationFilter.map((item) => item.id),
+                            null,
+                            'vi',
+                        ))
+                        navigation.navigate('SearchResult')
+                    }}
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderWidth: 0.2,
+                        padding: 5,
+                        width: '65%',
+                        height: '50%',
+                        justifyContent: 'center',
+                        borderRadius: 5,
+                        backgroundColor: '#337DFF',
+                    }}>
                     <Text style={{
                         textAlign: 'center',
                         color: 'white',
@@ -377,8 +399,8 @@ export default function Filter() {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <TypeComponent isCheckClickType={false} dataTypeFilter={dataTypeFilter} setDataTypeFilter={setDataTypeFilter} showModalType={showModalType} setShowModalType={setShowModalType} />
-            <MoneyComponent isCheckClickMoney={false} setDataMoneyFilter={setDataMoneyFilter} dataMoneyFilter={dataMoneyFilter} showModalMoney={showModalMoney} setShowModalMoney={setShowModalMoney} />
+            <TypeComponent type={false} isCheckClickType={false} dataTypeFilter={dataTypeFilter} setDataTypeFilter={setDataTypeFilter} showModalType={showModalType} setShowModalType={setShowModalType} />
+            <MoneyComponent type={false} isCheckClickMoney={false} setDataMoneyFilter={setDataMoneyFilter} dataMoneyFilter={dataMoneyFilter} showModalMoney={showModalMoney} setShowModalMoney={setShowModalMoney} />
             <CatogoryComponent setDataCategoryFilter={setDataCategoryFilter} dataCategoryFilter={dataCategoryFilter} showModalCategory={showModalCategory} setShowModalCategory={setShowModalCategory} />
             <LocationComponent dataLocationFilter={dataLocationFilter} setDataLocationFilter={setDataLocationFilter} showModalLocation={showModalLocation} setShowModalLocation={setShowModalLocation} />
         </View>

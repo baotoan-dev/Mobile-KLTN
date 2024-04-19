@@ -30,7 +30,11 @@ export default function Company() {
             <View style={{
                 paddingHorizontal: 10,
             }}>
-                <Heading props={{ title: "Công ty nổi bật", extra: "Xem thêm" }} />
+                <Heading props={{
+                    title: "Công ty nổi bật", extra: "Xem thêm", handleSeeMore: () => {
+                        navigation.navigate('MoreInforOfTopCompany')
+                    }
+                }} />
             </View>
             <TouchableOpacity
                 onPress={() => {

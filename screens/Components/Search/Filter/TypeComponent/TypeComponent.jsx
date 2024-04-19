@@ -6,15 +6,18 @@ import { jobTypeApi } from '../../../../../api/job-type/jobTypeApi';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { getSearchAction } from '../../../../../redux/store/Search/searchSlice';
 
-export default function TypeComponent({ showModalType, setShowModalType, setDataTypeFilter, dataTypeFilter, isCheckClickMoney }) {
+export default function TypeComponent({ type, showModalType, setShowModalType, setDataTypeFilter, dataTypeFilter, isCheckClickMoney }) {
     const [jobType, setJobType] = React.useState([])
+    const dispatch = useDispatch()
     const fetchData = async () => {
         const res = await jobTypeApi.getJobType('vi')
         if (res && res.code === 200) {
             setJobType(res.data)
         }
-        setJobType([{ id: 0, name: 'Tất cả' }, ...res.data])
+        setJobType(res.data)
     }
 
     useEffect(() => {
@@ -31,6 +34,26 @@ export default function TypeComponent({ showModalType, setShowModalType, setData
         }
         fetchData()
     }, [])
+
+    const handleSearchFromTop = async () => {
+        dispatch(getSearchAction(
+            '',
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            [dataTypeFilter.id],
+            [],
+            [],
+            null,
+            'vi',
+        ))
+    }
 
     return (
         <View>
@@ -87,6 +110,9 @@ export default function TypeComponent({ showModalType, setShowModalType, setData
                                         id: item.id,
                                         name: item.name
                                     }))
+                                    if (type === true) {
+                                        handleSearchFromTop()
+                                    }
                                 }}
                                 style={{
                                     padding: 20,

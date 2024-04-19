@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { createCvProjectAction, deleteCvProjectAction, getCvProjectAction } from '../../../../redux/store/CvProject/cvProjectSlice';
+import { createCvProjectAction, getCvProjectAction } from '../../../../redux/store/CvProject/cvProjectSlice';
 import { createCvListProject } from './helpers/CreateCvListProject';
 import { createCvProject, createMoreCvProject } from './helpers/CreateCvProject';
 
@@ -21,29 +21,28 @@ export default function Project() {
     }, [])
 
     useEffect(() => {
-        const data = createCvListProject(cvProject);
-
-        setListProject(data);
-
+        if (cvProject) {
+            const data = createCvListProject(cvProject);
+            setListProject(data[0]);
+        }
     }, [cvProject]);
 
     const handleDeleteProject = async (id) => {
-        const newListProject = listProject.filter(item => +item.id !== +id);
+        let arrayMore = []
 
-        const newCvProjectData = newListProject.map((item, index) => {
-            const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, index);
-            return createCvProject(item.type, 0, 0, 0, 0, createMoreCvProjectData);
+        const newListProject = listProject && listProject.moreCvProjects.filter(item => +item.id !== +id);
+
+        newListProject.map((item, index) => {
+            const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, item.index);
+            arrayMore.push(createMoreCvProjectData);
         });
 
-        if (newListProject && newListProject.length > 0) {
-            dispatch(createCvProjectAction(newCvProjectData)).then(() => {
+        const newCreateProject = createCvProject(listProject.type, listProject.row, listProject.col, listProject.cvIndex, listProject.part, arrayMore);
+
+        if (newCreateProject) {
+            dispatch(createCvProjectAction([newCreateProject])).then(() => {
                 dispatch(getCvProjectAction(0));
             });
-        }
-        if (newListProject && newListProject.length === 0) {
-            dispatch(deleteCvProjectAction(0)).then(() => {
-                dispatch(getCvProjectAction(0));
-            })
         }
     };
 
@@ -66,7 +65,8 @@ export default function Project() {
             </View>
             <ScrollView>
                 {
-                    listProject && listProject.length > 0 && listProject.map((item, index) => {
+                    listProject && listProject.moreCvProjects &&
+                    listProject.moreCvProjects.map((item, index) => {
                         return (
                             <View style={styles.item} key={index}>
                                 <View style={{
@@ -77,7 +77,6 @@ export default function Project() {
                                         onPress={() => {
                                             navigation.navigate('UpdateProject', {
                                                 idParent: item.id,
-                                                typeParent: item.type,
                                                 timeParent: item.time,
                                                 linkParent: item.link,
                                                 participantParent: item.participant,
@@ -98,15 +97,7 @@ export default function Project() {
                                                 fontWeight: 'bold',
                                                 fontSize: 16,
                                             }}>
-                                            {`Tên dự án: ${item.type}`}
-                                        </Text>
-                                        <Text
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: 14,
-                                                marginTop: 5,
-                                            }}>
-                                            {'Vị trí: ' + item.position}
+                                            {`Tên dự án: ${item.position}`}
                                         </Text>
                                         <Text
                                             numberOfLines={1}

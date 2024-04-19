@@ -9,13 +9,14 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from '../../Education/helpers/CreateCvListExtraInformation';
-import { CreateMoreCvExtraInformation } from '../helpers/CreateCvExtraInformation';
 import { CreateCvExtraInformation } from '../../Education/helpers/CreateCvExtraInformation';
+import { TYPE_CETIFICATION } from '../../Constant/constantContentCv';
 
 export default function UpdateCertification(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch()
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+    const [listOtherInformation, setListOtherInformation] = useState([]);
     const { idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [type, setType] = useState('');
@@ -37,39 +38,57 @@ export default function UpdateCertification(prop) {
     }, [])
 
     useEffect(() => {
-        if (cvExtraInformation.length === 0) {
-            setListExtraInformation([]);
-        }
-        else {
+        if (cvExtraInformation) {
             const data = createCvListExtraInformaion(cvExtraInformation);
 
-            const newListCvExtraInformation = data.filter(item => item.id === idParent)
+            const newData = data && data.filter(item => item.type === TYPE_CETIFICATION);
 
-            setListExtraInformation(newListCvExtraInformation)
+            const otherData = data && data.filter(item => item.type !== TYPE_CETIFICATION);
+
+            const newListCvExtraInformation = {
+                type: newData[0].type,
+                row: newData[0].row,
+                part: newData[0].part,
+                col: newData[0].col,
+                cvIndex: newData[0].cvIndex,
+                moreCvExtraInformations: newData[0].moreCvExtraInformations.filter(item => item.id !== idParent),
+            }
+
+            setListOtherInformation(otherData);
+
+            setListExtraInformation(newListCvExtraInformation);
         }
     }, [cvExtraInformation])
 
 
     const handleUpdate = () => {
-        const newListExtraInformation = [...listExtraInformation, {
-            id: listExtraInformation.length + 1,
-            type: 'certification',
-            position: position,
-            time: `${startTime} - ${endTime}`,
-            company: company,
-            description: description
-        }];
+        const newListExtraInformation = {
+            col: listExtraInformation.col,
+            cvIndex: listExtraInformation.cvIndex,
+            part: listExtraInformation.part,
+            row: listExtraInformation.row,
+            type: listExtraInformation.type,
+            moreCvExtraInformations: [
+                ...listExtraInformation.moreCvExtraInformations,
+                {
+                    position: position,
+                    time: startTime,
+                    company: company,
+                    description: description,
+                    index: 0,
+                }
+            ]
+        };
 
-        const newCvExtraInformationData = newListExtraInformation.map((item, index) => {
-            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, index);
-            return CreateCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
-        });
+        const newDataCvExtraInformation = CreateCvExtraInformation(newListExtraInformation.type, newListExtraInformation.row, newListExtraInformation.col, newListExtraInformation.cvIndex, newListExtraInformation.part, newListExtraInformation.moreCvExtraInformations);
 
-        dispatch(createCvExtraInformationAction(newCvExtraInformationData)).then(() => {
+        listOtherInformation.push(newDataCvExtraInformation);
+
+        dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
             dispatch(getCvExtraInformationAction(0));
         });
 
-        navigation.goBack()
+        navigation.goBack();
     }
 
 

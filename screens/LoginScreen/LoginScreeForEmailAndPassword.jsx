@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
@@ -18,8 +18,9 @@ export default function LoginScreeForEmailAndPassword() {
     const handleLogin = async () => {
         try {
             // baotoandd2016@gmail.com
-
             const response = await authCandidate.signInCandidate(email, password);
+
+            console.log(response);
 
             if (response.code === 200) {
                 SecureStore.setItemAsync("accountId", response.data.accountId);

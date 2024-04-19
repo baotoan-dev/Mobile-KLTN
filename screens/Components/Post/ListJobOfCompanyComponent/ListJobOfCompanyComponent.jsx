@@ -38,7 +38,7 @@ export default function ListJobOfCompanyComponent({
                         data={listJob}
                         horizontal={false}
                         onEndReached={loadMoreItem}
-                        onEndReachedThreshold={0}
+                        onEndReachedThreshold={1}
                         ListFooterComponent={renderLoader}
                         renderItem={({ item }) => (
                             <TouchableOpacity

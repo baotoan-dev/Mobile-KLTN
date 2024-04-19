@@ -64,9 +64,9 @@ export default function HeaderSearch() {
 
 const styles = StyleSheet.create({
     input: {
-        borderWidth: 0.5,
+        borderWidth: 0.2,
         borderColor: 'black',
-        borderRadius: 10,
+        borderRadius: 5,
         marginTop: 10,
         padding: 5,
         flexDirection: 'row',
@@ -78,5 +78,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
+        paddingHorizontal: 10,
     }
 })

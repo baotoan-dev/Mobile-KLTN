@@ -44,7 +44,7 @@ export const getSearchAction = (
             salary_type,
             lang,
         );
-
+        
         if (response && response.data) {
             dispatch(actions.getSearchSuccess(response.data.data));
         }

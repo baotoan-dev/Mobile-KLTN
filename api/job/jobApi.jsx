@@ -11,6 +11,7 @@ const jobApi = {
         limit,
         threshold,
         lang,
+        page
     ) => {
         const URL =
             `${CONST_API}/api/v3/posts/newest?` +
@@ -32,7 +33,7 @@ const jobApi = {
             }` +
             `${provinceId ? `provinceId=${provinceId}&` : ``}` +
             `limit=${limit}${threshold ? `&threshold=${threshold}` : ``}` +
-            `&lang=${lang}`;
+            `&lang=${lang}&page=${page}`;
 
         return await axios.get(URL, {
             headers: {

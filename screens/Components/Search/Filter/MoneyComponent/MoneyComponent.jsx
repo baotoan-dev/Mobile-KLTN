@@ -6,14 +6,18 @@ import { StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getSearchAction } from '../../../../../redux/store/Search/searchSlice';
+import { useDispatch } from 'react-redux';
 
 export default function MoneyComponent({
     showModalMoney,
     setShowModalMoney,
     setDataMoneyFilter,
     dataMoneyFilter,
-    isCheckClickType
+    isCheckClickType,
+    type,
 }) {
+    const dispatch = useDispatch()
     useEffect(() => {
         const fetchData = async () => {
             const data = await AsyncStorage.getItem('dataMoneyFilter')
@@ -23,6 +27,27 @@ export default function MoneyComponent({
         }
         fetchData()
     }, [])
+
+    const handleSearchFromTop = async (salaryMin, salaryMax) => {
+        dispatch(getSearchAction(
+            '',
+            0,
+            null,
+            null,
+            null,
+            null,
+            salaryMin,
+            salaryMax,
+            null,
+            null,
+            [],
+            [],
+            [],
+            null,
+            'vi',
+        ))
+    }
+
     return (
         <View>
             <Modal
@@ -69,6 +94,7 @@ export default function MoneyComponent({
                                         setDataMoneyFilter({})
                                         return
                                     };
+
                                     setDataMoneyFilter({
                                         salaryMin: item.slaryMin,
                                         salaryMax: item.slaryMax,
@@ -80,6 +106,9 @@ export default function MoneyComponent({
                                         id: item.id,
                                     }))
                                     setShowModalMoney(false)
+                                    if (type === true) {
+                                        handleSearchFromTop(item.slaryMin, item.slaryMax)
+                                    }
                                     if (isCheckClickType) {
                                         navigation.navigate('SearchResult');
                                     }

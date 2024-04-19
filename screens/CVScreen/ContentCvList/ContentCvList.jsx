@@ -18,100 +18,93 @@ export default function ContentCvList({ checkShow, profile }) {
         }
     }, [profile])
 
-    useEffect(() => {
-        Animated.timing(itemOpacity, {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true
-        }).start();
+    // useEffect(() => {
+    //     Animated.timing(itemOpacity, {
+    //         toValue: 1,
+    //         duration: 500,
+    //         useNativeDriver: true
+    //     }).start();
 
-        Animated.spring(itemScale, {
-            toValue: 1,
-            tension: 20,
-            friction: 4,
-            useNativeDriver: true
-        }).start()
-    }, []);
+    //     Animated.spring(itemScale, {
+    //         toValue: 1,
+    //         tension: 20,
+    //         friction: 4,
+    //         useNativeDriver: true
+    //     }).start()
+    // }, []);
 
     return (
         <Animated.View style={styles.container}>
             {checkShow ? (
-                listCvs?.map((item, index) => (
-                    <Animated.View key={index}
-
-                        style={[styles.item,
-                        {
-                            opacity: itemOpacity,
-                            transform: [{ scale: itemScale }]
-                        }
-                        ]}
-
-                    >
-                        <TouchableOpacity style={styles.itemContainer}>
-                            <View style={{
-                                height: '70%',
-                                width: '100%',
-                                position: 'relative',
-                            }}>
-                                <Image source={{ uri: item.imageURL }} style={styles.image} />
-                                <TouchableOpacity
-                                    style={{
-                                        position: 'absolute',
-                                        top: 5,
-                                        right: 10,
-                                        backgroundColor: '#B4B4B8',
-                                        padding: 5,
-                                        borderRadius: 15,
-                                        width: 25,
-                                        height: 25,
-                                    }}
-                                >
-                                    {item.status === 0 ? (
-                                        <AntDesign style={{
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            textAlign: 'center'
-                                        }} name="staro" size={15} color="white" />
-                                    ) : (
-                                        <AntDesign style={{
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            textAlign: 'center'
-                                        }} name="star" size={15} color="#F7C566" />
-                                    )}
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.content}>
+                <View style={styles.largeContainer}>
+                    {listCvs?.map((item, index) => (
+                        <View key={index} style={styles.item}>
+                            <TouchableOpacity style={styles.itemContainer}>
                                 <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    padding: 5
+                                    height: '70%',
+                                    width: '100%',
+                                    position: 'relative',
                                 }}>
-                                    <View>
-                                        <Text style={{
-                                            fontSize: 15,
-                                            fontWeight: 'bold'
-                                        }}>{item.name}</Text>
-                                        <Text style={{
-                                            fontSize: 12,
-                                            color: 'gray'
-                                        }}>
-                                            {moment(item.createdAt).format('DD/MM/YYYY')}
-                                        </Text>
-                                    </View>
-                                    <TouchableOpacity onPress={() => {
-                                        setShowModalActionCv(true);
-                                        setNameCv(item.name);
-                                        setStatusCv(item.status);
-                                    }}>
-                                        <AntDesign name="ellipsis1" size={24} color="black" />
+                                    <Image source={{ uri: item.imageURL }} style={styles.image} />
+                                    <TouchableOpacity
+                                        style={{
+                                            position: 'absolute',
+                                            top: 5,
+                                            right: 10,
+                                            backgroundColor: '#B4B4B8',
+                                            padding: 5,
+                                            borderRadius: 15,
+                                            width: 25,
+                                            height: 25,
+                                        }}
+                                    >
+                                        {item.status === 0 ? (
+                                            <AntDesign style={{
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                textAlign: 'center'
+                                            }} name="staro" size={15} color="white" />
+                                        ) : (
+                                            <AntDesign style={{
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                textAlign: 'center'
+                                            }} name="star" size={15} color="#F7C566" />
+                                        )}
                                     </TouchableOpacity>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                    </Animated.View>
-                ))
+                                <View style={styles.content}>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: 5
+                                    }}>
+                                        <View>
+                                            <Text style={{
+                                                fontSize: 15,
+                                                fontWeight: 'bold'
+                                            }}>{item.name}</Text>
+                                            <Text style={{
+                                                fontSize: 12,
+                                                color: 'gray'
+                                            }}>
+                                                {moment(item.createdAt).format('DD/MM/YYYY')}
+                                            </Text>
+                                        </View>
+                                        <TouchableOpacity onPress={() => {
+                                            setShowModalActionCv(true);
+                                            setNameCv(item.name);
+                                            setStatusCv(item.status);
+                                        }}>
+                                            <AntDesign name="ellipsis1" size={24} color="black" />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                </View>
             ) : (
                 listCvs?.map((item, index) => (
                     <TouchableOpacity style={styles.containerWidthSmall} key={index}>
@@ -121,7 +114,7 @@ export default function ContentCvList({ checkShow, profile }) {
                         }]}>
                             <View
                                 style={{
-                                    width: 80,
+                                    width: 90,
                                     height: '100%',
                                 }}
                             >
@@ -169,19 +162,19 @@ export default function ContentCvList({ checkShow, profile }) {
                                         textAlign: 'center'
                                     }} name="star" size={15} color="#F7C566" />
                                 )}
-                            
+
                             </View>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        setShowModalActionCv(true);
-                                        setNameCv(item.name);
-                                        setStatusCv(item.status);
-                                    }}
-                                    style={{
-                                        marginTop: 5,
-                                    }}>
-                                    <AntDesign name="ellipsis1" size={24} color="black" />
-                                </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setShowModalActionCv(true);
+                                    setNameCv(item.name);
+                                    setStatusCv(item.status);
+                                }}
+                                style={{
+                                    marginTop: 5,
+                                }}>
+                                <AntDesign name="ellipsis1" size={24} color="black" />
+                            </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
                 ))
@@ -194,10 +187,14 @@ export default function ContentCvList({ checkShow, profile }) {
 }
 
 const styles = StyleSheet.create({
-    item: {
-        width: '48%',
-        height: 200,
+    largeContainer: {
+        flexDirection: 'row',
         flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+    item: {
+        width: '47%',
+        height: 200,
         marginVertical: 5,
         borderRadius: 5,
         backgroundColor: 'white',
@@ -209,6 +206,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+        borderColor: '#97E7E1',
+        borderWidth: 0.5,
     },
     itemContainer: {
         height: '100%',
@@ -233,7 +232,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 80,
-        borderColor: '#B4B4B8',
+        borderColor: '#97E7E1',
+        borderWidth: 0.5,
         marginVertical: 5,
         borderRadius: 5,
         backgroundColor: 'white',

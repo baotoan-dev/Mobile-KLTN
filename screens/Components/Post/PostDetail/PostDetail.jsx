@@ -7,10 +7,16 @@ import MoreInforComponent from './MoreInforComponent/MoreInforComponent';
 import TabPostComponent from './TabPostComponent.jsx/TabPostComponent';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
+import { bookmarksApi } from '../../../../api/bookmarks/bookmarksApi';
+import { useDispatch } from 'react-redux';
+import { getProfileAnalyticsAction } from '../../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice';
+import { getNewPostAction } from '../../../../redux/store/NewPost/newPostSlice';
 
 export default function PostDetail(prop) {
     const id = prop.route.params.id;
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [fitOfPost, setFitOfPost] = useState('');
     const [post, setPost] = useState({});
     const [scrollY, setScrollY] = useState(false);
@@ -29,6 +35,44 @@ export default function PostDetail(prop) {
         }
         else {
             setScrollY(true);
+        }
+    }
+
+    const handleCreateBookmark = async () => {
+        const res = await bookmarksApi.createBookMark(post.id);
+
+        if (res && res.data.code === 200) {
+            fetchDetailPost()
+            dispatch(getProfileAnalyticsAction())
+            dispatch(getNewPostAction(
+                null,
+                null,
+                null,
+                null,
+                16,
+                null,
+                "vi",
+                0
+            ))
+        }
+    }
+
+    const handleDeleteBookmark = async () => {
+        const res = await bookmarksApi.deleteBookMark(post.id);
+
+        if (res && res.data.code === 200) {
+            fetchDetailPost()
+            dispatch(getProfileAnalyticsAction())
+            dispatch(getNewPostAction(
+                null,
+                null,
+                null,
+                null,
+                16,
+                null,
+                "vi",
+                0
+            ))
         }
     }
 
@@ -103,19 +147,39 @@ export default function PostDetail(prop) {
                         height: '70%',
                         marginLeft: 10,
                     }}>
-                        <View style={{
-                            borderWidth: 1,
-                            padding: 10,
-                            borderColor: 'blue',
-                            borderRadius: 10,
-                            width: '80%'
-                        }}>
-                            <Feather style={{
-                                textAlign: 'center'
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (post.bookmarked) {
+                                    handleDeleteBookmark();
+                                }
+                                else {
+                                    handleCreateBookmark();
+                                }
                             }}
+                            style={{
+                                borderWidth: 1,
+                                padding: 10,
+                                borderColor: 'blue',
+                                borderRadius: 10,
+                                width: '80%'
+                            }}>
+                            {
+                                post.bookmarked ? (
+                                    <FontAwesome
+                                        style={{
+                                            textAlign: 'center'
+                                        }}
+                                        name="bookmark" size={24} color="black" />
+                                ) : (
+                                    <Feather
+                                        style={{
+                                            textAlign: 'center'
+                                        }}
+                                        name="bookmark" size={24} color="black" />
+                                )
+                            }
 
-                                name="bookmark" size={24} color="black" />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={{
                         width: '85%',
