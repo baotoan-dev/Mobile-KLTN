@@ -1,16 +1,27 @@
 export function createCvListProject(cvProject) {
   if (cvProject && cvProject.length > 0) {
-    const newProjectList = cvProject.map((item, index) => ({
-      id: index,
-      type: item.type,
-      time: item.moreCvProjects[0].time,
-      link: item.moreCvProjects[0].link,
-      participant: item.moreCvProjects[0].participant,
-      position: item.moreCvProjects[0].position,
-      functionality: item.moreCvProjects[0].functionality,
-      technology: item.moreCvProjects[0].technology,
-    }));
-    return newProjectList;
+    const newProject = cvProject.map((item, index) => {
+      return {
+        type: item.type,
+        row: item.row,
+        part: item.part,
+        col: item.col,
+        cvIndex: item.cvIndex,
+        moreCvProjects: item.moreCvProjects.map((moreItem, moreIndex) => {
+          return {
+            time: moreItem.time,
+            link: moreItem.link,
+            participant: moreItem.participant,
+            position: moreItem.position,
+            functionality: moreItem.functionality,
+            technology: moreItem.technology,
+            id: moreIndex,
+          }
+        }),
+      }
+    })
+
+    return newProject
   }
   else {
     return [];

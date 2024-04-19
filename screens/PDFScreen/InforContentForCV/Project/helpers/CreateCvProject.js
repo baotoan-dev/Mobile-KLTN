@@ -5,7 +5,7 @@ export function createCvProject(type, row, col, cvIndex, part , moreCvProjects) 
         col: col,
         cvIndex: cvIndex,
         part: part,
-        moreCvProjects: [moreCvProjects],
+        moreCvProjects: moreCvProjects,
     }
 }
 

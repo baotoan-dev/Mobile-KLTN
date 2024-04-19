@@ -5,7 +5,7 @@ export function CreateCvExtraInformation(type, row, col, cvIndex, part, moreCvEx
         col: col,
         cvIndex: cvIndex,
         part: part,
-        moreCvExtraInformations: [moreCvExtraInformations],
+        moreCvExtraInformations: moreCvExtraInformations,
     }
 }
 

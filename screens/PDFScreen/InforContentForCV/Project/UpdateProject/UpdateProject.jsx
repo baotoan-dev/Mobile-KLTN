@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvProjectAction, getCvProjectAction } from '../../../../../redux/store/CvProject/cvProjectSlice';
 import { createCvListProject } from '../helpers/CreateCvListProject';
-import { createCvProject, createMoreCvProject } from '../helpers/CreateCvProject';
+import { createCvProject } from '../helpers/CreateCvProject';
 
 export default function UpdateProject(prop) {
   const navigation = useNavigation();
@@ -41,34 +41,48 @@ export default function UpdateProject(prop) {
   }, [])
 
   useEffect(() => {
-    const data = createCvListProject(cvProject);
+    if (cvProject) {
+      const data = createCvListProject(cvProject);
 
-    const newListProject = data.filter(item => +item.id !== +idParent);
+      const newListProject = {
+        col: data[0].col,
+        cvIndex: data[0].cvIndex,
+        part: data[0].part,
+        row: data[0].row,
+        type: data[0].type,
+        moreCvProjects: data[0].moreCvProjects.filter(item => +item.id !== +idParent),
+      }
 
-    setListProject(newListProject);
-
+      setListProject(newListProject);
+    }
   }, [cvProject])
 
   const handleSaveProject = () => {
-    const newListProject = [...listProject, {
-      id: listProject.length + 1,
-      type: type,
-      time: `${startTime} - ${endTime}`,
-      link: link,
-      participant: participant,
-      position: position,
-      functionality: functionality,
-      technology: technology,
-    }];
-    const newCvProjectData = newListProject.map((item, index) => {
-      const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, index);
-      return createCvProject(item.type, 0, 0, 0, 0, createMoreCvProjectData);
-    });
+    const newListProject = {
+      col: listProject.col,
+      cvIndex: listProject.cvIndex,
+      part: listProject.part,
+      row: listProject.row,
+      type: listProject.type,
+      moreCvProjects: [
+        ...listProject.moreCvProjects,
+        {
+          time: `${startTime} - ${endTime}`,
+          link: link,
+          participant: participant,
+          position: position,
+          functionality: functionality,
+          technology: technology,
+        }
+      ]
+    }
+    const newCreateProject = createCvProject(newListProject.type, newListProject.row, newListProject.col, newListProject.cvIndex, newListProject.part, newListProject.moreCvProjects);
 
-    dispatch(createCvProjectAction(newCvProjectData)).then(() => {
-      dispatch(getCvProjectAction(0));
-    })
-
+    if (newCreateProject) {
+      dispatch(createCvProjectAction([newCreateProject])).then(() => {
+        dispatch(getCvProjectAction(0));
+      });
+    }
     navigation.goBack();
   }
 

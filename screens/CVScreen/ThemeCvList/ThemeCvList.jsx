@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { templateApi } from '../../../api/template/templateApi';
+import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
 
 export default function ThemeCvList() {
     const navigation = useNavigation()
@@ -20,23 +21,7 @@ export default function ThemeCvList() {
     }, [])
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack()
-                    }}
-                >
-                    <Ionicons name="arrow-back" size={24} color="black" />
-                </TouchableOpacity>
-
-                <Text style={{
-                    marginLeft: 5,
-                    fontSize: 16,
-                    fontWeight: 'bold'
-                }}>
-                    Mẫu CV
-                </Text>
-            </View>
+            <HeaderOfScreen title="Chọn mẫu CV" />
             <View>
                 <View style={{
                     paddingHorizontal: 20,
@@ -73,6 +58,17 @@ export default function ThemeCvList() {
                                     borderWidth: 0.3,
                                     borderRadius: 3,
                                     margin: 10,
+                                    borderColor: '#97E7E1',
+                                    backgroundColor: '#DFF5F3',
+                                    padding: 10,
+                                    shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 3.84,
+                                    elevation: 5,
                                 }}>
                                     <TouchableOpacity
                                         onPress={() => {

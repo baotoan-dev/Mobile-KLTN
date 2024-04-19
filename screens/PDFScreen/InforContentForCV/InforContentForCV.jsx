@@ -1,30 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { ContentEditForCv } from './constant/constant'
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
 
 export default function InforContentForCV() {
     const navigation = useNavigation()
     return (
         <View>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => {
-                    navigation.goBack()
-                }}>
-                    <Ionicons name="arrow-back-outline" size={24} color="black" />
-                </TouchableOpacity>
-                <Text style={{
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontSize: 18,
-                    borderBottomColor: 'gray',
-                    borderBottomWidth: 0.5,
-                    marginLeft: 5,
-                }}>
-                    Thông tin cơ bản
-                </Text>
-            </View>
+            <HeaderOfScreen title='Thông tin cơ bản' />
             <View style={styles.container}>
                 {
                     ContentEditForCv.map((item, index) => {
@@ -54,15 +38,23 @@ const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         padding: 10,
-        borderWidth: 0.2,
+        borderWidth: 0.5,
         borderRadius: 5,
         margin: 10,
         width: '44%',
         alignItems: 'center',
+        backgroundColor: 'white',
+        borderColor: '#97E7E1',
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5,
     },
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        marginTop: 20,
     },
     header: {
         alignItems: 'center',

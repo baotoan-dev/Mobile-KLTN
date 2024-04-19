@@ -27,9 +27,16 @@ export default function ModalAddCv({
                         alignItems: 'center',
                         paddingHorizontal: 20,
                         paddingVertical: 10,
-                        borderBottomWidth: 0.2,
                         borderBottomColor: 'gray',
                         backgroundColor: '#FFF2E1',
+                        shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5,
                     }}>
 
                         <Text style={{
@@ -58,11 +65,13 @@ export default function ModalAddCv({
                             }}
                         >
                             <View style={{
-                                borderWidth: 0.2,
+                                borderWidth: 0.5,
                                 borderRadius: 3,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 padding: 10,
+                                borderColor: '#97E7E1',
+                                backgroundColor: '#DFF5F3'
                             }}>
                                 <AntDesign name="addfile" size={24} color="black" />
                                 <Text style={{
@@ -77,11 +86,13 @@ export default function ModalAddCv({
                         <TouchableOpacity>
                             <View style={{
                                 padding: 10,
-                                borderWidth: 0.2,
+                                borderWidth: 0.5,
                                 borderRadius: 3,
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                marginTop: 10
+                                marginTop: 10,
+                                borderColor: '#97E7E1',
+                                backgroundColor: '#DFF5F3'
                             }}>
                                 <AntDesign name="clouduploado" size={24} color="black" />
                                 <Text style={{
@@ -109,7 +120,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         width: '100%',
-        height: '25%',
+        height: '30%',
         borderRadius: 10,
     }
 })

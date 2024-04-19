@@ -8,15 +8,16 @@ import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvListExtraInformaion } from '../../Education/helpers/CreateCvListExtraInformation';
-import { CreateMoreCvExtraInformation } from '../helpers/CreateCvExtraInformation';
 import { CreateCvExtraInformation } from '../../Education/helpers/CreateCvExtraInformation';
 import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { useEffect } from 'react';
+import { TYPE_CETIFICATION } from '../../Constant/constantContentCv';
 
 export default function AddCertification() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [listExtraInformation, setListExtraInformation] = useState([]);
+    const [listOtherInformation, setListOtherInformation] = useState([]);
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
     const [company, setCompany] = useState('');
     const [position, setPosition] = useState('');
@@ -25,33 +26,42 @@ export default function AddCertification() {
     const [description, setDescription] = useState('');
 
     useEffect(() => {
-        if (cvExtraInformation) {
-            const data = createCvListExtraInformaion(cvExtraInformation);
+        const data = createCvListExtraInformaion(cvExtraInformation);
 
-            setListExtraInformation(data);
-        }
-        else {
-            setListExtraInformation([]);
-        }
+        const newData = data && data.filter(item => item.type === TYPE_CETIFICATION);
+
+        const otherData = data && data.filter(item => item.type !== TYPE_CETIFICATION);
+
+        setListOtherInformation(otherData);
+
+        setListExtraInformation(newData[0]);
     }, [cvExtraInformation])
 
     const handleSaveExtraInformation = async () => {
-        const newListExtraInformation = [...listExtraInformation, {
-            id: listExtraInformation.length + 1,
-            type: 'certification',
-            position: position,
-            time: `${startTime} - ${endTime}`,
-            company: company,
-            description: description,
-        }];
+        const newListExtraInformation = {
+            col: listExtraInformation.col,
+            cvIndex: listExtraInformation.cvIndex,
+            part: listExtraInformation.part,
+            row: listExtraInformation.row,
+            type: listExtraInformation.type,
+            moreCvExtraInformations: [
+                ...listExtraInformation.moreCvExtraInformations,
+                {
+                    position: position,
+                    time: startTime,
+                    company: company,
+                    description: description,
+                    index: 0,
+                }
+            ]
+        };
 
-        const newCvExtraInformationData = newListExtraInformation.map((item, index) => {
-            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, index);
-            return CreateCvExtraInformation(item.type, 0, 0, 0, 0, createMoreCvExtraInformationData);
-        });
+        const newDataCvExtraInformation = CreateCvExtraInformation(newListExtraInformation.type, newListExtraInformation.row, newListExtraInformation.col, newListExtraInformation.cvIndex, newListExtraInformation.part, newListExtraInformation.moreCvExtraInformations);
 
-        if (newListExtraInformation && newListExtraInformation.length > 0) {
-            dispatch(createCvExtraInformationAction(newCvExtraInformationData)).then(() => {
+        listOtherInformation.push(newDataCvExtraInformation);
+
+        if (newDataCvExtraInformation) {
+            dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
                 dispatch(getCvExtraInformationAction(0));
             });
         }
