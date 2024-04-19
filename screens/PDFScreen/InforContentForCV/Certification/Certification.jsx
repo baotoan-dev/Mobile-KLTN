@@ -10,6 +10,7 @@ import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvEx
 import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 import { TYPE_CETIFICATION } from '../Constant/constantContentCv';
+import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
 
 export default function Certification() {
     const navigation = useNavigation();
@@ -44,11 +45,11 @@ export default function Certification() {
         const newListExtraInformation = listCertification && listCertification.moreCvExtraInformations.filter(item => +item.id !== +id);
 
         newListExtraInformation.map((item, index) => {
-            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, item.index);
+            const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, item.index, item.padIndex);
             arrayMore.push(createMoreCvExtraInformationData);
         });
 
-        const newCreateCvExtraInformation = CreateCvExtraInformation(listCertification.type, listCertification.row, listCertification.col, listCertification.cvIndex, listCertification.part, arrayMore);
+        const newCreateCvExtraInformation = CreateCvExtraInformation(listCertification.type, listCertification.row, listCertification.col, listCertification.cvIndex, listCertification.part, arrayMore, listCertification.padIndex);
 
         listOtherInformation.push(newCreateCvExtraInformation);
 
@@ -61,20 +62,7 @@ export default function Certification() {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                >
-                    <Ionicons name="arrow-back-outline" size={24} color="black" />
-                </TouchableOpacity>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 16,
-                    marginLeft: 5,
-                }}>Chứng chỉ</Text>
-            </View>
+            <HeaderOfScreen title="Chứng chỉ" />
             <ScrollView>
                 {
                     listCertification && listCertification.moreCvExtraInformations &&
@@ -182,24 +170,24 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingTop: 30,
-        paddingBottom: 10,
-        borderBottomWidth: 0.2,
-        borderBottomColor: 'gray',
-        paddingHorizontal: 10,
-        height: 70,
-    },
     item: {
         width: '95%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 10,
-        borderWidth: 0.2,
+        borderWidth: 1,
         borderRadius: 5,
         margin: 10,
+        borderColor: '#97E7E1',
+        backgroundColor: 'white',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     }
 })

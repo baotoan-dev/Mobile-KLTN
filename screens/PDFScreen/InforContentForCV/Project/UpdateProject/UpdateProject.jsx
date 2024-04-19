@@ -64,6 +64,7 @@ export default function UpdateProject(prop) {
       part: listProject.part,
       row: listProject.row,
       type: listProject.type,
+      padIndex: listProject.padIndex,
       moreCvProjects: [
         ...listProject.moreCvProjects,
         {
@@ -73,10 +74,11 @@ export default function UpdateProject(prop) {
           position: position,
           functionality: functionality,
           technology: technology,
+          padIndex: 0
         }
       ]
     }
-    const newCreateProject = createCvProject(newListProject.type, newListProject.row, newListProject.col, newListProject.cvIndex, newListProject.part, newListProject.moreCvProjects);
+    const newCreateProject = createCvProject(newListProject.type, newListProject.row, newListProject.col, newListProject.cvIndex, newListProject.part, newListProject.moreCvProjects, newListProject.padIndex);
 
     if (newCreateProject) {
       dispatch(createCvProjectAction([newCreateProject])).then(() => {
@@ -137,14 +139,14 @@ export default function UpdateProject(prop) {
                 marginLeft: 5,
               }}
               placeholder="Tên dự án"
-              onChangeText={(text) => setType(text)}
-              value={type}
+              onChangeText={(text) => setPosition(text)}
+              value={position}
             >
             </TextInput>
           </View>
         </View>
         {/* position */}
-        <View>
+        {/* <View>
           <View style={{
             flexDirection: 'row',
             marginTop: 10,
@@ -168,7 +170,7 @@ export default function UpdateProject(prop) {
             >
             </TextInput>
           </View>
-        </View>
+        </View> */}
         {/* link */}
         <View>
           <View style={{

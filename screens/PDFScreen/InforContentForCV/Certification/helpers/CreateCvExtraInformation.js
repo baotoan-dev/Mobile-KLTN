@@ -1,4 +1,4 @@
-export function CreateCvExtraInformation(type, row, col, cvIndex, part, moreCvExtraInformations) {
+export function CreateCvExtraInformation(type, row, col, cvIndex, part, moreCvExtraInformations, padIndex) {
     return {
         type: type,
         row: row,
@@ -6,16 +6,18 @@ export function CreateCvExtraInformation(type, row, col, cvIndex, part, moreCvEx
         cvIndex: cvIndex,
         part: part,
         moreCvExtraInformations: moreCvExtraInformations,
+        padIndex: padIndex,
     }
 }
 
 
-export function CreateMoreCvExtraInformation(position, time, company, description, index) {
+export function CreateMoreCvExtraInformation(position, time, company, description, index, padIndex) {
     return {
         position: position,
         time: time,
         company: company,
         description: description,
         index: index,
+        padIndex: padIndex,
     }
 }

@@ -7,6 +7,7 @@ export function createCvListProject(cvProject) {
         part: item.part,
         col: item.col,
         cvIndex: item.cvIndex,
+        padIndex: item.padIndex,
         moreCvProjects: item.moreCvProjects.map((moreItem, moreIndex) => {
           return {
             time: moreItem.time,
@@ -16,6 +17,7 @@ export function createCvListProject(cvProject) {
             functionality: moreItem.functionality,
             technology: moreItem.technology,
             id: moreIndex,
+            padIndex: moreItem.padIndex,
           }
         }),
       }

@@ -68,6 +68,7 @@ export default function UpdateCertification(prop) {
             part: listExtraInformation.part,
             row: listExtraInformation.row,
             type: listExtraInformation.type,
+            padIndex: listExtraInformation.padIndex,
             moreCvExtraInformations: [
                 ...listExtraInformation.moreCvExtraInformations,
                 {
@@ -76,11 +77,12 @@ export default function UpdateCertification(prop) {
                     company: company,
                     description: description,
                     index: 0,
+                    padIndex: 0,
                 }
             ]
         };
 
-        const newDataCvExtraInformation = CreateCvExtraInformation(newListExtraInformation.type, newListExtraInformation.row, newListExtraInformation.col, newListExtraInformation.cvIndex, newListExtraInformation.part, newListExtraInformation.moreCvExtraInformations);
+        const newDataCvExtraInformation = CreateCvExtraInformation(newListExtraInformation.type, newListExtraInformation.row, newListExtraInformation.col, newListExtraInformation.cvIndex, newListExtraInformation.part, newListExtraInformation.moreCvExtraInformations, newListExtraInformation.padIndex);
 
         listOtherInformation.push(newDataCvExtraInformation);
 

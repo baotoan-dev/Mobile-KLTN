@@ -42,7 +42,6 @@ export default function ModalAddCv({
                         <Text style={{
                             fontSize: 16,
                             fontWeight: 'bold',
-
                         }}>
                             Thêm CV mới
                         </Text>
@@ -71,7 +70,15 @@ export default function ModalAddCv({
                                 alignItems: 'center',
                                 padding: 10,
                                 borderColor: '#97E7E1',
-                                backgroundColor: '#DFF5F3'
+                                backgroundColor: 'white',
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                shadowOpacity: 0.25,
+                                shadowRadius: 3.84,
+                                elevation: 5,
                             }}>
                                 <AntDesign name="addfile" size={24} color="black" />
                                 <Text style={{
@@ -92,7 +99,15 @@ export default function ModalAddCv({
                                 alignItems: 'center',
                                 marginTop: 10,
                                 borderColor: '#97E7E1',
-                                backgroundColor: '#DFF5F3'
+                                backgroundColor: 'white',
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                shadowOpacity: 0.25,
+                                shadowRadius: 3.84,
+                                elevation: 5,
                             }}>
                                 <AntDesign name="clouduploado" size={24} color="black" />
                                 <Text style={{

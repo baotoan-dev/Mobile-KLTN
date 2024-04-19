@@ -45,6 +45,7 @@ export default function AddProject() {
       part: listProject.part,
       row: listProject.row,
       type: listProject.type,
+      padIndex: listProject.padIndex,
       moreCvProjects: [
         ...listProject.moreCvProjects,
         {
@@ -55,6 +56,7 @@ export default function AddProject() {
           functionality: functionality,
           technology: technology,
           id: listProject.moreCvProjects.length,
+          padIndex: 0,
         }
       ]
     };
@@ -121,13 +123,13 @@ export default function AddProject() {
                 marginLeft: 5,
               }}
               placeholder="Tên dự án"
-              onChangeText={(text) => setType(text)}
+              onChangeText={(text) => setPosition(text)}
             >
             </TextInput>
           </View>
         </View>
         {/* position */}
-        <View>
+        {/* <View>
           <View style={{
             flexDirection: 'row',
             marginTop: 10,
@@ -150,7 +152,7 @@ export default function AddProject() {
             >
             </TextInput>
           </View>
-        </View>
+        </View> */}
         {/* link */}
         <View>
           <View style={{
