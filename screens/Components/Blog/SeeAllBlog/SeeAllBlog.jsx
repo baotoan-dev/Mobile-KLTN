@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { communityApi } from '../../../../api/community/communityApi';
+import HeaderOfScreen from '../../HeaderOfScreen/HeaderOfScreen';
 
 export default function SeeAllBlog(prop) {
     const type = prop.route.params.type;
@@ -55,29 +56,13 @@ export default function SeeAllBlog(prop) {
     return (
         <View style={styles.container}>
             <View style={{
-                paddingHorizontal: 20,
+                // paddingHorizontal: 20,
             }}>
-                <View style={{
-                    flexDirection: 'row',
-                }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.goBack();
-                        }}
-                    >
-                        <Ionicons name="arrow-back" size={24} color="black" />
-                    </TouchableOpacity>
-                    <Text style={{
-                        fontSize: 20,
-                        fontWeight: 'bold',
-                        marginBottom: 10,
-                        marginLeft: 10,
-                    }}>Tất cả bài viết</Text>
-                </View>
+                <HeaderOfScreen title='Tất cả bài viết' />
                 <Text style={{
                     fontSize: 14,
-                    marginBottom: 10,
-                
+                    paddingHorizontal: 10,
+                    marginVertical: 10,
                 }}>
                     {`Tất cả bài viết (${total})`}
                 </Text>
@@ -151,7 +136,7 @@ export default function SeeAllBlog(prop) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 40,
+
     },
     item: {
         flexDirection: 'row',
