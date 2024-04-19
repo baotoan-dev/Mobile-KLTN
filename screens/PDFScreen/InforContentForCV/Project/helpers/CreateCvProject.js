@@ -1,4 +1,4 @@
-export function createCvProject(type, row, col, cvIndex, part , moreCvProjects) {
+export function createCvProject(type, row, col, cvIndex, part , moreCvProjects, padIndex) {
     return {
         type: type,
         row: row,
@@ -6,10 +6,11 @@ export function createCvProject(type, row, col, cvIndex, part , moreCvProjects) 
         cvIndex: cvIndex,
         part: part,
         moreCvProjects: moreCvProjects,
+        padIndex: padIndex,
     }
 }
 
-export function createMoreCvProject(time, link, participant, position, functionality, technology, index) {
+export function createMoreCvProject(time, link, participant, position, functionality, technology, index, padIndex) {
     return {
         time: time,
         link: link,
@@ -18,5 +19,6 @@ export function createMoreCvProject(time, link, participant, position, functiona
         functionality: functionality,
         technology: technology,
         index: index,
+        padIndex: padIndex,
     }
 }

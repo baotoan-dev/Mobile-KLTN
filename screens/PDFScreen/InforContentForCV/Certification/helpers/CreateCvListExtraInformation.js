@@ -7,6 +7,7 @@ export function createCvListExtraInformaion(cvExtraInformation) {
         part: item.part,
         col: item.col,
         cvIndex: item.cvIndex,
+        padIndex: item.padIndex,
         moreCvExtraInformations: item.moreCvExtraInformations.map((moreItem, moreIndex) => {
           return {
             position: moreItem.position,
@@ -15,6 +16,7 @@ export function createCvListExtraInformaion(cvExtraInformation) {
             description: moreItem.description,
             index: moreItem.index,
             id: moreIndex,
+            padIndex: moreItem.padIndex,
           }
         }),
       }
