@@ -5,7 +5,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import ModalShowHideCV from '../ModalShowHideCV/ModalShowHideCV';
 import { useNavigation } from '@react-navigation/native';
-import { WebView } from 'react-native-webview';
+import { profileCVsApi } from '../../../api/profile/profileCVs/profileCVsApi';
+import { useDispatch } from 'react-redux';
+import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
+import ModalConfirmDelete from '../ModalConfirmDelete/ModalConfirmDelete';
 
 export default function ModalActionCv({
   showModalActionCv,
@@ -13,10 +16,12 @@ export default function ModalActionCv({
   nameCv,
   statusCv,
   idCV,
-  profile
+  profile,
 }) {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
   const [modalShowHideCv, setModalShowHideCv] = React.useState(false)
+  const [showModalConfirmDelete, setShowModalConfirmDelete] = React.useState(false)
   const [listCv, setListCv] = React.useState([])
   const [linkPDFOfCV, setLinkPDFOfCV] = React.useState('')
 
@@ -25,6 +30,30 @@ export default function ModalActionCv({
       setListCv(profile.profilesCvs)
     }
   }, [profile])
+
+  const handleShowOrHideCV = async (id) => {
+    try {
+      const res = await profileCVsApi.pushTopCv(id)
+
+      if (res && res.data.statusCode === 200) {
+        dispatch(getProfileAction('vi'))
+        setShowModalActionCv(false)
+      }
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const handleDeleteCv = async () => {
+    const res = await profileCVsApi.deleteCvs([idCV])
+
+    if (res && res.data.statusCode === 200) {
+      dispatch(getProfileAction('vi'))
+      setShowModalActionCv(false)
+    }
+
+  }
 
   return (
     <View>
@@ -88,18 +117,28 @@ export default function ModalActionCv({
               </TouchableOpacity>
             </View>
             <View style={[styles.itemContainer]}>
-              <TouchableOpacity style={styles.item}>
+              <TouchableOpacity
+                onPress={() => {
+                  
+                }}
+                style={styles.item}>
                 <AntDesign name="download" size={20} color="black" />
                 <Text style={styles.ml}>Tải xuống</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.item, {
-                justifyContent: 'space-between'
-              }]}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleShowOrHideCV(idCV)
+                }}
+                style={[styles.item, {
+                  justifyContent: 'space-between'
+                }]}>
                 <View style={{
                   flexDirection: 'row',
                 }}>
                   <AntDesign name="pushpino" size={20} color="black" />
-                  <Text style={styles.ml}>Hiện CV</Text>
+                  <Text style={styles.ml}>{
+                    statusCv === 1 ? 'Ẩn CV' : 'Hiện CV'
+                  }</Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => {
@@ -112,7 +151,12 @@ export default function ModalActionCv({
               </TouchableOpacity>
             </View>
             <View style={styles.itemContainer}>
-              <TouchableOpacity style={styles.item}>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowModalConfirmDelete(true)
+                  setShowModalActionCv(false)
+                }}
+                style={styles.item}>
                 <AntDesign name="delete" size={20} color="red" />
                 <Text style={[styles.ml, {
                   color: 'red'
@@ -128,6 +172,14 @@ export default function ModalActionCv({
           modalShowHideCv={modalShowHideCv}
           setModalShowHideCv={setModalShowHideCv}
           statusCv={statusCv}
+        />
+      }
+      {
+        showModalConfirmDelete &&
+        <ModalConfirmDelete
+          showModalConfirmDelete={showModalConfirmDelete}
+          setShowModalConfirmDelete={setShowModalConfirmDelete}
+          handleDeleteCv={handleDeleteCv}
         />
       }
     </View>
