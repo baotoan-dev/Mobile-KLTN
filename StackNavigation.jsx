@@ -47,6 +47,7 @@ import CreateNotificationScreen from './screens/CreateNotificationScreen/CreateN
 import BookmarkScreen from './screens/BookmarkScreen/BookmarkScreen';
 import NotifyJobProfileScreen from './screens/NotifyJobProfileScreen/NotifyJobProfileScreen';
 import JobFitScreen from './screens/JobFitScreen/JobFitScreen';
+import SeenPDFScreen from './screens/SeenPDFScreen/SeenPDFScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -319,6 +320,12 @@ function Navigation() {
                 {/* MoreInforOfTopCompanyScreen */}
 
                 <Stack.Screen name="MoreInforOfTopCompanyScreen" component={MoreInforOfTopCompany} options={{
+                    headerShown: false,
+                }} />
+
+                {/* See pdf link */}
+
+                <Stack.Screen name="SeenPDF" component={SeenPDFScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

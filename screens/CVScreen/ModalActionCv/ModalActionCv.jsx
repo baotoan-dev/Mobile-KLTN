@@ -1,17 +1,31 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Modal from 'react-native-modal'
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import ModalShowHideCV from '../ModalShowHideCV/ModalShowHideCV';
+import { useNavigation } from '@react-navigation/native';
+import { WebView } from 'react-native-webview';
 
 export default function ModalActionCv({
   showModalActionCv,
   setShowModalActionCv,
   nameCv,
-  statusCv
+  statusCv,
+  idCV,
+  profile
 }) {
+  const navigation = useNavigation()
   const [modalShowHideCv, setModalShowHideCv] = React.useState(false)
+  const [listCv, setListCv] = React.useState([])
+  const [linkPDFOfCV, setLinkPDFOfCV] = React.useState('')
+
+  useEffect(() => {
+    if (profile) {
+      setListCv(profile.profilesCvs)
+    }
+  }, [profile])
+
   return (
     <View>
       <Modal
@@ -58,7 +72,13 @@ export default function ModalActionCv({
             paddingTop: 20,
           }}>
             <View style={styles.itemContainer}>
-              <TouchableOpacity style={styles.item}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('SeenPDF', {
+                    id: idCV,
+                  })
+                }}
+                style={styles.item}>
                 <AntDesign name="eyeo" size={20} color="black" />
                 <Text style={styles.ml}>Xem</Text>
               </TouchableOpacity>

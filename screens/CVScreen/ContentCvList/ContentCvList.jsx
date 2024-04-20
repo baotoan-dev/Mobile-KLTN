@@ -11,6 +11,7 @@ export default function ContentCvList({ checkShow, profile }) {
     const [showModalActionCv, setShowModalActionCv] = React.useState(false);
     const [nameCv, setNameCv] = React.useState('');
     const [statusCv, setStatusCv] = React.useState(0);
+    const [idCv, setIdCv] = React.useState('');
 
     useEffect(() => {
         if (profile) {
@@ -96,6 +97,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                             setShowModalActionCv(true);
                                             setNameCv(item.name);
                                             setStatusCv(item.status);
+                                            setIdCv(item.id);
                                         }}>
                                             <AntDesign name="ellipsis1" size={24} color="black" />
                                         </TouchableOpacity>
@@ -169,6 +171,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                     setShowModalActionCv(true);
                                     setNameCv(item.name);
                                     setStatusCv(item.status);
+                                    setIdCv(item.id);
                                 }}
                                 style={{
                                     marginTop: 5,
@@ -180,7 +183,7 @@ export default function ContentCvList({ checkShow, profile }) {
                 ))
             )}
             {
-                <ModalActionCv statusCv={statusCv} nameCv={nameCv} showModalActionCv={showModalActionCv} setShowModalActionCv={setShowModalActionCv} />
+                <ModalActionCv profile={profile} idCV={idCv} statusCv={statusCv} nameCv={nameCv} showModalActionCv={showModalActionCv} setShowModalActionCv={setShowModalActionCv} />
             }
         </Animated.View>
     );
