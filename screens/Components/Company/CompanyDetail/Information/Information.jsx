@@ -18,28 +18,6 @@ export default function Information({ company }) {
                                     flexDirection: 'row',
                                     alignItems: 'center',
                                 }}>
-                                    <MaterialIcons style={{
-                                        marginRight: 5,
-                                    }} name="description" size={24} color="black" />
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: 'bold',
-                                    }}>
-                                        Mô tả
-                                    </Text>
-                                </View>
-                                <Text style={{
-                                    marginTop: 10,
-                                    paddingHorizontal: 30,
-                                }}>{company?.description}</Text>
-                            </View>
-                            <View style={{
-                                marginTop: 20,
-                            }}>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}>
                                     <Ionicons name="information-circle" size={24} color="black" style={{
                                         marginRight: 5,
                                     }} />
@@ -156,6 +134,27 @@ export default function Information({ company }) {
                                         }}>{company?.companySizeInfomation ? company.companySizeInfomation.nameText : 'Chưa cập nhật'}</Text>
                                     </View>
                                 </View>
+                            </View>
+                            <View>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginTop: 20,
+                                }}>
+                                    <MaterialIcons style={{
+                                        marginRight: 5,
+                                    }} name="description" size={24} color="black" />
+                                    <Text style={{
+                                        fontSize: 16,
+                                        fontWeight: 'bold',
+                                    }}>
+                                        Mô tả
+                                    </Text>
+                                </View>
+                                <Text style={{
+                                    marginTop: 10,
+                                    paddingHorizontal: 30,
+                                }}>{company?.description}</Text>
                             </View>
                         </ScrollView>
                     </SafeAreaView>
