@@ -154,9 +154,13 @@ function Navigation() {
                         </>)
                         :
                         (
-                            <Stack.Screen name="Main" component={BottomTabs} options={{
+                            <Stack.Screen name="PDFScreen" component={PDFScreen} options={{
                                 headerShown: false,
                             }} />
+
+                            // <Stack.Screen name="Main" component={BottomTabs} options={{
+                            //     headerShown: false,
+                            // }} />
                         )
                 }
                 {/* company */}
@@ -217,9 +221,9 @@ function Navigation() {
                 }} />
 
                 {/* Create PDF */}
-                <Stack.Screen name="PDFScreen" component={PDFScreen} options={{
+                {/* <Stack.Screen name="PDFScreen" component={PDFScreen} options={{
                     headerShown: false,
-                }} />
+                }} /> */}
 
                 <Stack.Screen name='ThemeCvList' component={ThemeCvList} options={{
                     headerShown: false,
