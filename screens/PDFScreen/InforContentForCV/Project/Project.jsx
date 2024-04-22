@@ -34,7 +34,7 @@ export default function Project() {
         const newListProject = listProject && listProject.moreCvProjects.filter(item => +item.id !== +id);
 
         newListProject.map((item, index) => {
-            const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, item.index, item.padIndex);
+            const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, item.index, item.padIndex, item.name);
             arrayMore.push(createMoreCvProjectData);
         });
 
@@ -65,6 +65,7 @@ export default function Project() {
                                         onPress={() => {
                                             navigation.navigate('UpdateProject', {
                                                 idParent: item.id,
+                                                nameParent: item.name,
                                                 timeParent: item.time,
                                                 linkParent: item.link,
                                                 participantParent: item.participant,
@@ -85,7 +86,14 @@ export default function Project() {
                                                 fontWeight: 'bold',
                                                 fontSize: 16,
                                             }}>
-                                            {`Tên dự án: ${item.position}`}
+                                            {`Tên dự án: ${item.name}`}
+                                        </Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{
+                                                fontSize: 12,
+                                            }}>
+                                            {`Vị trí: ${item.position}`}
                                         </Text>
                                         <Text
                                             numberOfLines={1}

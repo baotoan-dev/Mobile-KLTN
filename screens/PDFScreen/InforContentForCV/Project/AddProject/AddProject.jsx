@@ -25,6 +25,7 @@ export default function AddProject() {
   const [technology, setTechnology] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [name, setName] = useState('');
   const [listProject, setListProject] = useState([])
 
   useEffect(() => {
@@ -123,13 +124,13 @@ export default function AddProject() {
                 marginLeft: 5,
               }}
               placeholder="Tên dự án"
-              onChangeText={(text) => setPosition(text)}
+              onChangeText={(text) => setName(text)}
             >
             </TextInput>
           </View>
         </View>
         {/* position */}
-        {/* <View>
+        <View>
           <View style={{
             flexDirection: 'row',
             marginTop: 10,
@@ -152,7 +153,7 @@ export default function AddProject() {
             >
             </TextInput>
           </View>
-        </View> */}
+        </View>
         {/* link */}
         <View>
           <View style={{
