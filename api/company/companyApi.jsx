@@ -12,9 +12,9 @@ export const companyApi = {
         const URL = `${CONST_API}/api/v3/companies/${id}?lang=${lang}`;
         return axios.get(URL);
     },
-    postCompanyRating: (companyId, star, comment) => {
+    postCompanyRating: async (companyId, star, comment) => {
         const URL = `${CONST_API}/api/v3/company-ratings`;
-        return axios.post(
+        return await axiosConfig.post(
             URL,
             { companyId, star, comment },
             {
@@ -26,19 +26,19 @@ export const companyApi = {
     },
     getReviewAccountOfCompany: (id, lang) => {
         const URL = `${CONST_API}/api/v3/company-ratings/account/company/${id}?lang=${lang}`;
-        return axios.get(URL, {
+        return axiosConfig.get(URL, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         });
     },
-    getCompanyRating: (id, page, limit, lang) => {
+    getCompanyRating: async (id, page, limit, lang) => {
         const URL = `${CONST_API}/api/v3/company-ratings/company/${id}?lang=${lang}&limit=${limit}&page=${page}`;
-        return axios.get(URL);
+        return await axiosConfig.get(URL);
     },
-    deleteCompanyReview: (id) => {
+    deleteCompanyReview: async (id) => {
         const URL = `${CONST_API}/api/v3/company-ratings/account/company/${id}`;
-        return axios.delete(URL, {
+        return await axiosConfig.delete(URL, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
