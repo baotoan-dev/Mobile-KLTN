@@ -12,9 +12,9 @@ export const companyApi = {
         const URL = `${CONST_API}/api/v3/companies/${id}?lang=${lang}`;
         return axios.get(URL);
     },
-    postCompanyRating: (companyId, star, comment) => {
+    postCompanyRating: async (companyId, star, comment) => {
         const URL = `${CONST_API}/api/v3/company-ratings`;
-        return axios.post(
+        return await axiosConfig.post(
             URL,
             { companyId, star, comment },
             {

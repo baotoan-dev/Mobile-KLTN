@@ -20,8 +20,11 @@ export const getCompanyRatingAction = (id, page, limit, lang) => async (dispatch
 export const createCompanyRatingAction = (companyId, star, comment) => async (dispatch) => {
     try {
         dispatch(actions.createCompanyRatingStart());
-        await companyApi.postCompanyRating(companyId, star, comment);
-        dispatch(actions.createCompanyRatingSuccess());
+        const response = await companyApi.postCompanyRating(companyId, star, comment);
+        console.log(response);
+        if (response.status === 200) {
+            dispatch(actions.createCompanyRatingSuccess());
+        }
     } catch (error) {
         dispatch(actions.createCompanyRatingFail(error));
     }
