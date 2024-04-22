@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { getCompanyRatingAction } from '../../../../../redux/store/CompanyRating/companyRatingSlice';
 import { useEffect, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
 import { getProfileAction } from '../../../../../redux/store/Profile/profileSilce';
-import { deleteCompanyReviewAction } from '../../../../../redux/store/CompanyRating/CompanyRatingOfAccount/companyRatingOfAccountSlice';
+import { deleteCompanyReviewAction, getCompanyRatingOfAccountAction } from '../../../../../redux/store/CompanyRating/CompanyRatingOfAccount/companyRatingOfAccountSlice';
+import ModalCreateUpdateEvaluateCompany from '../ModalCreateUpdateEvaluateCompany/ModalCreateUpdateEvaluateCompany';
 
 export default function Evaluate({
     company
@@ -37,11 +37,6 @@ export default function Evaluate({
             }
         }
     }, [companyRating])
-
-    const handleDeleteReview = (id) => {
-        dispatch(deleteCompanyReviewAction(id))
-        dispatch(getCompanyRatingAction(company.id, 10, currentPage, 'vi'))
-    }
 
     return (
         <View style={styles.container}>

@@ -12,6 +12,7 @@ import { createFollowCompanyAction } from '../../../../redux/store/FollowCompany
 import { getProfileAnalyticsAction } from '../../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice';
 import Evaluate from './Evaluate/Evaluate';
 import { FAB } from 'react-native-elements';
+import ModalCreateUpdateEvaluateCompany from './ModalCreateUpdateEvaluateCompany/ModalCreateUpdateEvaluateCompany';
 
 export default function CompanyDetail(prop) {
 
@@ -19,6 +20,7 @@ export default function CompanyDetail(prop) {
     const dispatch = useDispatch();
     const [company, setCompany] = useState();
     const [index, setIndex] = useState(0);
+    const [openModalCreateUpdateEvaluateCompany, setOpenModalCreateUpdateEvaluateCompany] = useState(false)
 
     const fetchInforCompany = async () => {
         const res = await companyApi.getDetailCompany(id, 'vi');
@@ -136,7 +138,7 @@ export default function CompanyDetail(prop) {
                             {
                                 company && company.id && (
                                     <ScrollView>
-                                        {index === 1 ? <CompanyJob company={company} /> : index === 0 ? <Information company={company} /> : <Evaluate company={company}/>}
+                                        {index === 1 ? <CompanyJob company={company} /> : index === 0 ? <Information company={company} /> : <Evaluate company={company} />}
                                     </ScrollView>
                                 )
                             }
@@ -152,6 +154,7 @@ export default function CompanyDetail(prop) {
                                     >
                                         <FAB
                                             onPress={() => {
+                                                setOpenModalCreateUpdateEvaluateCompany(true)
                                             }}
                                             buttonStyle={{
                                                 backgroundColor: '#FF6347'
@@ -170,6 +173,15 @@ export default function CompanyDetail(prop) {
                             <OurCompany company={company} />
                         </View>
                     </View>
+                )
+            }
+            {
+                openModalCreateUpdateEvaluateCompany && (
+                    <ModalCreateUpdateEvaluateCompany
+                        company={company}
+                        openModalCreateUpdateEvaluateCompany={openModalCreateUpdateEvaluateCompany}
+                        setOpenModalCreateUpdateEvaluateCompany={setOpenModalCreateUpdateEvaluateCompany}
+                    />
                 )
             }
         </SafeAreaView>

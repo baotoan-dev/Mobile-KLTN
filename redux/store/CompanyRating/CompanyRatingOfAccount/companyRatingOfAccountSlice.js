@@ -2,12 +2,12 @@ import { companyApi } from "../../../../api/company/companyApi";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
-    companyRatingOfAccount: [],
+    companyRatingOfAccount: {},
     loading: false,
     error: null
 }
 
-export const companyRatingOfAccountAction = () => async (dispatch) => {
+export const getCompanyRatingOfAccountAction = (id, lang) => async (dispatch) => {
     try {
         dispatch(actions.getCompanyRatingOfAccountStart());
         const response = await companyApi.getReviewAccountOfCompany(id, lang);
@@ -20,11 +20,13 @@ export const companyRatingOfAccountAction = () => async (dispatch) => {
 export const deleteCompanyReviewAction = (id) => async (dispatch) => {
     try {
         dispatch(actions.deleteCompanyReviewStart());
-        await companyApi.deleteCompanyReview(id);
-        dispatch(actions.deleteCompanyReviewSuccess());
+        const res = await companyApi.deleteCompanyReview(id);
+        if (res.data.statusCode === 200) {
+            dispatch(actions.deleteCompanyReviewSuccess());
+        }
     }
     catch (error) {
-        dispatch(actions.deleteCompanyReviewFail(error.message)); // Chỉ truyền message của error
+        dispatch(actions.deleteCompanyReviewFail(error.message)); 
     }
 }
 
