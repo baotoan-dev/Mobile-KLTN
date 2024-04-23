@@ -82,7 +82,7 @@ export default function ContentCenterPDFScreen({ avatar }) {
                         <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                     </div>   
                         <div>
-                            ${listProject.map((item, index) => {
+                            ${listProject?.map((item, index) => {
                         return `
                         <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                             <div style="font-size: 25px;margin-bottom: 10px">

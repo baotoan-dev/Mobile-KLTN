@@ -64,21 +64,13 @@ export default function ModalAddCv({
                             }}
                         >
                             <View style={{
-                                borderWidth: 0.5,
+                                borderWidth: 0.8,
                                 borderRadius: 3,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 padding: 10,
                                 borderColor: '#97E7E1',
-                                backgroundColor: 'white',
-                                shadowColor: "#000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 2,
-                                },
-                                shadowOpacity: 0.25,
-                                shadowRadius: 3.84,
-                                elevation: 5,
+                                backgroundColor: '#F6F5F2',
                             }}>
                                 <AntDesign name="addfile" size={24} color="black" />
                                 <Text style={{
@@ -93,21 +85,13 @@ export default function ModalAddCv({
                         <TouchableOpacity>
                             <View style={{
                                 padding: 10,
-                                borderWidth: 0.5,
+                                borderWidth: 0.8,
                                 borderRadius: 3,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 marginTop: 10,
                                 borderColor: '#97E7E1',
-                                backgroundColor: 'white',
-                                shadowColor: "#000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 2,
-                                },
-                                shadowOpacity: 0.25,
-                                shadowRadius: 3.84,
-                                elevation: 5,
+                                backgroundColor: '#F6F5F2',
                             }}>
                                 <AntDesign name="clouduploado" size={24} color="black" />
                                 <Text style={{

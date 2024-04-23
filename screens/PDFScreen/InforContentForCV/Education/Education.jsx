@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
-import { TYPE_EDUCATION } from '../Constant/constantContentCv';
+import { TYPE_EDUCATION } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
 
 export default function Education() {
@@ -55,12 +55,6 @@ export default function Education() {
                 dispatch(getCvExtraInformationAction(0));
             });
         }
-
-        // if (newListExtraInformation.length === 0) {
-        //     dispatch(deleteCvExtraInformationAction(0)).then(() => {
-        //         dispatch(getCvExtraInformationAction(0));
-        //     })
-        // }
     };
 
     return (
@@ -104,8 +98,9 @@ export default function Education() {
                                         <Text
                                             numberOfLines={1}
                                             style={{
-                                                fontSize: 14,
+                                                fontSize: 12,
                                                 marginTop: 5,
+                                                textTransform: 'uppercase'
                                             }}>
                                             {`Công ty: ${item.company}`}
                                         </Text>
@@ -114,7 +109,8 @@ export default function Education() {
                                             style={{
                                                 fontSize: 12,
                                                 marginTop: 2,
-                                                color: 'gray'
+                                                color: 'gray',
+                                                numberOfLines: 1
                                             }}>
 
                                             {`Mô tả: ${item.description}`}

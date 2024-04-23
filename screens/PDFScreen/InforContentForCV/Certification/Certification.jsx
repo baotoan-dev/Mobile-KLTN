@@ -2,14 +2,13 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
-import { TYPE_CETIFICATION } from '../Constant/constantContentCv';
+import { TYPE_CETIFICATION } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
 
 export default function Certification() {
@@ -101,8 +100,9 @@ export default function Certification() {
                                         <Text
                                             numberOfLines={1}
                                             style={{
-                                                fontSize: 14,
+                                                fontSize: 12,
                                                 marginTop: 5,
+                                                textTransform: 'uppercase',
                                             }}>
                                             {`Tổ chức: ${item.company}`}
                                         </Text>

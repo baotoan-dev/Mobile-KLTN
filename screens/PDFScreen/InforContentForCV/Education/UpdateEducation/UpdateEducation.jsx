@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from '../helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from '../helpers/CreateCvExtraInformation';
-import { TYPE_EDUCATION } from '../../Constant/constantContentCv';
+import { TYPE_EDUCATION } from '../../constant/constantContentCv';
 
 export default function UpdateEducation(prop) {
     const navigation = useNavigation();

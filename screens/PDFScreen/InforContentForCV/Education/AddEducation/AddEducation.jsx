@@ -10,7 +10,7 @@ import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from '../helpe
 import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from '../helpers/CreateCvListExtraInformation';
 import { useDispatch, useSelector } from 'react-redux';
-import { TYPE_EDUCATION } from '../../Constant/constantContentCv';
+import { TYPE_EDUCATION } from '../../constant/constantContentCv';
 
 export default function AddEducation() {
     const navigation = useNavigation();
@@ -41,25 +41,34 @@ export default function AddEducation() {
 
 
     const handleSaveExtraInformation = async () => {
+        let col = listExtraInformation && listExtraInformation.col ? listExtraInformation.col : 0;
+        let cvIndex = listExtraInformation && listExtraInformation.cvIndex ? listExtraInformation.cvIndex : 0;
+        let part = listExtraInformation && listExtraInformation.part ? listExtraInformation.part : 0;
+        let row = listExtraInformation && listExtraInformation.row ? listExtraInformation.row : 0;
+        let type = listExtraInformation && listExtraInformation.type ? listExtraInformation.type : TYPE_EDUCATION;
+        let padIndex = listExtraInformation && listExtraInformation.padIndex ? listExtraInformation.padIndex : 0;
+
         const newListExtraInformation = {
-            col: listExtraInformation.col,
-            cvIndex: listExtraInformation.cvIndex,
-            part: listExtraInformation.part,
-            row: listExtraInformation.row,
-            type: listExtraInformation.type,
+            col: col,
+            cvIndex: cvIndex,
+            part: part,
+            row: row,
+            type: type,
+            padIndex: padIndex,
             moreCvExtraInformations: [
-                ...listExtraInformation.moreCvExtraInformations,
+                ... (listExtraInformation && listExtraInformation.moreCvExtraInformations) ? listExtraInformation.moreCvExtraInformations : [],
                 {
                     position: position,
                     time: startTime,
                     company: company,
                     description: description,
-                    index: listExtraInformation.moreCvExtraInformations.length,
+                    index: listExtraInformation ? listExtraInformation.moreCvExtraInformations.length : 0,
+                    padIndex: padIndex,
                 }
             ]
         };
 
-        const newDataCvExtraInformation = CreateCvExtraInformation(newListExtraInformation.type, newListExtraInformation.row, newListExtraInformation.col, newListExtraInformation.cvIndex, newListExtraInformation.part, newListExtraInformation.moreCvExtraInformations);
+        const newDataCvExtraInformation = CreateCvExtraInformation(type, row, col, cvIndex, part, newListExtraInformation.moreCvExtraInformations, padIndex);
 
         listOtherInformation.push(newDataCvExtraInformation);
 

@@ -3,11 +3,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+
 export const ContentEditForCv = [
     {
         id : 1,
         title: 'Personal Information',
-        icon: <MaterialIcons name="broadcast-on-personal" size={24} color="black" />,
+        icon: <MaterialCommunityIcons name="human" size={24} color="black" />,
         screen: 'PersonalInformation'
     },
     {
@@ -19,7 +22,7 @@ export const ContentEditForCv = [
     {
         id: 3,
         title: 'Certification',
-        icon: <Ionicons name="duplicate-outline" size={24} color="black" />,
+        icon: <MaterialCommunityIcons name="certificate" size={24} color="black" />,
         screen: 'Certification'
     },
     {
@@ -27,5 +30,17 @@ export const ContentEditForCv = [
         title: 'Project',
         icon:<FontAwesome5 name="project-diagram" size={24} color="black" />,
         screen: 'Project'
+    },
+    {
+        id: 5,
+        title: 'Skill',
+        icon: <Foundation name="social-skillshare" size={24} color="black" />,
+        screen: 'Skill'
+    },
+    {
+        id: 6,
+        title: 'Award',
+        icon: <Ionicons name="ios-ribbon" size={24} color="black" />,
+        screen: 'Award'
     }
 ];

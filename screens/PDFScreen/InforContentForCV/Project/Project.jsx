@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
@@ -92,6 +91,7 @@ export default function Project() {
                                             numberOfLines={1}
                                             style={{
                                                 fontSize: 12,
+                                                textTransform: 'uppercase'
                                             }}>
                                             {`Vị trí: ${item.position}`}
                                         </Text>

@@ -1,31 +1,29 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
-import { createCvListExtraInformaion } from '../../Education/helpers/CreateCvListExtraInformation';
-import { CreateCvExtraInformation } from '../../Education/helpers/CreateCvExtraInformation';
-import { TYPE_CETIFICATION } from '../../constant/constantContentCv';
+import { createCvListExtraInformaion } from '../helpers/CreateCvListExtraInformation';
+import { CreateCvExtraInformation } from '../helpers/CreateCvExtraInformation';
+import { TYPE_AWARD } from '../../constant/constantContentCv';
 
-export default function UpdateCertification(prop) {
+export default function UpdateAward(prop) {
     const navigation = useNavigation();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
-    const [listOtherInformation, setListOtherInformation] = useState([]);
     const { idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
     const [listExtraInformation, setListExtraInformation] = useState([]);
+    const [listOtherInformation, setListOtherInformation] = useState([]);
     const [type, setType] = useState('');
     const [company, setCompany] = useState('');
     const [position, setPosition] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [description, setDescription] = useState('');
-
 
     useEffect(() => {
         dispatch(getCvExtraInformationAction(0));
@@ -34,16 +32,16 @@ export default function UpdateCertification(prop) {
         setPosition(positionParent);
         setStartTime(timeParent.split(' - ')[0]);
         setEndTime(timeParent.split(' - ')[1]);
-        setDescription(descriptionParent);
+        setDescription(descriptionParent)
     }, [])
 
     useEffect(() => {
         if (cvExtraInformation) {
             const data = createCvListExtraInformaion(cvExtraInformation);
 
-            const newData = data && data.filter(item => item.type === TYPE_CETIFICATION);
+            const newData = data && data.filter(item => item.type === TYPE_AWARD);
 
-            const otherData = data && data.filter(item => item.type !== TYPE_CETIFICATION);
+            const otherData = data && data.filter(item => item.type !== TYPE_AWARD);
 
             const newListCvExtraInformation = {
                 type: newData[0].type,
@@ -59,7 +57,6 @@ export default function UpdateCertification(prop) {
             setListExtraInformation(newListCvExtraInformation);
         }
     }, [cvExtraInformation])
-
 
     const handleUpdate = () => {
         const newListExtraInformation = {
@@ -93,7 +90,6 @@ export default function UpdateCertification(prop) {
         navigation.goBack();
     }
 
-
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -109,10 +105,12 @@ export default function UpdateCertification(prop) {
                         fontWeight: 'bold',
                         fontSize: 16,
                         marginLeft: 5,
-                    }}>Cập nhật chứng chỉ
+                    }}>Cập nhật giải thưởng
                 </Text>
                 <TouchableOpacity
-                    onPress={handleUpdate}
+                    onPress={() => {
+                        handleUpdate();
+                    }}
                 >
                     <Text style={{
                         fontWeight: 'bold',
@@ -131,7 +129,9 @@ export default function UpdateCertification(prop) {
                     }}>
                         <Text style={{
                             fontWeight: 'bold',
-                        }}>Tên chứng chỉ</Text>
+                        }}>
+                          Tên giải thưởng
+                        </Text>
                         <FontAwesome name="asterisk" size={10} color="red" style={{
                             marginLeft: 5,
                         }} />
@@ -142,89 +142,11 @@ export default function UpdateCertification(prop) {
                             style={{
                                 marginLeft: 5,
                             }}
-                            placeholder="Tên chứng chỉ"
-                            onChangeText={(text) => {
-                                setPosition(text)
-                            }}
-                            value={position}
-                        >
-                        </TextInput>
-                    </View>
-                </View>
-                {/* position */}
-                <View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginTop: 10,
-                    }}>
-                        <Text style={{
-                            fontWeight: 'bold',
-                        }}>Tổ chức</Text>
-                        <FontAwesome name="asterisk" size={10} color="red" style={{
-                            marginLeft: 5,
-                        }} />
-                    </View>
-                    <View style={styles.input}>
-                        <AntDesign name="creditcard" size={24} color="black" />
-                        <TextInput
-                            style={{
-                                marginLeft: 5,
-                            }}
-                            placeholder="Tổ chức"
+                            placeholder="Tên giải thưởng"
                             onChangeText={(text) => {
                                 setCompany(text)
                             }}
                             value={company}
-                        >
-                        </TextInput>
-                    </View>
-                </View>
-                {/* Start time */}
-                <View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginTop: 10,
-                    }}>
-                        <Text style={{
-                            fontWeight: 'bold',
-                        }}>Thời gian bắt đầu</Text>
-                    </View>
-                    <View style={styles.input}>
-                        <Entypo name="back-in-time" size={24} color="black" />
-                        <TextInput
-                            style={{
-                                marginLeft: 5,
-                            }}
-                            placeholder="Thời gian bắt đầu"
-                            onChangeText={(text) => {
-                                setStartTime(text)
-                            }}
-                            value={startTime}
-                        >
-                        </TextInput>
-                    </View>
-                </View>
-                {/* End time */}
-                <View>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginTop: 10,
-                    }}>
-                        <Text style={{
-                            fontWeight: 'bold',
-                        }}>Thời gian kết thúc</Text>
-                    </View>
-                    <View style={styles.input}>
-                        <Entypo name="back-in-time" size={24} color="black" />
-                        <TextInput
-                            style={{
-                                marginLeft: 5,
-                            }}
-                            placeholder="Thời gian kết thúc"
-                            onChangeText={(text) => {
-                                setEndTime(text)
-                            }}
-                            value={endTime}
                         >
                         </TextInput>
                     </View>
