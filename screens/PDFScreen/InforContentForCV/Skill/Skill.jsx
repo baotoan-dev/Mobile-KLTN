@@ -71,6 +71,7 @@ export default function Skill() {
                 <View style={{
                   flexDirection: 'row',
                   alignItems: 'center',
+                  width: '80%'
                 }}>
                   <TouchableOpacity
                     onPress={() => {

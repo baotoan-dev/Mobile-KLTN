@@ -9,39 +9,39 @@ import { Buffer } from "buffer";
 export default function HeaderProfile({ profile, isScrolling }) {
     const [image, setImage] = useState(null);
 
+    const imageToBlob = async (uri) => {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        const filename = uri.split('/').pop();
+        const ext = filename.split('.').pop();
+        const mimeType = `image/${ext}`;
+        ;
+        return new File([blob], filename, { type: mimeType });
+    };
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
-            base64: true,
+            // base64: true,
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
-            const buffer = Buffer.from(result.assets[0].base64, 'base64');
-            console.log(buffer.data);
+            const file = await imageToBlob(result.assets[0].uri);
 
-            const dataUpload = {
-                filenames: 'images',
-                originalname: result.assets[0].uri.split('/').pop(),
-                encoding: '7bit',
-                mimetype: 'image/jpeg',
-                buffer: new Buffer(result.assets[0].base64, 'base64').data,
-                size: result.assets[0].base64.length,
+            const formData = new FormData();
+            formData.append('images', file);
+
+            console.log(formData);
+
+            try {
+                const response = await avatarApi.updateAvatar(formData);
+                console.log('Response:', response);
+            } catch (error) {
+                console.error('Error updating avatar:', error);
             }
-
-            console.log(dataUpload);
-
-            const data = new FormData();
-
-            data.append('files', [JSON.stringify(dataUpload)]);
-
-            // const res = await avatarApi.updateAvatar(data);
-
-            console.log('res', res);
         }
     };
 
