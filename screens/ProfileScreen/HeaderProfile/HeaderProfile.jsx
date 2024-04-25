@@ -3,46 +3,68 @@ import React, { useEffect } from 'react'
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
 import { avatarApi } from '../../../api/profile/avatar/avatarApi';
-import { Buffer } from "buffer";
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
 
-export default function HeaderProfile({ profile, isScrolling }) {
+export default function HeaderProfile({ isScrolling }) {
+    const dispatch = useDispatch();
     const [image, setImage] = useState(null);
+    const profile = useSelector(state => state.profile.profile);
+    const [dataProfile, setDataProfile] = useState({});
 
-    const imageToBlob = async (uri) => {
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        const filename = uri.split('/').pop();
-        const ext = filename.split('.').pop();
-        const mimeType = `image/${ext}`;
-        ;
-        return new File([blob], filename, { type: mimeType });
+    useEffect(() => {
+        dispatch(getProfileAction('vi'));
+    }, []);
+
+    useEffect(() => {
+        if (profile) {
+            setDataProfile(profile);
+        }
+    }, [profile]);
+
+
+    const openImageLibrary = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!');
+        }
+
+        if (status === 'granted') {
+            const response = await DocumentPicker.getDocumentAsync({
+                type: 'image/*',
+                copyToCacheDirectory: true,
+            });
+
+            if (!response.cancelled) {
+                setImage(response);
+                pickImage();
+            }
+        }
     };
 
     const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            // base64: true,
-            quality: 1,
+        const formData = new FormData();
+
+        formData.append('images', {
+            uri: image.uri,
+            name: image.name,
+            type: image.mimeType,
         });
 
-        if (!result.cancelled) {
-            const file = await imageToBlob(result.assets[0].uri);
-
-            const formData = new FormData();
-            formData.append('images', file);
-
-            console.log(formData);
-
-            try {
-                const response = await avatarApi.updateAvatar(formData);
-                console.log('Response:', response);
-            } catch (error) {
-                console.error('Error updating avatar:', error);
+        try {
+            const response = await avatarApi.updateAvatar(formData);
+            if (response && response.code === 200) {
+                setImage(null);
+                dispatch(getProfileAction('vi'));
             }
+            
+        } catch (error) {
+            console.error('Error updating avatar:', error);
         }
+
     };
 
     const renderHeader = () => {
@@ -68,11 +90,11 @@ export default function HeaderProfile({ profile, isScrolling }) {
                                     height: '100%',
                                     borderRadius: 50,
                                 }}
-                                source={{ uri: profile.avatarPath }}
+                                source={{ uri: dataProfile.avatarPath }}
                             />
                             <TouchableOpacity
                                 onPress={() => {
-                                    pickImage();
+                                    openImageLibrary();
                                 }}
                                 style={{
                                     position: 'absolute',
@@ -105,7 +127,7 @@ export default function HeaderProfile({ profile, isScrolling }) {
                                 color: 'blue',
                                 marginTop: 10,
                             }}>
-                                {profile.name}
+                                {dataProfile.name}
                             </Text>
                         </View>
                     </View>

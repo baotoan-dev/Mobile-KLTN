@@ -10,6 +10,7 @@ export const avatarApi = {
             const token = await SecureStore.getItemAsync('token');
             const response = await axiosConfig.put(URL, formData, {
                 headers: {
+                    Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
                 },
