@@ -17,10 +17,7 @@ export default function LoginScreeForEmailAndPassword() {
 
     const handleLogin = async () => {
         try {
-            // baotoandd2016@gmail.com
             const response = await authCandidate.signInCandidate(email, password);
-
-            console.log(response);
 
             if (response.code === 200) {
                 SecureStore.setItemAsync("accountId", response.data.accountId);
@@ -64,15 +61,22 @@ export default function LoginScreeForEmailAndPassword() {
                 paddingHorizontal: 20,
             }}>
                 <View style={styles.item}>
-                    <Entypo name='email' size={24} color='black' />
-                    <TextInput
-                        placeholder="Email"
-                        placeholderTextColor="black"
-                        style={styles.input}
-                        onChangeText={(text) => {
-                            setEmail(text)
-                        }}
-                    />
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}>
+                        <Entypo name='email' size={24} color='black' style={{
+                            marginRight: 10,
+                        }} />
+                        <TextInput
+                            placeholder="Email"
+                            placeholderTextColor="black"
+                            style={styles.input}
+                            onChangeText={(text) => {
+                                setEmail(text)
+                            }}
+                        />
+                    </View>
                 </View>
 
                 <View style={styles.item}>

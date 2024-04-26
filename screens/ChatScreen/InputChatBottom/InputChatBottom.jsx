@@ -4,9 +4,13 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function InputChatBottom() {
+export default function InputChatBottom({
+    messageText,
+    setMessageText,
+    handleSendMessage
+}) {
     const [checkClick, setCheckClick] = React.useState(false)
-    const [messageText, setMessageText] = React.useState('')
+
     return (
         <View style={styles.container}>
             {
@@ -29,12 +33,13 @@ export default function InputChatBottom() {
                         setCheckClick(false)
                     }
                     placeholder="Nhập tin nhắn"
+                    value={messageText}
                     onChangeText={text => setMessageText(text)}
                 />
                 {
                     messageText.length > 0 && (
                         <TouchableOpacity
-                            onPress={() => setMessageText('')}
+                            onPress={() => handleSendMessage()}
                         >
                             <Ionicons name="send-sharp" size={24} color="black" />
                         </TouchableOpacity>
