@@ -12,8 +12,6 @@ export default function ContentChatDetail({ listMessage }) {
         });
     }, [])
 
-    console.log(listMessage);
-
     return (
         <ScrollView style={styles.container}>
             {accountId && (
@@ -31,7 +29,7 @@ export default function ContentChatDetail({ listMessage }) {
                                     alignItems: 'center',
                                 }}>
                                     <View style={{
-                                        backgroundColor: item.is_me ? '#0084FF' : '#EEEEEE',
+                                        backgroundColor: item.sender_id === accountId ? '#A3D8FF' : '#EEEEEE',
                                         padding: 10,
                                         borderRadius: 10,
                                         maxWidth: '100%',
@@ -39,7 +37,8 @@ export default function ContentChatDetail({ listMessage }) {
                                         {
                                             item.type === 'text' && (
                                                 <Text style={{
-                                                    color: item.is_me ? 'white' : 'black',
+
+                                                    color: item.sender_id === accountId ? 'black' : 'black',
                                                 }}>
                                                     {item.message}
                                                 </Text>

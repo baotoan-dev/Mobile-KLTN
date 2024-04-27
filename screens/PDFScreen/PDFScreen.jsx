@@ -33,7 +33,7 @@ export default function PDFScreen() {
         if (cvProject) {
             setListProject(cvProject[0]?.moreCvProjects);
         }
-        if (cvExtraInformation) {
+        if (cvExtraInformation && cvExtraInformation.length > 0) {
             const skills = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_skill');
             const awards = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_award');
             const educations = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_study');

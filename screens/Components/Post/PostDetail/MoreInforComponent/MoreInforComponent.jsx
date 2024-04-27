@@ -22,7 +22,7 @@ export default function MoreInforComponent({ post, fitOfPost }) {
                             style={styles.item}>
                             {
                                 post.salary_min === 0 && post.salary_max === 0 ? 'Thỏa thuận' :
-                                    post.salary_min >= 0 && post.salary_max >= 1000000 ? (post.salary_min / 1000000 + 'tr' + ' - ' + post.salary_max / 1000000 + 'tr') : (post.salary_min + ' - ' + post.salary_max)
+                                    post.salary_min >= 0 && post.salary_max >= 10000 ? (post.salary_min / 1000000 + 'tr' + ' - ' + post.salary_max / 1000000 + 'tr') : (post.salary_min + ' - ' + post.salary_max)
                             }
                         </Text>
                     </Text>

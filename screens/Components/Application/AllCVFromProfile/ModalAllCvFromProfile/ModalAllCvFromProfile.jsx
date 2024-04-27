@@ -7,8 +7,11 @@ import ListCvFromProfile from '../ListCvFromProfile/ListCvFromProfile';
 export default function ModalAllCvFromProfile({
     showModalCvFromProfile,
     setShowModalCvFromProfile,
-    profile
+    profile,
+    idSelected, 
+    setIdSelected
 }) {
+
     return (
         <View>
             <Modal
@@ -62,7 +65,11 @@ export default function ModalAllCvFromProfile({
                             color: 'gray',
                         }}>CV ONLINE</Text>
                         <View>
-                            <ListCvFromProfile profile={profile} />
+                            <ListCvFromProfile
+                                profile={profile}
+                                idSelected={idSelected}
+                                setIdSelected={setIdSelected}
+                            />
                         </View>
                     </View>
                 </View>

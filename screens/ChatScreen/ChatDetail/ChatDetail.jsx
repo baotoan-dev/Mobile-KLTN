@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useContext, useState } from 'react'
-import { Entypo } from '@expo/vector-icons';
 import ContentChatDetail from '../ContentChatDetail/ContentChatDetail';
 import { useSelector, useDispatch } from 'react-redux';
 import { getChatMessageAction } from '../../../redux/store/Chat/chatSlice';
@@ -10,12 +9,16 @@ import { connectToSocket } from '../../../utils/Chat';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { chatApi } from '../../../api/chat/chatApi';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function ChatDetail(prop) {
+  const navigation = useNavigation();
   const [socketInstance, setSocketInstance] = useState(null);
   const [messageText, setMessageText] = React.useState('')
   const [openModalLeft, setOpenModalLeft] = React.useState(false);
-  const { userId, postId } = prop.route.params;
+  const { userId, postId, imageParent, nameParent } = prop.route.params;
   const dispatch = useDispatch();
   const message = useSelector(state => state.chat.messages);
   const [listMessage, setListMessage] = React.useState([]);
@@ -157,28 +160,38 @@ export default function ChatDetail(prop) {
         <View style={{
           flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'space-between',
         }}>
-          <TouchableOpacity
-            onPress={() => {
-              setOpenModalLeft(true);
-            }}
-            style={{
-              padding: 5,
-              backgroundColor: '#EEEEEE',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Entypo name="menu" size={24} color="black" />
+          <View style={styles.left}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{
+                marginRight: 10,
+              }}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+            <View>
+              <Image
+                source={{ uri: imageParent }}
+                style={{ width: 40, height: 40, borderRadius: 20, objectFit: 'scale-down' }}
+              />
+            </View>
+            <View style={{
+              marginLeft: 5
+            }}>
+              <Text style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}>
+                {nameParent.length > 10 ? nameParent.slice(0, 10) + '...' : nameParent}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.right}>
+            <AntDesign name="infocirlce" size={24} color="black" />
           </TouchableOpacity>
-          <Text style={{
-            fontSize: 16,
-            marginLeft: 5,
-            fontWeight: 'bold',
-          }}>
-            Đoạn chat
-          </Text>
         </View>
       </View>
       <ContentChatDetail listMessage={listMessage} />
@@ -203,5 +216,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomColor: 'gray',
     borderBottomWidth: 0.5,
-  }
+  },
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  right: {
+
+  },
 })

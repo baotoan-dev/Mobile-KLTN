@@ -1,20 +1,97 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ImageBackground, TextInput } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Platform, TextInput, PermissionsAndroid, Alert } from 'react-native'
+import React, { useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
+import * as DocumentPicker from 'expo-document-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCvInformationAction, getCvInformationAction } from '../../../../redux/store/CvInFormation/cvInformationSlice';
+import { createCvInformation } from './helpers/CreateCvInformation';
+import { TYPE_PERSONAL } from '../constant/constantContentCv';
 
 export default function PersonalInformation() {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const cvInformation = useSelector(state => state.cvInformation.cvInformation);
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const [address, setAddress] = React.useState('');
     const [link, setLink] = React.useState('');
     const [intent, setIntent] = React.useState('');
+    const [urlAvatar, setUrlAvatar] = React.useState(null);
+    const [listImage, setListImage] = React.useState([]);
+    const [part, setPart] = React.useState(0);
+    const [row, setRow] = React.useState(0);
+    const [col, setCol] = React.useState(0);
+
+    useEffect(() => {
+        dispatch(getCvInformationAction(0))
+    }, []);
+
+    useEffect(() => {
+        if (cvInformation && cvInformation.data) {
+            setName(cvInformation?.data?.name);
+            setEmail(cvInformation?.data?.email);
+            setPhone(cvInformation?.data?.phone);
+            setAddress(cvInformation?.data?.address);
+            setLink(cvInformation?.data?.link);
+            setIntent(cvInformation?.data?.intent);
+            // setUrlAvatar(cvInformation?.data?.avatar);
+            setPart(cvInformation?.data?.part);
+            setRow(cvInformation?.data?.row);
+            setCol(cvInformation?.data?.col);
+        }
+
+    }, [cvInformation])
+
+    const handleUploadImage = async () => {
+        try {
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                    {
+                        title: 'Permission Required',
+                        message: 'This app needs access to your storage to upload images.',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
+                    },
+                );
+                if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+                    Alert.alert('Permission Denied', 'You need to grant storage permission to upload images.');
+                    return;
+                }
+            }
+
+            let result = await DocumentPicker.getDocumentAsync({
+                type: 'image/*',
+                copyToCacheDirectory: true
+            });
+
+            if (result && result.type === 'success') {
+                setListImage({
+                    uri: result.uri,
+                    name: result.name,
+                    type: 'image/*'
+                })
+            }
+        } catch (error) {
+            console.error('Error while handling document upload:', error);
+        }
+    }
+
+    const handleSavePersonalInformation = () => {
+        const formData = createCvInformation(name, email, phone, address, link, intent, TYPE_PERSONAL, listImage, row, part, col, 0, null);
+
+        dispatch(createCvInformationAction(formData)).then(() => {
+            dispatch(getCvInformationAction(0));
+        });
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -41,7 +118,7 @@ export default function PersonalInformation() {
                     marginTop: 20,
                 }}>
                     <Image
-                        source={{ uri: 'https://inkythuatso.com/uploads/thumbnails/800/2023/03/1-hinh-anh-ngay-moi-hanh-phuc-sieu-cute-inkythuatso-09-13-35-50.jpg' }}
+                        source={(cvInformation && cvInformation?.data &&  cvInformation?.data?.avatar) ? { uri: cvInformation?.data?.avatar } : require('../../../../images/default_image.png')}
                         style={{
                             width: 100,
                             height: 100,
@@ -51,15 +128,19 @@ export default function PersonalInformation() {
                         }}
                     >
                     </Image>
-                    <TouchableOpacity style={{
-                        position: 'absolute',
-                        bottom: 10,
-                        right: 10,
-                        backgroundColor: 'white',
-                        borderRadius: 50,
-                        padding: 5,
-                        zIndex: 1000,
-                    }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            handleUploadImage();
+                        }}
+                        style={{
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 10,
+                            backgroundColor: 'white',
+                            borderRadius: 50,
+                            padding: 5,
+                            zIndex: 1000,
+                        }}>
                         <MaterialIcons name="camera-alt" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -94,6 +175,7 @@ export default function PersonalInformation() {
                             }} />
                             <TextInput
                                 placeholder="Nhập họ và tên..."
+                                value={name}
                                 onChangeText={(text) => {
                                     setName(text);
                                 }}
@@ -128,6 +210,7 @@ export default function PersonalInformation() {
                             }} />
                             <TextInput
                                 placeholder="Nhập email..."
+                                value={email}
                                 onChangeText={(text) => {
                                     setEmail(text);
                                 }}
@@ -162,6 +245,7 @@ export default function PersonalInformation() {
                             }} />
                             <TextInput
                                 placeholder="Nhập số điện thoại..."
+                                value={phone}
                                 onChangeText={(text) => {
                                     setPhone(text);
                                 }}
@@ -196,6 +280,7 @@ export default function PersonalInformation() {
                             }} />
                             <TextInput
                                 placeholder="Nhập địa chỉ..."
+                                value={address}
                                 onChangeText={(text) => {
                                     setAddress(text);
                                 }}
@@ -227,6 +312,7 @@ export default function PersonalInformation() {
                             }} />
                             <TextInput
                                 placeholder="Nhập link..."
+                                value={link}
                                 onChangeText={(text) => {
                                     setLink(text);
                                 }}
@@ -258,6 +344,7 @@ export default function PersonalInformation() {
                             }} />
                             <TextInput
                                 placeholder="Nhập mục tiêu..."
+                                value={intent}
                                 onChangeText={(text) => {
                                     setIntent(text);
                                 }}
@@ -266,7 +353,11 @@ export default function PersonalInformation() {
                     </View>
                 </View>
             </ScrollView>
-            <TouchableOpacity style={styles.bottom}>
+            <TouchableOpacity
+                onPress={() => {
+                    handleSavePersonalInformation();
+                }}
+                style={styles.bottom}>
                 <Text style={{
                     fontWeight: 'bold',
                     padding: 10,

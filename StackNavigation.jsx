@@ -160,9 +160,12 @@ function Navigation() {
                         </>)
                         :
                         (
-                            <Stack.Screen name="Main" component={BottomTabs} options={{
+                            <Stack.Screen name="PersonalInformation" component={PersonalInformation} options={{
                                 headerShown: false,
                             }} />
+                            // <Stack.Screen name="Main" component={BottomTabs} options={{
+                            //     headerShown: false,
+                            // }} />
                         )
                 }
                 {/* company */}
@@ -235,9 +238,9 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
-                <Stack.Screen name="PersonalInformation" component={PersonalInformation} options={{
+                {/* <Stack.Screen name="PersonalInformation" component={PersonalInformation} options={{
                     headerShown: false,
-                }} />
+                }} /> */}
 
                 <Stack.Screen name="Project" component={Project} options={{
                     headerShown: false,

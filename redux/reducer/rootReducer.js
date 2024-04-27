@@ -17,6 +17,7 @@ import newPostReducer from "../store/NewPost/newPostSlice";
 import nearbyReducer from "../store/Nearby/nearbySlice";
 import companyRatingReducer from "../store/CompanyRating/companyRatingSlice";
 import companyRatingOfAccountReducer from "../store/CompanyRating/CompanyRatingOfAccount/companyRatingOfAccountSlice";
+import cvInformationReducer from "../store/CvInFormation/cvInformationSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     searchHistory: searchHistoryReducer,
     cvProject: cvProjectReducer,
     cvExtraInformation: cvExtraInformationReducer,
+    cvInformation: cvInformationReducer,
     profileAnalytic: profileAnalyticReducer,
     chat: messageReducer,
     follow: followCompanyReducer,
