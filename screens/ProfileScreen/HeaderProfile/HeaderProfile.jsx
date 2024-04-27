@@ -40,7 +40,7 @@ export default function HeaderProfile({ isScrolling }) {
 
             if (!response.cancelled) {
                 setImage(response);
-                pickImage();
+                await pickImage();
             }
         }
     };

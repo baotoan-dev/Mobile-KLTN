@@ -6,17 +6,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getChatMessageAction } from '../../../redux/store/Chat/chatSlice';
 import InputChatBottom from '../InputChatBottom/InputChatBottom';
 import { ChatContext } from '../../../contex/ChatContex';
-import { connectToSocket, socket } from '../../../utils/Chat';
+import { connectToSocket } from '../../../utils/Chat';
+import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
+import { chatApi } from '../../../api/chat/chatApi';
 
 export default function ChatDetail(prop) {
   const [socketInstance, setSocketInstance] = useState(null);
-  const [connected, setConnected] = useState(false);
   const [messageText, setMessageText] = React.useState('')
   const [openModalLeft, setOpenModalLeft] = React.useState(false);
   const { userId, postId } = prop.route.params;
   const dispatch = useDispatch();
   const message = useSelector(state => state.chat.messages);
   const [listMessage, setListMessage] = React.useState([]);
+  const [selectedImage, setSelectedImage] = React.useState(null);
   const {
     userInfoChat,
     setSendMessages,
@@ -25,10 +28,19 @@ export default function ChatDetail(prop) {
     setReceivedMessages,
   } = useContext(ChatContext);
 
+
+  useEffect(() => {
+    dispatch(getChatMessageAction(userId, postId, 'vi'));
+  }, [sendMessages, setListMessage])
+
+  useEffect(() => {
+    dispatch(getChatMessageAction(userId, postId, 'vi'));
+  }, [receivedMessages, setReceivedMessages])
+
   useEffect(() => {
     dispatch(getChatMessageAction(userId, postId, 'vi'));
   }, [userId, postId])
-    
+
   useEffect(() => {
     if (message) {
       setListMessage(message);
@@ -36,16 +48,28 @@ export default function ChatDetail(prop) {
   }, [message])
 
   useEffect(() => {
+    let isMounted = true;
+
     const initializeSocket = async () => {
       try {
         const socketInstance = await connectToSocket();
-        console.log('socket instance:', socketInstance);
-        if (socketInstance) {
+
+        if (isMounted && socketInstance) {
           socketInstance.on("server-send-message-to-receiver", (data) => {
-            setReceivedMessages(data);
+            setReceivedMessages(
+              [
+                ...receivedMessages,
+                data,
+              ]
+            );
           });
           socketInstance.on("server-send-message-was-sent", (data) => {
-            setSendMessages(data);
+            setSendMessages(
+              [
+                ...sendMessages,
+                data,
+              ]
+            );
           });
           setSocketInstance(socketInstance);
         }
@@ -54,16 +78,17 @@ export default function ChatDetail(prop) {
       }
     }
 
-    if (!socketInstance) {
-      initializeSocket();
-    }
+    initializeSocket();
 
     return () => {
+      isMounted = false;
+
       if (socketInstance) {
         socketInstance.disconnect();
       }
     }
   }, []);
+
 
   const handleSendMessage = () => {
     if (messageText !== "" && socketInstance) {
@@ -78,6 +103,51 @@ export default function ChatDetail(prop) {
       dispatch(getChatMessageAction(userId, postId, 'vi'));
     }
   };
+
+  const openImageLibrary = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!');
+    }
+
+    if (status === 'granted') {
+      const response = await DocumentPicker.getDocumentAsync({
+        type: 'image/*',
+        multiple: true,
+      });
+
+      if (!response.cancelled) {
+        const formData = new FormData();
+
+        formData.append('images', {
+          uri: response.uri,
+          name: response.name,
+          type: response.mimeType,
+        });
+
+        const res = await chatApi.uploadImageChat(formData);
+
+        if (res.data && res.data.code === 200) {
+          setSelectedImage(res.data.data[0]);
+        }
+      }
+    }
+  };
+
+  const handleSendPhoto = async () => {
+    await openImageLibrary();
+    if (selectedImage && socketInstance) {
+      socketInstance.emit("client-send-message", {
+        receiverId: userId,
+        files: selectedImage ? [selectedImage] : [],
+        createdAt: Date.now(),
+        type: "url",
+        postId: postId,
+      });
+    }
+  }
+
 
   return (
     <View style={styles.container}>
@@ -114,6 +184,7 @@ export default function ChatDetail(prop) {
       <ContentChatDetail listMessage={listMessage} />
       <InputChatBottom
         messageText={messageText}
+        handleSendPhoto={handleSendPhoto}
         setMessageText={setMessageText}
         handleSendMessage={handleSendMessage}
       />

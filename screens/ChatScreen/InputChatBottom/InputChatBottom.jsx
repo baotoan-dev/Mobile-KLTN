@@ -7,7 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 export default function InputChatBottom({
     messageText,
     setMessageText,
-    handleSendMessage
+    handleSendMessage,
+    handleSendPhoto,
 }) {
     const [checkClick, setCheckClick] = React.useState(false)
 
@@ -18,7 +19,11 @@ export default function InputChatBottom({
                     <View style={styles.left}>
                         <MaterialIcons name="keyboard-voice" size={24} color="black" />
                         <AntDesign name="camerao" size={24} color="black" />
-                        <AntDesign name="picture" size={24} color="black" />
+                        <TouchableOpacity
+                            onPress={() => handleSendPhoto()}
+                        >
+                            <AntDesign name="picture" size={24} color="black" />
+                        </TouchableOpacity>
                     </View>
                 )
             }

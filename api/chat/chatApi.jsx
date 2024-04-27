@@ -28,5 +28,16 @@ export const chatApi = {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         })
+    },
+    uploadImageChat: async (data) => {
+        const token = await SecureStore.getItemAsync('token');
+        const URL = `${CONST_API_V1}/api/v1/chats/upload-image`
+        return await axiosConfig.post(URL, data, {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+            },
+        })
     }
 }

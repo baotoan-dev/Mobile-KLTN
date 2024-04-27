@@ -1,10 +1,9 @@
-import { View, StyleSheet, ScrollView, FlatList, Text } from 'react-native'
+import { View, StyleSheet, ScrollView, FlatList, Text, Image } from 'react-native'
 import React from 'react'
 import * as SecureStore from 'expo-secure-store';
 import moment from 'moment';
 
 export default function ContentChatDetail({ listMessage }) {
-
     const [accountId, setAccountId] = React.useState('');
 
     React.useEffect(() => {
@@ -12,6 +11,8 @@ export default function ContentChatDetail({ listMessage }) {
             setAccountId(data);
         });
     }, [])
+
+    console.log(listMessage);
 
     return (
         <ScrollView style={styles.container}>
@@ -35,12 +36,28 @@ export default function ContentChatDetail({ listMessage }) {
                                         borderRadius: 10,
                                         maxWidth: '100%',
                                     }}>
-                                        <Text style={{
-                                            color: item.is_me ? 'white' : 'black',
-                                        }}>
-                                            {item.message}
-                                        </Text>
+                                        {
+                                            item.type === 'text' && (
+                                                <Text style={{
+                                                    color: item.is_me ? 'white' : 'black',
+                                                }}>
+                                                    {item.message}
+                                                </Text>
+                                            )
+                                        }
 
+                                        {
+                                            (item.type === 'url' || item.type === 'image') && (
+                                                <Image
+                                                    style={{
+                                                        width: 200,
+                                                        height: 200,
+                                                        borderRadius: 10,
+                                                    }}
+                                                    source={{ uri: item.image }}
+                                                />
+                                            )
+                                        }
                                     </View>
                                     <Text style={{
                                         fontSize: 10,
@@ -65,5 +82,6 @@ export default function ContentChatDetail({ listMessage }) {
 const styles = StyleSheet.create({
     container: {
         padding: 10,
+        marginBottom: 100,
     }
 })

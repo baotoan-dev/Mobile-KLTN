@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import * as SecureStore from 'expo-secure-store';
+import ChatContextProvider from './contex/ChatContex';
 
 export const AuthContext = createContext();
 
@@ -25,9 +26,11 @@ export default function App() {
   }, []);
   return (
     <Provider store={store}>
-      <AuthContext.Provider value={{ auth, setAuth }}>
-        <Navigation />
-      </AuthContext.Provider>
+      <ChatContextProvider>
+        <AuthContext.Provider value={{ auth, setAuth }}>
+          <Navigation />
+        </AuthContext.Provider>
+      </ChatContextProvider>
     </Provider>
 
   );
