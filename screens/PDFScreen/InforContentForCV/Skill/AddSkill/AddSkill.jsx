@@ -12,8 +12,9 @@ import { createCvListExtraInformaion } from '../helpers/CreateCvListExtraInforma
 import { useDispatch, useSelector } from 'react-redux';
 import { TYPE_EDUCATION, TYPE_SKILL } from '../../constant/constantContentCv';
 
-export default function AddSkill() {
+export default function AddSkill(prop) {
   const navigation = useNavigation();
+  const { cvIndexParent } = prop.route.params;
   const [listExtraInformation, setListExtraInformation] = useState([]);
   const [listOtherInformation, setListOtherInformation] = useState([]);
   const dispatch = useDispatch();
@@ -21,7 +22,6 @@ export default function AddSkill() {
   const [company, setCompany] = useState('');
   const [position, setPosition] = useState('');
   const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
   const [description, setDescription] = useState('');
 
   useEffect(() => {
@@ -34,15 +34,14 @@ export default function AddSkill() {
 
       setListOtherInformation(otherData);
 
-      setListExtraInformation(newData[0]);
+      setListExtraInformation(newData ? newData[0] : {});
     }
   }, [cvExtraInformation])
 
 
-
   const handleSaveExtraInformation = async () => {
     let col = listExtraInformation && listExtraInformation.col ? listExtraInformation.col : 0;
-    let cvIndex = listExtraInformation && listExtraInformation.cvIndex ? listExtraInformation.cvIndex : 0;
+    let cvIndex = cvIndexParent;
     let part = listExtraInformation && listExtraInformation.part ? listExtraInformation.part : 0;
     let row = listExtraInformation && listExtraInformation.row ? listExtraInformation.row : 0;
     let type = listExtraInformation && listExtraInformation.type ? listExtraInformation.type : TYPE_SKILL;
@@ -54,7 +53,7 @@ export default function AddSkill() {
       row: row,
       type: type,
       moreCvExtraInformations: [
-        ...listExtraInformation.moreCvExtraInformations ? listExtraInformation.moreCvExtraInformations : [],
+        ...(listExtraInformation && listExtraInformation.moreCvExtraInformations) ? listExtraInformation.moreCvExtraInformations : [],
         {
           position: position,
           time: startTime,
@@ -71,7 +70,7 @@ export default function AddSkill() {
 
     if (newDataCvExtraInformation) {
       dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-        dispatch(getCvExtraInformationAction(0));
+        dispatch(getCvExtraInformationAction(cvIndexParent));
       });
     }
 

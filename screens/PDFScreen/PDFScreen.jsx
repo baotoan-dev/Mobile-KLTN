@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ToastAndroid } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
@@ -10,26 +10,51 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { getCvProjectAction } from '../../redux/store/CvProject/cvProjectSlice';
 import { getCvExtraInformationAction } from '../../redux/store/CvExtraInformation/CvExtraInformationSlice';
+import { getCvInformationAction } from '../../redux/store/CvInFormation/cvInformationSlice';
+import ModalActionSave from './ModalActionSave/ModalActionSave';
 
-export default function PDFScreen() {
+
+export default function PDFScreen(prop) {
     const navigation = useNavigation();
     const profile = useSelector((state) => state.profile.profile);
+    const { typeAction, templateId } = prop.route.params;
     const dispatch = useDispatch();
     const [avatar, setAvatar] = useState(null);
+    const [showModalAction, setShowModalAction] = useState(false);
     const cvProject = useSelector(state => state.cvProject.cvProject);
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+    const cvInformation = useSelector(state => state.cvInformation.cvInformation);
+    const [listPersonalInformation, setListPersonalInformation] = useState({});
     const [listProject, setListProject] = useState([]);
     const [listSkill, setListSkill] = useState([]);
     const [listAward, setListAward] = useState([]);
     const [listEducation, setListEducation] = useState([]);
+    const [nameCv, setNameCv] = useState('');
+    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
         dispatch(getProfileAction('vi'));
-        dispatch(getCvProjectAction(0))
-        dispatch(getCvExtraInformationAction(0))
+        dispatch(getCvProjectAction(cvIndex))
+        dispatch(getCvExtraInformationAction(cvIndex))
+        dispatch(getCvInformationAction(cvIndex))
     }, [])
 
     useEffect(() => {
+        if (profile) {
+            if (typeAction === 'create') {
+                let maxIndex = 0;
+                profile.profilesCvs.forEach((item, index) => {
+                    if (item.cvIndex > maxIndex) {
+                        maxIndex = item.cvIndex
+                    }
+                })
+
+                setCvIndex(maxIndex)
+            }
+            else {
+                setCvIndex(templateId)
+            }
+        }
         if (cvProject) {
             setListProject(cvProject[0]?.moreCvProjects);
         }
@@ -37,9 +62,12 @@ export default function PDFScreen() {
             const skills = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_skill');
             const awards = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_award');
             const educations = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_study');
-            setListSkill(skills[0].moreCvExtraInformations);
-            setListAward(awards[0].moreCvExtraInformations);
-            setListEducation(educations[0].moreCvExtraInformations)
+            setListSkill((skills && skills.length > 0) ? skills[0].moreCvExtraInformations : []);
+            setListAward((awards && awards.length > 0) ? awards[0].moreCvExtraInformations : []);
+            setListEducation((educations && educations.length > 0) ? educations[0].moreCvExtraInformations : []);
+        }
+        if (cvInformation && cvInformation.data) {
+            setListPersonalInformation(cvInformation.data);
         }
     }, [profile])
 
@@ -66,19 +94,19 @@ export default function PDFScreen() {
                                 <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-envelope" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px; word-wrap: break-word;">baotoandd2016@gmail.com</div>
+                                        <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.email}</div>
                                     </div>
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-phone" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">0765969802</div>
+                                        <div style="font-size: 25px;word-wrap: break-word;">${listPersonalInformation.phone}</div>
                                     </div>
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-address-book" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">Dĩ An District, Bình Dương Province, Vietnam </div>
+                                        <div style="font-size: 25px;word-wrap: break-word;">${listPersonalInformation.address}</div>
                                     </div>
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-link" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">link@ssssss.com</div>
+                                        <div style="font-size: 25px;word-wrap: break-word;">${listPersonalInformation.link}</div>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +150,7 @@ export default function PDFScreen() {
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div> 
                         <div style="font-size: 20px; margin-top: 20px; padding: 30px; text-align: justify; line-height: 1.5;">
-                            Chiều cao của phần tử cha không được đặt cố định: Trong trường hợp này, phần tử cha của các phần tử con có chiều cao không cố định, nên không thể thiết lập chiều cao của các phần tử con là 100%. Để giải quyết vấn đề này, hãy đảm bảo rằng phần tử cha có chiều cao được đặt cố định hoặc sử dụng các giải pháp linh hoạt như sử dụng các đơn vị đo lường linh hoạt như viewport height (vh).
+                            ${listPersonalInformation.intent}
                         </div>
                     </div>
                     <div>
@@ -274,18 +302,35 @@ export default function PDFScreen() {
     </html>
     `;
 
+    const handleAction = () => {
+        setShowModalAction(true);
+    }
 
-    const print = async () => {
 
+    const handlePrint = async () => {
         await Print.printAsync({
             html,
         });
     };
 
+
     const printToFile = async () => {
         const { uri } = await Print.printToFileAsync({ html });
-        console.log('File has been saved to:', uri);
-        await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+
+        if (!nameCv) {
+            setShowModalAction(false);
+            ToastAndroid.show('Vui lòng nhập tên file', ToastAndroid.SHORT);
+            return;
+        }
+
+        const formData = new FormData();
+
+        formData.append('file', {
+            uri,
+            name: nameCv,
+            type: 'application/pdf',
+        });
+        // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
     };
 
     useEffect(() => {
@@ -315,6 +360,7 @@ export default function PDFScreen() {
                 <View>
                     <TextInput
                         placeholder="Tên file"
+                        onChangeText={(text) => setNameCv(text)}
                         style={{
                             borderWidth: 0.5,
                             borderColor: 'gray',
@@ -324,7 +370,7 @@ export default function PDFScreen() {
                         }}
                     />
                 </View>
-                <TouchableOpacity onPress={print} >
+                <TouchableOpacity onPress={handleAction} >
                     <Text style={{
                         fontWeight: 'bold',
                     }}>
@@ -332,9 +378,15 @@ export default function PDFScreen() {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <ModalActionSave
+                showModalAction={showModalAction}
+                setShowModalAction={setShowModalAction}
+                handlePrint={handlePrint}
+                printToFile={printToFile}
+            />
             <ContentHeaderPDFScreen />
-            <ContentCenterPDFScreen avatar={avatar} />
-            <ContentBottomPDFScreen />
+            <ContentCenterPDFScreen typeAction={typeAction}/>
+            <ContentBottomPDFScreen typeAction={typeAction}/>
         </View>
 
     );

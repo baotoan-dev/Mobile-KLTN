@@ -5,7 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
 import * as Animatable from 'react-native-animatable';
 
-export default function InforContentForCV() {
+export default function InforContentForCV(prop) {
+    const { typeAction } = prop.route.params;
     const navigation = useNavigation()
     return (
         <View>
@@ -16,7 +17,9 @@ export default function InforContentForCV() {
                         return (
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate(item.screen)
+                                    navigation.navigate(item.screen, {
+                                        typeAction: typeAction
+                                    })
                                 }}
                                 style={styles.item} key={index}>
                                 {

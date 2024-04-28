@@ -10,18 +10,44 @@ import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformat
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 import { TYPE_SKILL } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Skill() {
+export default function Skill(prop) {
+  const { typeAction } = prop.route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const profile = useSelector(state => state.profile.profile);
   const [listSkill, setListSkill] = useState([]);
+  const [cvIndex, setCvIndex] = useState(0);
   const [listOtherInformation, setListOtherInformation] = useState([]);
   const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
 
+  useEffect(() => {
+    dispatch(getProfileAction('vi'))
+  }, [])
+
 
   useEffect(() => {
-    dispatch(getCvExtraInformationAction(0))
-  }, [])
+    if (profile) {
+      // get item have cvIndex highest
+      if (typeAction === 'create') {
+        let maxIndex = 0;
+        profile.profilesCvs.forEach((item, index) => {
+          if (item.cvIndex > maxIndex) {
+            maxIndex = item.cvIndex
+          }
+        })
+        setCvIndex(maxIndex)
+      }
+      else {
+
+      }
+    }
+  }, [typeAction, profile])
+
+  useEffect(() => {
+    dispatch(getCvExtraInformationAction(cvIndex))
+  }, [typeAction, profile])
 
   useEffect(() => {
     if (cvExtraInformation) {
@@ -33,7 +59,7 @@ export default function Skill() {
 
       setListOtherInformation(otherData);
 
-      setListSkill(newData[0]);
+      setListSkill(newData ? newData[0] : {});
     }
   }, [cvExtraInformation])
 
@@ -54,14 +80,14 @@ export default function Skill() {
 
     if (newCreateCvExtraInformation) {
       dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-        dispatch(getCvExtraInformationAction(0));
+        dispatch(getCvExtraInformationAction(cvIndex));
       });
     }
   };
 
   return (
     <View style={styles.container}>
-      <HeaderOfScreen title="Chứng chỉ" />
+      <HeaderOfScreen title="Kỹ năng" />
       <ScrollView>
         {
           listSkill && listSkill.moreCvExtraInformations &&
@@ -82,6 +108,7 @@ export default function Skill() {
                         companyParent: item.company,
                         descriptionParent: item.description,
                         timeParent: item.time,
+                        cvIndexParent: cvIndex,
                       })
                     }}
                   >
@@ -127,7 +154,9 @@ export default function Skill() {
       <View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('AddSkill')
+            navigation.navigate('AddSkill', {
+              cvIndexParent: cvIndex ? cvIndex : 0,
+            })
           }}
           style={{
             margin: 20,

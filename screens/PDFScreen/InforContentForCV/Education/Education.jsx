@@ -10,17 +10,43 @@ import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformat
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 import { TYPE_EDUCATION } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Education() {
+export default function Education(prop) {
+    const { typeAction } = prop.route.params;
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const profile = useSelector(state => state.profile.profile);
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
+    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
-        dispatch(getCvExtraInformationAction(0))
+        dispatch(getProfileAction('vi'))
     }, [])
+
+    useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                let maxIndex = 0;
+                profile.profilesCvs.forEach((item, index) => {
+                    if (item.cvIndex > maxIndex) {
+                        maxIndex = item.cvIndex
+                    }
+                })
+                setCvIndex(maxIndex)
+            }
+            else {
+
+            }
+        }
+    }, [typeAction, profile])
+
+    useEffect(() => {
+        dispatch(getCvExtraInformationAction(cvIndex))
+    }, [typeAction, profile])
 
     useEffect(() => {
         if (cvExtraInformation) {
@@ -32,7 +58,7 @@ export default function Education() {
 
             setListOtherInformation(otherData);
 
-            setListExtraInformation(newData[0]);
+            setListExtraInformation(newData ? newData[0] : {});
         }
     }, [cvExtraInformation])
 
@@ -52,7 +78,7 @@ export default function Education() {
 
         if (newCreateCvExtraInformation) {
             dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-                dispatch(getCvExtraInformationAction(0));
+                dispatch(getCvExtraInformationAction(cvIndex));
             });
         }
     };
@@ -79,6 +105,7 @@ export default function Education() {
                                                 companyParent: item.company,
                                                 descriptionParent: item.description,
                                                 timeParent: item.time,
+                                                cvIndexParent: cvIndex,
                                             })
                                         }}
                                     >
@@ -140,7 +167,9 @@ export default function Education() {
             <View>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('AddEducation')
+                        navigation.navigate('AddEducation', {
+                            cvIndexParent: cvIndex ? cvIndex : 0,
+                        })
                     }}
                     style={{
                         margin: 20,

@@ -10,18 +10,43 @@ import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformat
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 import { TYPE_CETIFICATION } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Certification() {
+export default function Certification(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { typeAction } = prop.route.params;
+    const profile = useSelector(state => state.profile.profile);
+    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
     const [listCertification, setListCertification] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
-    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
-
+    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
-        dispatch(getCvExtraInformationAction(0))
+        dispatch(getProfileAction('vi'))
     }, [])
+
+    useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                let maxIndex = 0;
+                profile.profilesCvs.forEach((item, index) => {
+                    if (item.cvIndex > maxIndex) {
+                        maxIndex = item.cvIndex
+                    }
+                })
+                setCvIndex(maxIndex)
+            }
+            else {
+
+            }
+        }
+    }, [typeAction, profile])
+
+    useEffect(() => {
+        dispatch(getCvExtraInformationAction(cvIndex))
+    }, [typeAction, profile])
 
     useEffect(() => {
         if (cvExtraInformation) {
@@ -33,7 +58,7 @@ export default function Certification() {
 
             setListOtherInformation(otherData);
 
-            setListCertification(newData[0]);
+            setListCertification(newData ? newData[0] : {});
         }
     }, [cvExtraInformation])
 
@@ -54,7 +79,7 @@ export default function Certification() {
 
         if (newCreateCvExtraInformation) {
             dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-                dispatch(getCvExtraInformationAction(0));
+                dispatch(getCvExtraInformationAction(cvIndex));
             });
         }
     };
@@ -81,6 +106,7 @@ export default function Certification() {
                                                 companyParent: item.company,
                                                 descriptionParent: item.description,
                                                 timeParent: item.time,
+                                                cvIndexParent: cvIndex,
                                             })
                                         }}
                                     >
@@ -143,7 +169,9 @@ export default function Certification() {
             <View>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('AddCertification')
+                        navigation.navigate('AddCertification', {
+                            cvIndexParent: cvIndex ? cvIndex : 0,
+                        })
                     }}
                     style={{
                         margin: 20,

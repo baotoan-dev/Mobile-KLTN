@@ -17,7 +17,7 @@ export default function UpdateProject(prop) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const cvProject = useSelector(state => state.cvProject.cvProject);
-  const { nameParent, idParent, typeParent, timeParent, linkParent, participantParent, positionParent, functionalityParent, technologyParent } = prop.route.params;
+  const { cvIndexParent, nameParent, idParent, typeParent, timeParent, linkParent, participantParent, positionParent, functionalityParent, technologyParent } = prop.route.params;
   const [type, setType] = useState();
   const [listProject, setListProject] = useState([])
   const [position, setPosition] = useState();
@@ -30,7 +30,7 @@ export default function UpdateProject(prop) {
   const [name, setName] = useState();
 
   useEffect(() => {
-    dispatch(getCvProjectAction(0));
+    dispatch(getCvProjectAction(cvIndexParent));
     setType(typeParent);
     setName(nameParent);
     setPosition(positionParent);
@@ -62,7 +62,7 @@ export default function UpdateProject(prop) {
   const handleSaveProject = () => {
     const newListProject = {
       col: listProject.col,
-      cvIndex: listProject.cvIndex,
+      cvIndex: cvIndexParent,
       part: listProject.part,
       row: listProject.row,
       type: listProject.type,
@@ -85,7 +85,7 @@ export default function UpdateProject(prop) {
 
     if (newCreateProject) {
       dispatch(createCvProjectAction([newCreateProject])).then(() => {
-        dispatch(getCvProjectAction(0));
+        dispatch(getCvProjectAction(cvIndexParent));
       });
     }
     navigation.goBack();

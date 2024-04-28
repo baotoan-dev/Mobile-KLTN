@@ -12,8 +12,9 @@ import { createCvListExtraInformaion } from '../helpers/CreateCvListExtraInforma
 import { useDispatch, useSelector } from 'react-redux';
 import { TYPE_EDUCATION } from '../../constant/constantContentCv';
 
-export default function AddEducation() {
+export default function AddEducation(prop) {
     const navigation = useNavigation();
+    const { cvIndexParent } = prop.route.params;
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
     const dispatch = useDispatch();
@@ -34,15 +35,13 @@ export default function AddEducation() {
 
             setListOtherInformation(otherData);
 
-            setListExtraInformation(newData[0]);
+            setListExtraInformation(newData ? newData[0] : {});
         }
     }, [cvExtraInformation])
 
-
-
     const handleSaveExtraInformation = async () => {
         let col = listExtraInformation && listExtraInformation.col ? listExtraInformation.col : 0;
-        let cvIndex = listExtraInformation && listExtraInformation.cvIndex ? listExtraInformation.cvIndex : 0;
+        let cvIndex = cvIndexParent;
         let part = listExtraInformation && listExtraInformation.part ? listExtraInformation.part : 0;
         let row = listExtraInformation && listExtraInformation.row ? listExtraInformation.row : 0;
         let type = listExtraInformation && listExtraInformation.type ? listExtraInformation.type : TYPE_EDUCATION;
@@ -74,7 +73,7 @@ export default function AddEducation() {
 
         if (newDataCvExtraInformation) {
             dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-                dispatch(getCvExtraInformationAction(0));
+                dispatch(getCvExtraInformationAction(cvIndexParent));
             });
         }
 

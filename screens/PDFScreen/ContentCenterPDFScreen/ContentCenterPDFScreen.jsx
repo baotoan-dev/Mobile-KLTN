@@ -5,21 +5,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
 import { getCvProjectAction } from '../../../redux/store/CvProject/cvProjectSlice';
 import { getCvExtraInformationAction } from '../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
+import { getCvInformationAction } from '../../../redux/store/CvInFormation/cvInformationSlice';
 
-export default function ContentCenterPDFScreen({ avatar }) {
+export default function ContentCenterPDFScreen({ typeAction }) {
     const dispatch = useDispatch();
     const profile = useSelector((state) => state.profile.profile);
     const cvProject = useSelector(state => state.cvProject.cvProject);
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+    const cvInformation = useSelector(state => state.cvInformation.cvInformation);
+    const [listPersonalInformation, setListPersonalInformation] = useState({});
     const [listProject, setListProject] = useState([]);
     const [listSkill, setListSkill] = useState([]);
     const [listAward, setListAward] = useState([]);
     const [listEducation, setListEducation] = useState([]);
+    const [cvIndex, setCvIndex] = useState(0);
+
+    useEffect(() => {
+        if (typeAction === 'create') {
+            // get item have cvIndex highest
+            let maxIndex = 0;
+            profile.profilesCvs.forEach((item, index) => {
+                if (item.cvIndex > maxIndex) {
+                    maxIndex = item.cvIndex
+                }
+            })
+
+            setCvIndex(maxIndex)
+        }
+        else {
+
+        }
+    }, [typeAction])
 
     useEffect(() => {
         dispatch(getProfileAction('vi'));
-        dispatch(getCvProjectAction(0))
-        dispatch(getCvExtraInformationAction(0))
+        dispatch(getCvProjectAction(cvIndex))
+        dispatch(getCvExtraInformationAction(cvIndex))
+        dispatch(getCvInformationAction(cvIndex))
     }, [])
 
     useEffect(() => {
@@ -30,9 +52,12 @@ export default function ContentCenterPDFScreen({ avatar }) {
             const skills = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_skill');
             const awards = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_award');
             const educations = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_study');
-            setListSkill(skills[0].moreCvExtraInformations);
-            setListAward(awards[0].moreCvExtraInformations);
-            setListEducation(educations[0].moreCvExtraInformations);
+            setListSkill((skills && skills.length > 0) ? skills[0].moreCvExtraInformations : []);
+            setListAward((awards && awards.length > 0) ? awards[0].moreCvExtraInformations : []);
+            setListEducation((educations && educations.length > 0) ? educations[0].moreCvExtraInformations : []);
+        }
+        if (cvInformation && cvInformation.data) {
+            setListPersonalInformation(cvInformation.data);
         }
     }, [profile])
 
@@ -52,28 +77,38 @@ export default function ContentCenterPDFScreen({ avatar }) {
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqgL3Hd08E6ZEepKPn1kNZnBLnWugLvplig&usqp=CAU" style="width: 90%; height: 400px; border: 1px solid black; border-radius: 10px;" />
                             </div>
                             <div style="padding: 30px;">
-                                <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
-                                    PERSONAL INFORMATION 
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
-                                    <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
-                                        <i class="fas fa-envelope" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px; word-wrap: break-word;">baotoandd2016@gmail.com</div>
-                                    </div>
-                                    <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
-                                        <i class="fas fa-phone" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">0765969802</div>
-                                    </div>
-                                    <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
-                                        <i class="fas fa-address-book" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">Dĩ An District, Bình Dương Province, Vietnam </div>
-                                    </div>
-                                    <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
-                                        <i class="fas fa-link" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">link@ssssss.com</div>
-                                    </div>
-                                </div>
+                            <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
+                                PERSONAL INFORMATION 
                             </div>
+                            ${listPersonalInformation.name && (
+                                <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+                                    ${listPersonalInformation.email && (
+                                        <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
+                                            <i class="fas fa-envelope" style="font-size: 30px"></i>
+                                            <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.email}</div>
+                                        </div>
+                                    )}
+                                    ${listPersonalInformation.phone && (
+                                        <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
+                                            <i class="fas fa-phone" style="font-size: 30px"></i>
+                                            <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.phone}</div>
+                                        </div>
+                                    )}
+                                    ${listPersonalInformation.address && (
+                                        <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
+                                            <i class="fas fa-address-book" style="font-size: 30px"></i>
+                                            <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.address}</div>
+                                        </div>
+                                    )}
+                                    ${listPersonalInformation.link && (
+                                        <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
+                                            <i class="fas fa-link" style="font-size: 30px"></i>
+                                            <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.link}</div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>                        
                         </div>
                         <div style="padding: 30px;">
                             <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
@@ -114,7 +149,7 @@ export default function ContentCenterPDFScreen({ avatar }) {
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div> 
                         <div style="font-size: 20px; margin-top: 20px; padding: 30px; text-align: justify; line-height: 1.5;">
-                            Chiều cao của phần tử cha không được đặt cố định: Trong trường hợp này, phần tử cha của các phần tử con có chiều cao không cố định, nên không thể thiết lập chiều cao của các phần tử con là 100%. Để giải quyết vấn đề này, hãy đảm bảo rằng phần tử cha có chiều cao được đặt cố định hoặc sử dụng các giải pháp linh hoạt như sử dụng các đơn vị đo lường linh hoạt như viewport height (vh).
+                            ${listPersonalInformation.intent}
                         </div>
                     </div>
                     <div>

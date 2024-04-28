@@ -13,9 +13,10 @@ import { createCvExtraInformationAction, getCvExtraInformationAction } from '../
 import { useEffect } from 'react';
 import { TYPE_CETIFICATION } from '../../constant/constantContentCv';
 
-export default function AddCertification() {
+export default function AddCertification(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { cvIndexParent } = prop.route.params;
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
@@ -34,12 +35,13 @@ export default function AddCertification() {
 
         setListOtherInformation(otherData);
 
-        setListExtraInformation(newData[0]);
+        setListExtraInformation(newData ? newData[0] : {});
+
     }, [cvExtraInformation])
 
     const handleSaveExtraInformation = async () => {
         let col = listExtraInformation && listExtraInformation.col ? listExtraInformation.col : 0;
-        let cvIndex = listExtraInformation && listExtraInformation.cvIndex ? listExtraInformation.cvIndex : 0;
+        let cvIndex = cvIndexParent;
         let part = listExtraInformation && listExtraInformation.part ? listExtraInformation.part : 0;
         let row = listExtraInformation && listExtraInformation.row ? listExtraInformation.row : 0;
         let type = listExtraInformation && listExtraInformation.type ? listExtraInformation.type : TYPE_CETIFICATION;
@@ -71,7 +73,7 @@ export default function AddCertification() {
 
         if (newDataCvExtraInformation) {
             dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-                dispatch(getCvExtraInformationAction(0));
+                dispatch(getCvExtraInformationAction(cvIndexParent));
             });
         }
 

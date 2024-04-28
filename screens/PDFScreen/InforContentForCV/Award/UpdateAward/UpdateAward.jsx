@@ -15,7 +15,7 @@ export default function UpdateAward(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
-    const { idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
+    const { cvIndexParent, idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
     const [type, setType] = useState('');
@@ -26,7 +26,7 @@ export default function UpdateAward(prop) {
     const [description, setDescription] = useState('');
 
     useEffect(() => {
-        dispatch(getCvExtraInformationAction(0));
+        dispatch(getCvExtraInformationAction(cvIndexParent));
         setType(typeParent);
         setCompany(companyParent);
         setPosition(positionParent);
@@ -61,7 +61,7 @@ export default function UpdateAward(prop) {
     const handleUpdate = () => {
         const newListExtraInformation = {
             col: listExtraInformation.col,
-            cvIndex: listExtraInformation.cvIndex,
+            cvIndex: cvIndexParent,
             part: listExtraInformation.part,
             row: listExtraInformation.row,
             type: listExtraInformation.type,
@@ -84,7 +84,7 @@ export default function UpdateAward(prop) {
         listOtherInformation.push(newDataCvExtraInformation);
 
         dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-            dispatch(getCvExtraInformationAction(0));
+            dispatch(getCvExtraInformationAction(cvIndexParent));
         });
 
         navigation.goBack();
@@ -130,7 +130,7 @@ export default function UpdateAward(prop) {
                         <Text style={{
                             fontWeight: 'bold',
                         }}>
-                          Tên giải thưởng
+                            Tên giải thưởng
                         </Text>
                         <FontAwesome name="asterisk" size={10} color="red" style={{
                             marginLeft: 5,

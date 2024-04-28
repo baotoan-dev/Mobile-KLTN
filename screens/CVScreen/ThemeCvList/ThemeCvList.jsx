@@ -74,6 +74,10 @@ export default function ThemeCvList() {
                                         onPress={() => {
                                             navigation.navigate(
                                                 'PDFScreen',
+                                                {
+                                                    templateId: index,
+                                                    typeAction: 'create'
+                                                }
                                             )
                                         }}
                                     >

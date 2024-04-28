@@ -9,21 +9,47 @@ import { createCvProjectAction, getCvProjectAction } from '../../../../redux/sto
 import { createCvListProject } from './helpers/CreateCvListProject';
 import { createCvProject, createMoreCvProject } from './helpers/CreateCvProject';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Project() {
+export default function Project(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { typeAction } = prop.route.params;
+    const profile = useSelector(state => state.profile.profile);
     const [listProject, setListProject] = useState([])
     const cvProject = useSelector(state => state.cvProject.cvProject);
+    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
-        dispatch(getCvProjectAction(0))
+        dispatch(getProfileAction('vi'))
     }, [])
+
+    useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                let maxIndex = 0;
+                profile.profilesCvs.forEach((item, index) => {
+                    if (item.cvIndex > maxIndex) {
+                        maxIndex = item.cvIndex
+                    }
+                })
+                setCvIndex(maxIndex)
+            }
+            else {
+
+            }
+        }
+    }, [typeAction, profile])
+
+    useEffect(() => {
+        dispatch(getCvProjectAction(cvIndex))
+    }, [typeAction, profile])
 
     useEffect(() => {
         if (cvProject) {
             const data = createCvListProject(cvProject);
-            setListProject(data[0]);
+            setListProject(data ? data[0] : {});
         }
     }, [cvProject]);
 
@@ -41,11 +67,10 @@ export default function Project() {
 
         if (newCreateProject) {
             dispatch(createCvProjectAction([newCreateProject])).then(() => {
-                dispatch(getCvProjectAction(0));
+                dispatch(getCvProjectAction(cvIndex));
             });
         }
     };
-
 
     return (
         <View style={styles.container}>
@@ -71,6 +96,7 @@ export default function Project() {
                                                 positionParent: item.position,
                                                 functionalityParent: item.functionality,
                                                 technologyParent: item.technology,
+                                                cvIndexParent: cvIndex,
                                             })
                                         }}
                                     >
@@ -159,7 +185,9 @@ export default function Project() {
             <View>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('AddProject')
+                        navigation.navigate('AddProject', {
+                            cvIndexParent: cvIndex ? cvIndex : 0,
+                        })
                     }}
                     style={{
                         margin: 20,

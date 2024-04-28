@@ -10,18 +10,44 @@ import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helper
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
 import { TYPE_AWARD } from '../constant/constantContentCv';
 import { createCvListExtraInformaion } from '../Certification/helpers/CreateCvListExtraInformation';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Ward() {
+export default function Ward(prop) {
+  const { typeAction } = prop.route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [listSkill, setListSkill] = useState([]);
   const [listOtherInformation, setListOtherInformation] = useState([]);
+  const profile = useSelector(state => state.profile.profile);
   const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
+  const [cvIndex, setCvIndex] = useState(0);
+
+  useEffect(() => {
+    dispatch(getProfileAction('vi'))
+  }, [])
+
+  useEffect(() => {
+    if (profile) {
+      // get item have cvIndex highest
+      if (typeAction === 'create') {
+        let maxIndex = 0;
+        profile.profilesCvs.forEach((item, index) => {
+          if (item.cvIndex > maxIndex) {
+            maxIndex = item.cvIndex
+          }
+        })
+        setCvIndex(maxIndex)
+      }
+      else {
+
+      }
+    }
+  }, [typeAction, profile])
 
 
   useEffect(() => {
-    dispatch(getCvExtraInformationAction(0))
-  }, [])
+    dispatch(getCvExtraInformationAction(cvIndex))
+  }, [typeAction, profile])
 
   useEffect(() => {
     if (cvExtraInformation) {
@@ -33,7 +59,7 @@ export default function Ward() {
 
       setListOtherInformation(otherData);
 
-      setListSkill(newData[0]);
+      setListSkill(newData ? newData[0] : {});
     }
   }, [cvExtraInformation])
 
@@ -54,7 +80,7 @@ export default function Ward() {
 
     if (newCreateCvExtraInformation) {
       dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-        dispatch(getCvExtraInformationAction(0));
+        dispatch(getCvExtraInformationAction(cvIndex));
       });
     }
   };
@@ -81,6 +107,7 @@ export default function Ward() {
                         companyParent: item.company,
                         descriptionParent: item.description,
                         timeParent: item.time,
+                        cvIndexParent: cvIndex,
                       })
                     }}
                   >
@@ -126,7 +153,9 @@ export default function Ward() {
       <View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('AddAward')
+            navigation.navigate('AddAward', {
+              cvIndexParent: cvIndex ? cvIndex : 0,
+            })
           }}
           style={{
             margin: 20,
