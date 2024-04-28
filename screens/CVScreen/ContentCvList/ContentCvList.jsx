@@ -94,7 +94,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                             </Text>
                                         </View>
                                         <TouchableOpacity onPress={() => {
-                                            setShowModalActionCv(true);
+                                            setShowModalActionCv(!showModalActionCv);
                                             setNameCv(item.name);
                                             setStatusCv(item.status);
                                             setIdCv(item.id);
@@ -168,7 +168,7 @@ export default function ContentCvList({ checkShow, profile }) {
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    setShowModalActionCv(true);
+                                    setShowModalActionCv(!showModalActionCv);
                                     setNameCv(item.name);
                                     setStatusCv(item.status);
                                     setIdCv(item.id);

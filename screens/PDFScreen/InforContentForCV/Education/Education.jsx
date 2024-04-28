@@ -13,7 +13,7 @@ import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
 import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
 export default function Education(prop) {
-    const { typeAction } = prop.route.params;
+    const { typeAction,templateId,cvIndexParent } = prop.route.params;
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const profile = useSelector(state => state.profile.profile);
@@ -30,16 +30,21 @@ export default function Education(prop) {
         if (profile) {
             // get item have cvIndex highest
             if (typeAction === 'create') {
-                let maxIndex = 0;
-                profile.profilesCvs.forEach((item, index) => {
-                    if (item.cvIndex > maxIndex) {
-                        maxIndex = item.cvIndex
-                    }
-                })
-                setCvIndex(maxIndex)
+                if (profile.profilesCvs.length === 0) {
+                    setCvIndex(0)
+                }
+                else {
+                    let maxIndex = 0;
+                    profile.profilesCvs.forEach((item, index) => {
+                        if (item.cvIndex > maxIndex) {
+                            maxIndex = item.cvIndex
+                        }
+                    })
+                    setCvIndex(maxIndex + 1)
+                }
             }
             else {
-
+                setCvIndex(cvIndexParent)
             }
         }
     }, [typeAction, profile])

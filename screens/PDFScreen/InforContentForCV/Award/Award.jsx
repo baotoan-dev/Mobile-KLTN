@@ -30,13 +30,18 @@ export default function Ward(prop) {
     if (profile) {
       // get item have cvIndex highest
       if (typeAction === 'create') {
-        let maxIndex = 0;
-        profile.profilesCvs.forEach((item, index) => {
-          if (item.cvIndex > maxIndex) {
-            maxIndex = item.cvIndex
-          }
-        })
-        setCvIndex(maxIndex)
+        if (profile.profilesCvs.length === 0) {
+          setCvIndex(0)
+        }
+        else {
+          let maxIndex = 0;
+          profile.profilesCvs.forEach((item, index) => {
+            if (item.cvIndex > maxIndex) {
+              maxIndex = item.cvIndex
+            }
+          })
+          setCvIndex(maxIndex + 1)
+        }
       }
       else {
 

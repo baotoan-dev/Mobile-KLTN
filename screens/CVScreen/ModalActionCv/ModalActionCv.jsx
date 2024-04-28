@@ -52,7 +52,26 @@ export default function ModalActionCv({
       dispatch(getProfileAction('vi'))
       setShowModalActionCv(false)
     }
+  }
 
+  const handleEditCv = () => {
+    if (listCv) {
+      let cvIndex = 0
+      let templateId = 0
+      listCv.forEach((item) => {
+        if (item.id === idCV) {
+          cvIndex = item.cvIndex
+          templateId = item.templateId
+        }
+      })
+
+      navigation.navigate('PDFScreen',
+        {
+          templateId: templateId,
+          typeAction: 'edit',
+          cvIndexParent: cvIndex,
+        })
+    }
   }
 
   return (
@@ -111,7 +130,11 @@ export default function ModalActionCv({
                 <AntDesign name="eyeo" size={20} color="black" />
                 <Text style={styles.ml}>Xem</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.item}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleEditCv()
+                }}
+                style={styles.item}>
                 <AntDesign name="edit" size={20} color="black" />
                 <Text style={styles.ml}>Chỉnh sửa</Text>
               </TouchableOpacity>
@@ -119,7 +142,7 @@ export default function ModalActionCv({
             <View style={[styles.itemContainer]}>
               <TouchableOpacity
                 onPress={() => {
-                  
+
                 }}
                 style={styles.item}>
                 <AntDesign name="download" size={20} color="black" />

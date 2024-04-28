@@ -12,12 +12,13 @@ import { getCvProjectAction } from '../../redux/store/CvProject/cvProjectSlice';
 import { getCvExtraInformationAction } from '../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { getCvInformationAction } from '../../redux/store/CvInFormation/cvInformationSlice';
 import ModalActionSave from './ModalActionSave/ModalActionSave';
+import { cvProfileApi } from '../../api/cv-profile/cvProfileApi';
 
 
 export default function PDFScreen(prop) {
     const navigation = useNavigation();
     const profile = useSelector((state) => state.profile.profile);
-    const { typeAction, templateId } = prop.route.params;
+    const { typeAction, templateId, cvIndexParent } = prop.route.params;
     const dispatch = useDispatch();
     const [avatar, setAvatar] = useState(null);
     const [showModalAction, setShowModalAction] = useState(false);
@@ -33,31 +34,47 @@ export default function PDFScreen(prop) {
     const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                if (profile.profilesCvs.length === 0) {
+                    setCvIndex(0)
+                }
+                else {
+                    let maxIndex = 0;
+                    profile.profilesCvs.forEach((item, index) => {
+                        if (item.cvIndex > maxIndex) {
+                            maxIndex = item.cvIndex
+                        }
+                    })
+                    setCvIndex(maxIndex + 1)
+                }
+            }
+            else {
+                setCvIndex(cvIndexParent)
+            }
+        }
+
         dispatch(getProfileAction('vi'));
         dispatch(getCvProjectAction(cvIndex))
         dispatch(getCvExtraInformationAction(cvIndex))
         dispatch(getCvInformationAction(cvIndex))
-    }, [])
+
+    }, [profile])
 
     useEffect(() => {
-        if (profile) {
-            if (typeAction === 'create') {
-                let maxIndex = 0;
-                profile.profilesCvs.forEach((item, index) => {
-                    if (item.cvIndex > maxIndex) {
-                        maxIndex = item.cvIndex
-                    }
-                })
-
-                setCvIndex(maxIndex)
-            }
-            else {
-                setCvIndex(templateId)
-            }
+        if (cvInformation && cvInformation.data) {
+            setListPersonalInformation(cvInformation.data);
         }
+    }, [cvInformation])
+
+    useEffect(() => {
         if (cvProject) {
             setListProject(cvProject[0]?.moreCvProjects);
         }
+    }, [cvProject])
+
+    useEffect(() => {
         if (cvExtraInformation && cvExtraInformation.length > 0) {
             const skills = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_skill');
             const awards = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_award');
@@ -66,10 +83,7 @@ export default function PDFScreen(prop) {
             setListAward((awards && awards.length > 0) ? awards[0].moreCvExtraInformations : []);
             setListEducation((educations && educations.length > 0) ? educations[0].moreCvExtraInformations : []);
         }
-        if (cvInformation && cvInformation.data) {
-            setListPersonalInformation(cvInformation.data);
-        }
-    }, [profile])
+    }, [cvExtraInformation])
 
 
     const html = `
@@ -81,35 +95,36 @@ export default function PDFScreen(prop) {
         </head>
         <body style="height: fit-content; margin: 0;">
             <div style="display: flex; flex-direction: row; width: 100%; height: 100%">
-                <div style="overflow: hidden;width: 45%; height: auto; flex-direction: column; background-color: #c1e8e4;">
+                <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: #c1e8e4;">
                     <div>
                         <div>
                             <div style="text-align: center; margin-top: 10px;">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqgL3Hd08E6ZEepKPn1kNZnBLnWugLvplig&usqp=CAU" style="width: 90%; height: 400px; border: 1px solid black; border-radius: 10px;" />
+                                <img src=${listPersonalInformation.avatar ? listPersonalInformation.avatar : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqgL3Hd08E6ZEepKPn1kNZnBLnWugLvplig&usqp=CAU'} style="width: 90%; height: 400px; border: 1px solid black; border-radius: 10px;" />
                             </div>
                             <div style="padding: 30px;">
-                                <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
-                                    PERSONAL INFORMATION 
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+                            <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
+                                PERSONAL INFORMATION 
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-envelope" style="font-size: 30px"></i>
                                         <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.email}</div>
                                     </div>
+                            
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-phone" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">${listPersonalInformation.phone}</div>
+                                        <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.phone}</div>
                                     </div>
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-address-book" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">${listPersonalInformation.address}</div>
+                                        <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.address}</div>
                                     </div>
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-link" style="font-size: 30px"></i>
-                                        <div style="font-size: 25px;word-wrap: break-word;">${listPersonalInformation.link}</div>
+                                        <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.link}</div>
                                     </div>
-                                </div>
                             </div>
+                        </div>                        
                         </div>
                         <div style="padding: 30px;">
                             <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
@@ -142,7 +157,9 @@ export default function PDFScreen(prop) {
                     </div>
                 </div>
                 <div style="width: 55%; height: 100%">
-                    <div style="margin: 40px; font-size: 30px; font-weight: 700;">HUYNH NGOC HIEU</div>
+                    <div style="margin: 40px; font-size: 30px; font-weight: 700;">
+                        ${listPersonalInformation.name}
+                    </div>
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
@@ -156,7 +173,7 @@ export default function PDFScreen(prop) {
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
-                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">EDUCATION</span>
+                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">PROJECT</span>
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div>   
                         <div>
@@ -252,55 +269,13 @@ export default function PDFScreen(prop) {
                                 </div>`;
     }).join('')}
                         </div>
-                        <div>
-                        ${listEducation?.map((item, index) => {
-        return `
-                            <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
-                                <div style="font-size: 25px;margin-bottom: 10px">
-                                    <div style="display: flex; flex-direction: row; gap: 5px;">
-                                        <b style="">Name: </b>
-                                        <div>${item.position}</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 25px;margin-bottom: 10px">
-                                    <div style="display: flex; flex-direction: row; gap: 5px;">
-                                        <b style="">Link: </b>
-                                        <div>${item.functionality}</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 25px;margin-bottom: 10px">
-                                    <div style="display: flex; flex-direction: row; gap: 5px;">
-                                        <b style="">Technologies: </b>
-                                        <div>${item.technology}</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 25px;margin-bottom: 10px">
-                                    <div style="display: flex; flex-direction: row; gap: 5px;">
-                                        <b style="">Number of participants: : </b>
-                                        <div>${item.participant}</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 25px;margin-bottom: 10px">
-                                    <div style="display: flex; flex-direction: row; gap: 5px;">
-                                        <b style="">Link: </b>
-                                        <div>${item.link}</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 25px;">
-                                    <div style="display: flex; flex-direction: row; gap: 5px;">
-                                        <b style="">Time: </b>
-                                        <div>2022-2023</div>
-                                    </div>
-                                </div>
-                            </div>`;
-    }).join('')}
-                    </div>
                     </div>
                 </div>
             </div>
         </body>
     </html>
     `;
+
 
     const handleAction = () => {
         setShowModalAction(true);
@@ -330,7 +305,20 @@ export default function PDFScreen(prop) {
             name: nameCv,
             type: 'application/pdf',
         });
+        formData.append('name', nameCv);
+        formData.append('cvIndex', cvIndex);
+        formData.append('templateId', 0);
+
         // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+
+        const res = await cvProfileApi.createCv(formData)
+
+        if (res && res.data.statusCode === 201) {
+            dispatch(getProfileAction('vi'))
+            setShowModalAction(false);
+            navigation.navigate('CV');
+            ToastAndroid.show('Thêm CV thành công', ToastAndroid.SHORT);
+        }
     };
 
     useEffect(() => {
@@ -385,8 +373,8 @@ export default function PDFScreen(prop) {
                 printToFile={printToFile}
             />
             <ContentHeaderPDFScreen />
-            <ContentCenterPDFScreen typeAction={typeAction}/>
-            <ContentBottomPDFScreen typeAction={typeAction}/>
+            <ContentCenterPDFScreen typeAction={typeAction} />
+            <ContentBottomPDFScreen typeAction={typeAction} />
         </View>
 
     );

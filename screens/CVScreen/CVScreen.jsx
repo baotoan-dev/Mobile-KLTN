@@ -75,7 +75,7 @@ export default function CVScreen() {
       }
       <FAB
         onPress={() => {
-          setShowModalAddCv(true)
+          setShowModalAddCv(!showModalAddCv)
         }}
         placement="right"
         buttonStyle={{

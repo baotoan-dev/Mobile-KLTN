@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useEffect } from 'react'
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { templateApi } from '../../../api/template/templateApi';
 import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
@@ -76,7 +75,8 @@ export default function ThemeCvList() {
                                                 'PDFScreen',
                                                 {
                                                     templateId: index,
-                                                    typeAction: 'create'
+                                                    typeAction: 'create',
+                                                    cvIndexParent: 0,
                                                 }
                                             )
                                         }}

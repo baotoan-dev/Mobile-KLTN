@@ -11,11 +11,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCvInformationAction, getCvInformationAction } from '../../../../redux/store/CvInFormation/cvInformationSlice';
 import { createCvInformation } from './helpers/CreateCvInformation';
 import { TYPE_PERSONAL } from '../constant/constantContentCv';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function PersonalInformation() {
+export default function PersonalInformation(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { typeAction,templateId,cvIndexParent } = prop.route.params;
     const cvInformation = useSelector(state => state.cvInformation.cvInformation);
+    const profile = useSelector(state => state.profile.profile);
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [phone, setPhone] = React.useState('');
@@ -23,14 +26,43 @@ export default function PersonalInformation() {
     const [link, setLink] = React.useState('');
     const [intent, setIntent] = React.useState('');
     const [urlAvatar, setUrlAvatar] = React.useState(null);
-    const [listImage, setListImage] = React.useState([]);
+    const [listImage, setListImage] = React.useState({});
     const [part, setPart] = React.useState(0);
     const [row, setRow] = React.useState(0);
     const [col, setCol] = React.useState(0);
+    const [cvIndex, setCvIndex] = React.useState(0);
 
     useEffect(() => {
-        dispatch(getCvInformationAction(0))
-    }, []);
+        dispatch(getProfileAction('vi'))
+    }, [typeAction])
+
+    useEffect(() => {
+        dispatch(getCvInformationAction(cvIndex))
+    }, [cvIndex]);
+
+    useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                if (profile.profilesCvs.length === 0) {
+                    setCvIndex(0)
+                }
+                else {
+                    let maxIndex = 0;
+                    profile.profilesCvs.forEach((item, index) => {
+                        if (item.cvIndex > maxIndex) {
+                            maxIndex = item.cvIndex
+                        }
+                    })
+                    setCvIndex(maxIndex + 1)
+                }
+            }
+            if (typeAction === 'edit') {
+                console.log('cvIndexParent', cvIndexParent);
+                setCvIndex(cvIndexParent)
+            }
+        }
+    }, [profile])
 
     useEffect(() => {
         if (cvInformation && cvInformation.data) {
@@ -41,9 +73,9 @@ export default function PersonalInformation() {
             setLink(cvInformation?.data?.link);
             setIntent(cvInformation?.data?.intent);
             // setUrlAvatar(cvInformation?.data?.avatar);
-            setPart(cvInformation?.data?.part);
-            setRow(cvInformation?.data?.row);
-            setCol(cvInformation?.data?.col);
+            setPart(cvInformation?.data?.part ? cvInformation?.data?.part : 0);
+            setRow(cvInformation?.data?.row ? cvInformation?.data?.row : 0);
+            setCol(cvInformation?.data?.col ? cvInformation?.data?.col : 0);
         }
 
     }, [cvInformation])
@@ -85,10 +117,10 @@ export default function PersonalInformation() {
     }
 
     const handleSavePersonalInformation = () => {
-        const formData = createCvInformation(name, email, phone, address, link, intent, TYPE_PERSONAL, listImage, row, part, col, 0, null);
+        const formData = createCvInformation(name, email, phone, address, link, intent, TYPE_PERSONAL, listImage, row, part, col, cvIndex, null);
 
         dispatch(createCvInformationAction(formData)).then(() => {
-            dispatch(getCvInformationAction(0));
+            dispatch(getCvInformationAction(cvIndex));
         });
     }
 
@@ -118,7 +150,9 @@ export default function PersonalInformation() {
                     marginTop: 20,
                 }}>
                     <Image
-                        source={(cvInformation && cvInformation?.data &&  cvInformation?.data?.avatar) ? { uri: cvInformation?.data?.avatar } : require('../../../../images/default_image.png')}
+                        source={(cvInformation && cvInformation?.data && cvInformation?.data?.avatar) 
+                            ? { uri: cvInformation?.data?.avatar } : ((listImage && listImage.uri) ? { uri: listImage.uri } 
+                            : require('../../../../images/default_image.png'))}
                         style={{
                             width: 100,
                             height: 100,
