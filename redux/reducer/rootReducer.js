@@ -18,6 +18,7 @@ import nearbyReducer from "../store/Nearby/nearbySlice";
 import companyRatingReducer from "../store/CompanyRating/companyRatingSlice";
 import companyRatingOfAccountReducer from "../store/CompanyRating/CompanyRatingOfAccount/companyRatingOfAccountSlice";
 import cvInformationReducer from "../store/CvInFormation/cvInformationSlice";
+import communityReducer from "../store/Community/communitySlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
     nearby: nearbyReducer,
     companyRating: companyRatingReducer,
     companyRatingOfAccount: companyRatingOfAccountReducer,
+    community: communityReducer,
 });
 
 export default rootReducer;

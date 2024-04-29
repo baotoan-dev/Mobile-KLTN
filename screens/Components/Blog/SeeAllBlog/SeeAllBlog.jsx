@@ -1,51 +1,39 @@
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Image, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { communityApi } from '../../../../api/community/communityApi';
 import HeaderOfScreen from '../../HeaderOfScreen/HeaderOfScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCommunitiesAction } from '../../../../redux/store/Community/communitySlice';
 
 export default function SeeAllBlog(prop) {
     const type = prop.route.params.type;
+    const dispatch = useDispatch();
+    const community = useSelector((state) => state.community.communities);
     const [isOver, setIsOver] = React.useState(false);
     const [blog, setBlog] = React.useState([]);
     const [currentPage, setCurrentPage] = React.useState(0);
     const navigation = useNavigation();
     const [total, setTotal] = React.useState(0);
 
-    React.useEffect(() => {
-        fetchData();
+    useEffect(() => {
+        dispatch(getCommunitiesAction(0, "10", "cm", type === 'user' ? 0 : 1, "vi"))
     }, []);
 
-    const renderLoader = () => {
-        return (
-            isOver ? (
-                <View>
-                    <Text></Text>
-                </View>
-            ) : (
-                <View>
-                    <ActivityIndicator size="large" color="#0000ff" />
-                </View>
-            )
-        );
-    };
-
-    const fetchData = async () => {
-        try {
-            const res = await communityApi.getCommunityNews(currentPage.toString(), "10", "cm", type === 'user' ? 0 : 1, "vi");
-
-            if (res && res.data.status === 200) {
-                setBlog(res.data.data.communications);
-                setIsOver(res.data.data.is_over);
-                setTotal(res.data.data.total);
-            }
-
-        } catch (error) {
-            throw error
+    useEffect(() => {
+        if (currentPage === 0) {
+            setBlog(community.communications);
+        } else {
+            setBlog(prevBlog => [...prevBlog, ...community.communications]);
         }
-    }
+        setIsOver(community.is_over);
+        setTotal(community.total);
+    }, [community])
+
+    useEffect(() => {
+        dispatch(getCommunitiesAction(currentPage.toString(), "10", "cm", type === 'user' ? 0 : 1, "vi"))
+    }, [currentPage])
 
     const loadMoreItem = () => {
         if (!isOver) {
@@ -64,7 +52,7 @@ export default function SeeAllBlog(prop) {
                     paddingHorizontal: 10,
                     marginVertical: 10,
                 }}>
-                    {`Tất cả bài viết (${total})`}
+                    {`Tất cả bài viết (${total ? total : 0})`}
                 </Text>
                 <ScrollView>
                     <FlatList
@@ -72,7 +60,6 @@ export default function SeeAllBlog(prop) {
                         horizontal={false}
                         onEndReached={loadMoreItem}
                         onEndReachedThreshold={1}
-                        ListFooterComponentStyle={renderLoader}
                         ListFooterComponent={() => (
                             <View style={{
                                 height: 100,
@@ -85,7 +72,6 @@ export default function SeeAllBlog(prop) {
                                     )
                                 }
                             </View>
-
                         )}
                         renderItem={({ item }) => (
                             <TouchableOpacity

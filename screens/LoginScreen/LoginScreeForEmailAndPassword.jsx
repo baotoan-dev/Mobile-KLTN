@@ -6,8 +6,10 @@ import { authCandidate } from '../../api/candidate/auth';
 import { AuthContext } from '../../App';
 import { useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreeForEmailAndPassword() {
+    const navigation = useNavigation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { auth, setAuth } = useContext(AuthContext);
@@ -106,7 +108,11 @@ export default function LoginScreeForEmailAndPassword() {
 
             </View>
 
-            <TouchableOpacity style={{ marginTop: 10, paddingHorizontal: 20 }}>
+            <TouchableOpacity 
+            onPress={() => {
+                navigation.navigate('ForgotPassword');
+            }}
+            style={{ marginTop: 10, paddingHorizontal: 20 }}>
                 <Text style={{
                     textAlign: "right",
                     color: "rgba(52, 14, 231, 0.56)"
@@ -180,7 +186,7 @@ export default function LoginScreeForEmailAndPassword() {
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Register");
+                        navigation.navigate('Register');
                     }}
                 >
                     <Text style={{

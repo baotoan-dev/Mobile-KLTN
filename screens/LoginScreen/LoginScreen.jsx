@@ -17,8 +17,6 @@ const LoginScreen = () => {
     const checkTokenValidity = async () => {
       const accessToken = await AsyncStorage.getItem("token");
 
-      console.log(accessToken);
-
       if (accessToken) {
         setAuth(true);
       }

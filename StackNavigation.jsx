@@ -54,6 +54,9 @@ import AddSkill from './screens/PDFScreen/InforContentForCV/Skill/AddSkill/AddSk
 import UpdateSkill from './screens/PDFScreen/InforContentForCV/Skill/UpdateSkill/UpdateSkill';
 import AddAward from './screens/PDFScreen/InforContentForCV/Award/AddAward/AddAward';
 import UpdateAward from './screens/PDFScreen/InforContentForCV/Award/UpdateAward/UpdateAward';
+import CreateBlogComponent from './screens/Components/Blog/CreateBlogComponent/CreateBlogComponent';
+import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen/ForgotPasswordScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -202,6 +205,10 @@ function Navigation() {
                 <Stack.Screen name="SeeAllBlog" component={SeeAllBlog} options={{
                     headerShown: false,
                 }} />
+
+                {/* <Stack.Screen name="CreateBog" component={CreateBlogComponent} options={{
+                    headerShown: false,
+                }} /> */}
 
                 {/* applicaton */}
                 <Stack.Screen name="Application" component={Application} options={{
@@ -360,6 +367,16 @@ function Navigation() {
                 }} />
 
                 <Stack.Screen name="UpdateAward" component={UpdateAward} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Register */}
+                <Stack.Screen name='Register' component={RegisterScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Forgot password */}
+                <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

@@ -1,16 +1,19 @@
-import { View, Text, ScrollView, FlatList, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 export default function ListJobOfAllNewest({
     listJob,
     handleLoadMore,
-    isOver
+    isOver,
+    handleCreateBookmark,
+    handleDeleteBookmark
 }) {
     return (
         <FlatList
             data={listJob}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item?.id.toString()}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
             ListFooterComponent={() => {
@@ -25,7 +28,7 @@ export default function ListJobOfAllNewest({
                     >
                         <View style={styles.left}>
                             <Image
-                                source={(item.image) ? { uri: item.image } : require('../../../../../images/default_image.png')}
+                                source={(item?.image) ? { uri: item.image } : require('../../../../../images/default_image.png')}
                                 style={{
                                     width: 80,
                                     height: 80
@@ -38,24 +41,38 @@ export default function ListJobOfAllNewest({
                                     style={styles.title}
                                     numberOfLines={1}
                                 >
-                                    {item.title}
+                                    {item?.title}
                                 </Text>
                                 <Text>
-                                    {item.companyName}
+                                    {item?.companyName}
                                 </Text>
                             </View>
                             <Text style={styles.salary}>
                                 {
-                                    item.salaryMin === 0 && item.salaryMax === 0 ? 'Thương lượng' : (
-                                        item.salaryMin > 1000 && item.salaryMax > 1000 ? `${item.salaryMin / 10000000} - ${item.salaryMax / 10000000} triệu` : `${item.salaryMin} - ${item.salaryMax} nghìn`
+                                    item?.salaryMin === 0 && item?.salaryMax === 0 ? 'Thương lượng' : (
+                                        item?.salaryMin > 1000 && item?.salaryMax > 1000 ? `${item?.salaryMin / 10000000} - ${item?.salaryMax / 10000000} triệu` : `${item?.salaryMin} - ${item?.salaryMax} nghìn`
                                     )
                                 }
                             </Text>
                         </View>
-                        <View style={styles.right}>
-                            {
-                                item.bookmarked ? <Ionicons name="bookmark" size={24} color="black" /> : <Ionicons name="bookmark-outline" size={24} color="black" />
-                            }
+                        <View
+                            style={styles.right}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (item?.bookmarked) {
+                                        handleDeleteBookmark(item.id)
+                                    }
+                                    else {
+                                        handleCreateBookmark(item.id)
+                                    }
+                                }}
+                            >
+                                {
+                                    item?.bookmarked === true ? <Ionicons name="bookmark" size={24} color="black" /> : <Feather name="bookmark" size={24} color="black" />
+                                }
+                            </TouchableOpacity>
+
+
                         </View>
 
                     </TouchableOpacity>
