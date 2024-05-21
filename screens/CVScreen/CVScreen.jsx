@@ -61,13 +61,33 @@ export default function CVScreen() {
               color: 'gray',
               marginVertical: 10
             }}>
-              Tìm thấy {profile.profilesCvs.length} CV
+              Tìm thấy {(profile.profilesCvs && profile.profilesCvs.filter(
+                item => item.device === 1
+              )).length} CV tạo mới
             </Text>
           )
         }
         <View>
           {
-            profile && <ContentCvList checkShow={checkShow} profile={profile} />
+            profile && <ContentCvList checkShow={checkShow} profile={profile} type={1} />
+          }
+        </View>
+        {
+          profile && profile.profilesCvs && (
+            <Text style={{
+              fontSize: 12,
+              color: 'gray',
+              marginVertical: 10
+            }}>
+              Tìm thấy {profile.profilesCvs && profile.profilesCvs.filter(
+                item => item.device === 0
+              ).length} CV tải lên
+            </Text>
+          )
+        }
+        <View>
+          {
+            profile && <ContentCvList checkShow={checkShow} profile={profile} type={0} />
           }
         </View>
       </ScrollView>

@@ -9,6 +9,7 @@ import { profileCVsApi } from '../../../api/profile/profileCVs/profileCVsApi';
 import { useDispatch } from 'react-redux';
 import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
 import ModalConfirmDelete from '../ModalConfirmDelete/ModalConfirmDelete';
+import { CheckLengthTitle } from '../../../utils/CheckLengthTitle';
 
 export default function ModalActionCv({
   showModalActionCv,
@@ -17,6 +18,7 @@ export default function ModalActionCv({
   statusCv,
   idCV,
   profile,
+  typeCv,
 }) {
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -99,7 +101,7 @@ export default function ModalActionCv({
               <Text style={{
                 fontSize: 16,
                 fontWeight: 'bold',
-              }}>{nameCv}</Text>
+              }}>{CheckLengthTitle(nameCv)}</Text>
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -130,14 +132,17 @@ export default function ModalActionCv({
                 <AntDesign name="eyeo" size={20} color="black" />
                 <Text style={styles.ml}>Xem</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  handleEditCv()
-                }}
-                style={styles.item}>
-                <AntDesign name="edit" size={20} color="black" />
-                <Text style={styles.ml}>Chỉnh sửa</Text>
-              </TouchableOpacity>
+              {
+                typeCv === 0 &&
+                <TouchableOpacity
+                  onPress={() => {
+                    handleEditCv()
+                  }}
+                  style={styles.item}>
+                  <AntDesign name="edit" size={20} color="black" />
+                  <Text style={styles.ml}>Chỉnh sửa</Text>
+                </TouchableOpacity>
+              }
             </View>
             <View style={[styles.itemContainer]}>
               <TouchableOpacity

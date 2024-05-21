@@ -66,7 +66,7 @@ export default function ModalAddCv({
                 setFilePdf({
                     uri: result.uri,
                     name: result.name,
-                    type: 'application/pdf'
+                    type: result.mimeType
                 })
             }
 
@@ -76,6 +76,8 @@ export default function ModalAddCv({
             formData.append('file', filePdf);
             formData.append('cvIndex', cvIndex + 1);
             formData.append('templateId', 0);
+            formData.append('device', 1);
+            formData.append('type', 0);
 
             const res = await cvProfileApi.createCv(formData)
 
