@@ -38,13 +38,14 @@ export default function DisablePassAccount() {
                             navigation.goBack();
                         }}
                     >
-                        <Ionicons name="arrow-back" size={24} color="black" />
+                        <Ionicons name="arrow-back" size={24} color="#242670" />
                     </TouchableOpacity>
                     <Text style={{
                         justifyContent: 'center',
                         fontSize: 15,
                         marginLeft: 5,
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        color: '#242670',
                     }}>
                         Vô hiệu hóa tài khoản
                     </Text>

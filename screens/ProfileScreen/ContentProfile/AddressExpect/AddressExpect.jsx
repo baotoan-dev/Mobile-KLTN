@@ -30,7 +30,7 @@ export default function AddressExpect({ profile }) {
                         ) : <View>
                             <Text style={{
                                 fontWeight: 'bold',
-                                color: 'blue',
+                                color: '242670',
                             }}>Chưa cập nhật</Text>
                         </View>
                     }
@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     item: {
-        borderBottomColor: 'gray',
-        borderWidth: 0.1,
+        borderWidth: 0.5,
+        borderColor: '#242670',
+        backgroundColor: '#FFEFEF',
         alignSelf: 'flex-start',
         marginLeft: 10,
         padding: 5,
         borderRadius: 5,
-        backgroundColor: 'white',
         marginBottom: 10,
     }
 })

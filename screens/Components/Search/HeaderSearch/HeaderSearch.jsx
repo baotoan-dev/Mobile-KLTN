@@ -38,7 +38,9 @@ export default function HeaderSearch() {
     }
 
     return (
-        <View>
+        <View style={{
+            backgroundColor: 'white',
+        }}>
             <View style={styles.container}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
@@ -78,6 +80,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
-        paddingHorizontal: 10,
+        paddingHorizontal: 10
     }
 })

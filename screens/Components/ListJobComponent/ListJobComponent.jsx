@@ -94,7 +94,7 @@ export default function ListJobComponent({
                                                     padding: 2,
                                                     borderRadius: 4,
                                                     marginTop: 5,
-                                                    backgroundColor: item.application_status === 1 ? '#97E7E1' : item.application_status === 2 ? 'green' : item.application_status === 3 ? 'red' : 'blue'
+                                                    backgroundColor: item.application_status === 1 ? '#DFF5FF' : item.application_status === 2 ? 'green' : item.application_status === 3 ? 'red' : 'blue'
                                                 }]}>
                                                     <Text
                                                         style={{
@@ -102,16 +102,16 @@ export default function ListJobComponent({
                                                             fontSize: 12
                                                         }}>
                                                         {
-                                                            item.application_status === 1 && 'Đã ứng tuyển'
+                                                            item.application_status === 0 && 'Đã ứng tuyển'
                                                         }
                                                         {
-                                                            item.application_status === 2 && 'Đã được duyệ'
+                                                            item.application_status === 1 && 'Đã được duyệt'
                                                         }
                                                         {
                                                             item.application_status === 3 && 'Đã từ chối'
                                                         }
                                                         {
-                                                            item.application_status === 4 && 'Đã được tuyển'
+                                                            item.application_status === 2 && 'Đã được tuyển'
                                                         }
                                                     </Text>
                                                 </View>
@@ -145,7 +145,8 @@ export default function ListJobComponent({
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginBottom: 200
     },
     item: {
         marginVertical: 10,
@@ -153,14 +154,8 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'white',
         flexDirection: 'row',
-        borderColor: '#97E7E1',
-        borderWidth: 0.5,
-        shadowColor: '#97E7E1',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-        elevation: 5,
-        width: '100%'
+        borderColor: '#242670',
+        borderWidth: 0.5
     },
     flexRow: {
         flexDirection: 'row',
@@ -182,7 +177,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         padding: 2,
         borderRadius: 4,
-        backgroundColor: '#97E7E1',
+        backgroundColor: '#DFF5FF',
         marginTop: 5
     }
 }) 

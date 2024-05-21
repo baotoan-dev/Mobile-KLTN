@@ -12,6 +12,7 @@ import ModalUpdateProviceAddress from '../ModalUpdateProviceAddress/ModalUpdateP
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { updateProfileLocationsAction } from '../../../../../redux/store/Profile/ProfileLocations/Update/updateProfileLocations';
 import { getProfileAction } from '../../../../../redux/store/Profile/profileSilce';
+import Entypo from '@expo/vector-icons/Entypo';
 
 export default function ModalUpdateAddressExpect({
   isOpenModal,
@@ -131,7 +132,7 @@ export default function ModalUpdateAddressExpect({
                             <TouchableOpacity onPress={() => {
                               setListAddressExpect(listAddressExpect.filter(location => location.district_id !== item.district_id))
                             }}>
-                              <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
+                              <Entypo name="cross" size={24} color="black" />
                             </TouchableOpacity>
                           </View>
                         )
@@ -211,10 +212,10 @@ export default function ModalUpdateAddressExpect({
           <Text style={{
             fontWeight: 'bold',
             padding: 10,
-            width: '80%',
+            width: '95%',
             borderRadius: 10,
             color: 'white',
-            backgroundColor: 'blue',
+            backgroundColor: '#242670',
             textAlign: 'center',
           }}>
               Xác nhận

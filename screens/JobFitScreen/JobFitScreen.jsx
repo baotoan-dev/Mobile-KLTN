@@ -14,6 +14,7 @@ export default function JobFitScreen() {
     const [isOver, setIsOver] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [listNearBy, setListNearBy] = React.useState([]);
+    const [listNearByFilter, setListNearByFilter] = React.useState([]);
     const [total, setTotal] = React.useState(0);
     const [id, setId] = React.useState(0);
     const [search, setSearch] = React.useState('');
@@ -23,7 +24,15 @@ export default function JobFitScreen() {
     }, [])
 
     useEffect(() => {
-        dispatch(getAllNearByJobAction(0, 10, 'vi', search));
+        if (search) {
+            const newList = listNearBy.filter((item) => {
+                return item.title.toLowerCase().includes(search.toLowerCase());
+            })
+            setListNearByFilter(newList);
+        }
+        else {
+            setListNearByFilter(listNearBy);
+        }
     }, [search])
 
     useEffect(() => {
@@ -81,6 +90,7 @@ export default function JobFitScreen() {
             dispatch(getProfileAnalyticsAction());
         }
     }
+
     return (
         <View>
             <HeaderOfScreen title="Việc làm phù hợp" />
@@ -116,7 +126,7 @@ export default function JobFitScreen() {
                 />
             </View>
             <ListJobOfFit
-                listJob={listNearBy}
+                listJob={listNearByFilter}
                 isOver={isOver}
                 handleDeleteBookmark={handleDeleteBookmark}
                 handleLoadMore={handleLoadMore}

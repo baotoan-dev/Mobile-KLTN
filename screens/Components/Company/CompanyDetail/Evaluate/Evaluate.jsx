@@ -87,7 +87,12 @@ export default function Evaluate({
                         />
                     </View>
                 ) : (
-                    <>
+                    <View
+                        style={{
+                            flexDirection: 'column',
+                            alignItems: 'center'
+                        }}
+                    >
                         <Image
                             source={require('../../../../../images/no-comment.png')}
                             style={{ width: 100, height: 100, marginTop: 50 }}
@@ -95,7 +100,7 @@ export default function Evaluate({
                         <Text style={{ textAlign: 'center', marginTop: 10, fontWeight: 'bold' }}>
                             Chưa có đánh giá nào
                         </Text>
-                    </>
+                    </View>
                 )
             }
         </View>

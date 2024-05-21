@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid, Alert, ToastAndroid } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid, Alert, ToastAndroid, Image } from 'react-native'
 import React, { useEffect } from 'react'
 import Modal from 'react-native-modal';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -135,24 +135,10 @@ export default function ModalAddCv({
                         </TouchableOpacity>
                     </View>
                     <View style={{
-                        paddingHorizontal: 20,
-                        marginTop: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <Text 
-                            style={{
-                                fontSize: 16,
-                                fontWeight: 'bold',
-                                color: 'gray',
-                                textAlign: 'center'
-                            }}
-                        >
-                            Chọn cách thêm CV
-                        </Text>
-                    </View>
-                    <View style={{
                         padding: 20,
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: 20
                     }}>
                         <TouchableOpacity
                             onPress={() => {
@@ -160,20 +146,19 @@ export default function ModalAddCv({
                             }}
                         >
                             <View style={{
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                padding: 10,
-                                borderColor: '#97E7E1',
-                                backgroundColor: '#E1F7F5',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center'
                             }}>
-                                <AntDesign name="addfile" size={22} color="black" />
-                                <Text style={{
-                                    fontSize: 16,
-                                    fontWeight: 'bold',
-                                    marginLeft: 10
-                                }}>
+                                <Image
+                                    source={require('../../../assets/upload.png')}
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                        resizeMode: 'contain'
+                                    }}
+                                />
+                                <Text style={styles.title}>
                                     Thêm CV mới
                                 </Text>
                             </View>
@@ -184,21 +169,19 @@ export default function ModalAddCv({
                             }}
                         >
                             <View style={{
-                                padding: 10,
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                marginTop: 10,
-                                borderColor: '#97E7E1',
-                                backgroundColor: '#E1F7F5',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center'
                             }}>
-                                <AntDesign name="clouduploado" size={22} color="black" />
-                                <Text style={{
-                                    fontSize: 16,
-                                    fontWeight: 'bold',
-                                    marginLeft: 10
-                                }}>
+                                <Image
+                                    source={require('../../../assets/select.png')}
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                        resizeMode: 'contain'
+                                    }}
+                                />
+                                <Text style={styles.title}>
                                     Chọn CV từ máy
                                 </Text>
                             </View>
@@ -221,5 +204,14 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '30%',
         borderRadius: 10,
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginLeft: 10,
+        marginTop: 5
+    },
+    flexItem: {
+        
     }
 })

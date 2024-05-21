@@ -2,13 +2,12 @@ import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Image, Scrol
 import React, { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { communityApi } from '../../../../api/community/communityApi';
 import HeaderOfScreen from '../../HeaderOfScreen/HeaderOfScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCommunitiesAction } from '../../../../redux/store/Community/communitySlice';
 
 export default function SeeAllBlog(prop) {
-    const type = prop.route.params.type;
+    const type = prop.route.params ? prop.route.params.type : 'user';
     const dispatch = useDispatch();
     const community = useSelector((state) => state.community.communities);
     const [isOver, setIsOver] = React.useState(false);
@@ -25,7 +24,7 @@ export default function SeeAllBlog(prop) {
         if (currentPage === 0) {
             setBlog(community.communications);
         } else {
-            setBlog(prevBlog => [...prevBlog, ...community.communications]);
+            setBlog((prevBlog) => [...prevBlog, ...community?.communications]);
         }
         setIsOver(community.is_over);
         setTotal(community.total);
@@ -51,6 +50,7 @@ export default function SeeAllBlog(prop) {
                     fontSize: 14,
                     paddingHorizontal: 10,
                     marginVertical: 10,
+                    color: '#242670'
                 }}>
                     {`Tất cả bài viết (${total ? total : 0})`}
                 </Text>
@@ -103,7 +103,7 @@ export default function SeeAllBlog(prop) {
                                         }}>
                                             <Text style={{
                                                 fontSize: 12,
-                                                color: '#d3d3d3',
+                                                color: '#242670',
                                             }}>
                                                 {item.createdAtText}
                                             </Text>
@@ -122,7 +122,8 @@ export default function SeeAllBlog(prop) {
 
 const styles = StyleSheet.create({
     container: {
-
+        backgroundColor: 'white',
+        flex: 1,
     },
     item: {
         flexDirection: 'row',

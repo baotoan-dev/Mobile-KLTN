@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Entypo from '@expo/vector-icons/Entypo';
 
 export default function ModalUpdateProviceAddress({
     handleOpenModal,
@@ -120,7 +121,7 @@ export default function ModalUpdateProviceAddress({
                                     <View style={{
                                         alignSelf: 'flex-start',
                                         borderWidth: 0.5,
-                                        borderRadius: 10,
+                                        borderRadius: 5,
                                         marginLeft: 10,
                                         padding: 5,
                                         backgroundColor: 'white',
@@ -132,7 +133,7 @@ export default function ModalUpdateProviceAddress({
                                         <TouchableOpacity onPress={() => {
                                             setListAddressExpect(listAddressExpect.filter(location => location.district_id !== item.district_id))
                                         }}>
-                                            <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
+                                            <Entypo name="cross" size={24} color="#242670" />
                                         </TouchableOpacity>
                                     </View>
                                 )

@@ -11,7 +11,8 @@ export default function HeadingSeeMore({ left, right, handleSeeMore }) {
                 <Text style={{
                     fontSize: 17,
                     fontWeight: 'bold',
-                    marginBottom: 10
+                    marginBottom: 10,
+                    color: '#242670',
                 }}>{left}</Text>
                 <TouchableOpacity
                     onPress={() => {
@@ -21,7 +22,7 @@ export default function HeadingSeeMore({ left, right, handleSeeMore }) {
                     <Text style={{
                     fontSize: 13,
                     marginBottom: 10,
-                    color: 'blue',
+                    color: '#242670',
                 }}>{right}</Text></TouchableOpacity>
             </View>
         </View>

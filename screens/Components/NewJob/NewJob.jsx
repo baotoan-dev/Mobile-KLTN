@@ -28,7 +28,7 @@ export default function NewJob() {
     const [accountId, setAccountId] = useState('');
     const newPost = useSelector(state => state.newPost.newPost);
 
-    const getNewJob = async () => {
+    const getNewJob = () => {
         dispatch(getNewPostAction(
             null,
             null,
@@ -40,6 +40,11 @@ export default function NewJob() {
             currentPage
         ))
     }
+
+    useEffect(() => {
+        getNewJob();
+    }, [])
+
 
     useEffect(() => {
         if (newPost && newPost.data && newPost.data.length > 0) {
@@ -223,13 +228,13 @@ export default function NewJob() {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 5,
         paddingTop: 10,
         paddingHorizontal: 20,
+        backgroundColor: 'white',
     },
     item: {
         borderWidth: 0.2,
-        borderColor: '#97E7E1',
+        borderColor: '#242670',
         borderWidth: 0.5,
         padding: 10,
         display: 'flex',

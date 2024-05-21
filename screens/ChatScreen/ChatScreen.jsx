@@ -18,12 +18,13 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   header: {
     paddingTop: 30,
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#242670',
     borderBottomColor: 'gray',
     borderBottomWidth: 0.5,
     padding: 10,

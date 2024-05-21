@@ -77,10 +77,11 @@ export default function ManageRecord() {
                             flexDirection: 'row',
                             alignItems: 'center',
                         }}>
-                            <AntDesign name="creditcard" size={24} color="blue" />
+                            <AntDesign name="creditcard" size={24} color="#242670" />
                             <Text style={{
                                 marginLeft: 10,
                                 fontWeight: 'bold',
+                                color: '#242670',
                             }}>
                                 Trạng thái làm việc
                             </Text>
@@ -114,7 +115,7 @@ export default function ManageRecord() {
                                         onPress={() => setShowModalSearch(true)}
                                     >
                                         <Text style={{
-                                            color: 'blue',
+                                            color: '#242670',
                                             marginLeft: 5,
                                         }}>
                                             thay đổi

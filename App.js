@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, LogBox } from 'react-native';
 import Navigation from './StackNavigation';
 import { createContext, useEffect } from 'react';
 import { useState } from 'react';
@@ -12,6 +12,8 @@ export const AuthContext = createContext();
 export default function App() {
 
   const [auth, setAuth] = useState(false);
+  LogBox.ignoreLogs(['Warning: ...']);
+  LogBox.ignoreAllLogs();
 
   const checkAuth = async () => {
     const token = await SecureStore.getItemAsync('token');

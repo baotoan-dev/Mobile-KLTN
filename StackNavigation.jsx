@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
@@ -146,7 +147,26 @@ function BottomTabs() {
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
-    const { auth, setAuth } = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
+    const [isWaiting, setIsWaiting] = useState(true);
+
+    useEffect(() => {
+        if (!auth) {
+            const timer = setTimeout(() => {
+                setIsWaiting(false);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [auth]);
+
+    if (!auth && isWaiting) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
 
     return (
         <NavigationContainer>

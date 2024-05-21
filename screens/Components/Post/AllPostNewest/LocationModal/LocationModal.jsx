@@ -6,9 +6,10 @@ import ListProvinceLocation from './ListProvinceLocation/ListProvinceLocation';
 
 export default function LocationModal({
     showModalLocation,
-    setShowModalLocation
+    setShowModalLocation,
+    dataLocationFilter,
+    setDataLocationFilter,
 }) {
-    const [idOfProvince, setIdOfProvince] = React.useState([])
     const [search, setSearch] = React.useState('')
     return (
         <View>
@@ -49,8 +50,9 @@ export default function LocationModal({
                     <ScrollView>
                         <ListProvinceLocation
                             search={search}
-                            idOfProvince={idOfProvince}
-                            setIdOfProvince={setIdOfProvince}
+                            dataLocationFilter={dataLocationFilter}
+                            setDataLocationFilter={setDataLocationFilter}
+                            setShowModalLocation={setShowModalLocation}
                         />
                     </ScrollView>
                 </View>

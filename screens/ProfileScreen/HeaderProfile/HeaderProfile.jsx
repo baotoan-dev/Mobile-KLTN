@@ -124,7 +124,7 @@ export default function HeaderProfile({ isScrolling }) {
                             <Text style={{
                                 fontSize: 16,
                                 fontWeight: 'bold',
-                                color: 'blue',
+                                color: '#242670',
                                 marginTop: 10,
                             }}>
                                 {dataProfile.name}
@@ -205,13 +205,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         zIndex: 1000000000000000,
+        borderColor: '#242670',
+        borderWidth: 0.6,
     },
     avatar: {
         width: 80,
         height: 80,
         borderRadius: 50,
         marginLeft: 10,
-        borderColor: 'red',
+        borderColor: '#242670',
         borderWidth: 0.6,
         position: 'relative'
     },

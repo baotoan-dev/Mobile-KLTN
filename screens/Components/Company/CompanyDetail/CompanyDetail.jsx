@@ -118,18 +118,18 @@ export default function CompanyDetail(prop) {
                             <Tab value={index} onChange={setIndex} dense>
                                 <Tab.Item
                                     titleStyle={{
-                                        color: 'blue'
+                                        color: '#242670'
                                     }}>Thông tin
                                 </Tab.Item>
                                 <Tab.Item
                                     titleStyle={{
-                                        color: 'blue'
+                                        color: '#242670'
                                     }}
                                 >Việc làm
                                 </Tab.Item>
                                 <Tab.Item
                                     titleStyle={{
-                                        color: 'blue'
+                                        color: '#242670'
                                     }}
                                 >
                                     Đánh giá

@@ -6,7 +6,9 @@ import AdminBlogComponent from './AdminBlogComponent/AdminBlogComponent'
 
 export default function Blog() {
     return (
-        <View>
+        <View style={{
+            backgroundColor: 'white'
+        }}>
             <HeadingBlog />
             <UserBlogComponent />
             <AdminBlogComponent />

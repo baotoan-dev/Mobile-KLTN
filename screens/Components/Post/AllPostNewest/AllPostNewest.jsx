@@ -14,9 +14,13 @@ export default function AllPostNewest() {
     const dispatch = useDispatch();
     const newPost = useSelector(state => state.newPost.newPost);
     const [currentPage, setCurrentPage] = React.useState(0)
+    const [keyword, setKeyword] = React.useState('')
     const [listJob, setListJob] = React.useState([])
     const [totalPage, setTotalPage] = React.useState(0)
     const [isOver, setIsOver] = React.useState(false)
+    const [listJobFilter, setListJobFilter] = React.useState([])
+    const [dataCategoryFilter, setDataCategoryFilter] = React.useState({});
+    const [dataLocationFilter, setDataLocationFilter] = React.useState({});
 
     useEffect(() => {
         dispatch(getNewPostAction(
@@ -38,9 +42,9 @@ export default function AllPostNewest() {
     useEffect(() => {
         dispatch(getNewPostAction(
             null,
+            dataCategoryFilter ? dataCategoryFilter.parent_category_id : null,
             null,
-            null,
-            null,
+            dataLocationFilter ? dataLocationFilter.id : null,
             10,
             0,
             'vi',
@@ -55,6 +59,24 @@ export default function AllPostNewest() {
             setIsOver(newPost.is_over);
         })
     }, [currentPage]);
+
+
+    useEffect(() => {
+        dispatch(getNewPostAction(
+            null,
+            dataCategoryFilter ? dataCategoryFilter.parent_category_id : null,
+            null,
+            dataLocationFilter ? dataLocationFilter.id : null,
+            16,
+            0,
+            'vi',
+            0
+        )).then(() => {
+            setListJob(newPost.data);
+            setTotalPage(newPost.totalPage);
+            setIsOver(newPost.is_over);
+        })
+    }, [dataCategoryFilter, dataLocationFilter]);
 
     const handleLoadMore = () => {
         if (!isOver && currentPage < totalPage - 1) {
@@ -118,27 +140,52 @@ export default function AllPostNewest() {
         }
     }
 
+    const handleSearch = (keyword) => {
+        if (keyword === '') {
+            setListJobFilter(listJob)
+        }
+        else {
+            const listJobFilter = newPost.data.filter((item) => {
+                return item.title.toLowerCase().includes(keyword.toLowerCase())
+            })
+            setListJobFilter(listJobFilter)
+        }
+    }
+
+    useEffect(() => {
+        handleSearch(keyword)
+    }, [keyword])
+
     return (
         <View>
             <View style={styles.header}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                 >
-                    <Ionicons name="arrow-back-outline" size={24} color="black" />
+                    <Ionicons name="arrow-back-outline" size={24} color="#242670" />
                 </TouchableOpacity>
                 <Text style={{
                     marginLeft: 5,
                     fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#242670'
                 }}>
                     Việc làm tốt nhất
                 </Text>
             </View>
-            <HeaderFIlterAllPostNewest />
+            <HeaderFIlterAllPostNewest
+                handleSearch={handleSearch}
+                setKeyword={setKeyword}
+                dataCategoryFilter={dataCategoryFilter}
+                setDataCategoryFilter={setDataCategoryFilter}
+                dataLocationFilter={dataLocationFilter}
+                setDataLocationFilter={setDataLocationFilter}
+            />
             <ListJobOfAllNewest
                 handleCreateBookmark={handleCreateBookmark}
                 handleDeleteBookmark={handleDeleteBookmark}
                 isOver={isOver}
-                listJob={listJob}
+                listJob={listJobFilter.length > 0 ? listJobFilter : listJob}
                 handleLoadMore={handleLoadMore}
             />
         </View>

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
     },
     name: {
         fontSize: 16,

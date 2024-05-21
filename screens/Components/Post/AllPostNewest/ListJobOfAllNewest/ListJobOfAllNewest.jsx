@@ -12,6 +12,7 @@ export default function ListJobOfAllNewest({
 }) {
     return (
         <FlatList
+            showsVerticalScrollIndicator={false}
             data={listJob}
             keyExtractor={(item) => item?.id.toString()}
             onEndReached={handleLoadMore}
@@ -43,7 +44,10 @@ export default function ListJobOfAllNewest({
                                 >
                                     {item?.title}
                                 </Text>
-                                <Text>
+                                <Text style={{
+                                    fontSize: 13,
+                                    color: 'gray'
+                                }}>
                                     {item?.companyName}
                                 </Text>
                             </View>
@@ -85,8 +89,8 @@ export default function ListJobOfAllNewest({
 const styles = StyleSheet.create({
     item: {
         padding: 10,
-        borderWidth: 1,
-        borderColor: '#9AC8CD',
+        borderWidth: 0.5,
+        borderColor: '#242670',
         margin: 5,
         borderRadius: 5,
         backgroundColor: 'white',
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     },
     center: {
         width: '70%',
-        marginLeft: 10,
+        marginLeft: 15,
         justifyContent: 'space-between',
     },
     right: {

@@ -43,7 +43,7 @@ export default function Information({ company }) {
                                             marginRight: 2
                                         }}>Trang web:</Text>
                                         <Text style={{
-                                            color: 'blue',
+                                            color: '#242670',
                                             fontStyle: 'italic',
                                             fontWeight: 'bold',
                                         }}>{company?.website}</Text>
@@ -60,7 +60,7 @@ export default function Information({ company }) {
                                             marginRight: 2
                                         }}>Mã số thuể:</Text>
                                         <Text style={{
-                                            color: 'blue',
+                                            color: '#242670',
                                             fontStyle: 'italic',
                                             fontWeight: 'bold',
                                         }}>{company?.tax ? company.tax : 'Chưa cập nhật'}</Text>
@@ -77,7 +77,7 @@ export default function Information({ company }) {
                                             marginRight: 2
                                         }}>Email:</Text>
                                         <Text style={{
-                                            color: 'blue',
+                                            color: '#242670',
                                             fontStyle: 'italic',
                                             fontWeight: 'bold',
                                         }}>{company?.email}</Text>
@@ -94,7 +94,7 @@ export default function Information({ company }) {
                                             marginRight: 2
                                         }}>Điện thoại:</Text>
                                         <Text style={{
-                                            color: 'blue',
+                                            color: '#242670',
                                             fontStyle: 'italic',
                                             fontWeight: 'bold',
                                         }}>{company?.phone}</Text>
@@ -111,7 +111,7 @@ export default function Information({ company }) {
                                             marginRight: 2
                                         }}>Ngành nghề:</Text>
                                         <Text style={{
-                                            color: 'blue',
+                                            color: '#242670',
                                             fontStyle: 'italic',
                                             fontWeight: 'bold',
                                         }}>{company?.categoryData}</Text>
@@ -128,7 +128,7 @@ export default function Information({ company }) {
                                             marginRight: 2
                                         }}>Quy mô công ty:</Text>
                                         <Text style={{
-                                            color: 'blue',
+                                            color: '#242670',
                                             fontStyle: 'italic',
                                             fontWeight: 'bold',
                                         }}>{company?.companySizeInfomation ? company.companySizeInfomation.nameText : 'Chưa cập nhật'}</Text>

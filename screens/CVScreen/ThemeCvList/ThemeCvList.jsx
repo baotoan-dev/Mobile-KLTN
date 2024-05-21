@@ -57,8 +57,8 @@ export default function ThemeCvList() {
                                     borderWidth: 0.3,
                                     borderRadius: 3,
                                     margin: 10,
-                                    borderColor: '#97E7E1',
-                                    backgroundColor: '#DFF5F3',
+                                    borderColor: '#242670',
+                                    backgroundColor: '#F8F9D7',
                                     padding: 10,
                                     shadowColor: "#000",
                                     shadowOffset: {

@@ -6,10 +6,11 @@ import ListParentCategory from './ListParentCategory/ListParentCategory';
 
 export default function CategoryModal({
     showModalCategory,
-    setShowModalCategory
+    setShowModalCategory,
+    dataCategoryFilter,
+    setDataCategoryFilter,
 }) {
     const [search, setSearch] = React.useState('')
-    const [idOfParentCategory, setIdOfParentCategory] = React.useState([])
     return (
         <View>
             <Modal
@@ -49,8 +50,9 @@ export default function CategoryModal({
                     <ScrollView>
                         <ListParentCategory
                             search={search}
-                            idOfParentCategory={idOfParentCategory}
-                            setIdOfParentCategory={setIdOfParentCategory}
+                            dataCategoryFilter={dataCategoryFilter}
+                            setDataCategoryFilter={setDataCategoryFilter}
+                            setShowModalCategory={setShowModalCategory}
                         />
                     </ScrollView>
                 </View>
