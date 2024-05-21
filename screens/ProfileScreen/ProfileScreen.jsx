@@ -12,8 +12,7 @@ import ContentProfile from './ContentProfile/ContentProfile';
 export default function ProfileScreen() {
   const dispatch = useDispatch();
   const [token, setToken] = useState('');
-  const { auth, setAuth } = useContext(AuthContext);
-  const { profile, loading, error } = useSelector(state => state.profile);
+  const { profile } = useSelector(state => state.profile);
   const [isScrolling, setIsScrolling] = useState(false);
   const [dataProfile, setDataProfile] = useState({});
 
@@ -41,8 +40,12 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View>
-      <HeaderProfile profile={profile} isScrolling={isScrolling}/>
+    <View
+      style={{
+        backgroundColor: 'white',
+      }}
+    >
+      <HeaderProfile isScrolling={isScrolling} />
       <ScrollView showsVerticalScrollIndicator={false} onScroll={handleScroll} style={styles.container}>
         <ContentProfile profile={dataProfile} setIsScrolling={setIsScrolling} isScrolling={isScrolling} />
       </ScrollView>

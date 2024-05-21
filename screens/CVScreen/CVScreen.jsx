@@ -23,17 +23,21 @@ export default function CVScreen() {
 
 
   return (
-    <View>
+    <View style={{
+      backgroundColor: 'white',
+      height: '100%'
+    }}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => {
           navigation.goBack()
         }}>
-          <Ionicons name="arrow-back" size={24} color="black" />
+          <Ionicons name="arrow-back" size={24} color="#242670" />
         </TouchableOpacity>
         <Text style={{
-          fontSize: 16,
-          marginLeft: 10,
-          fontWeight: 'bold'
+          fontSize: 17,
+          marginLeft: 5,
+          fontWeight: 'bold',
+          color: '#242670'
         }}>Quản lý CV</Text>
       </View>
       <ScrollView style={styles.content}>
@@ -41,12 +45,13 @@ export default function CVScreen() {
           <Text style={{
             fontSize: 15,
             fontWeight: 'bold',
-            color: 'gray'
+            color: 'gray',
+            color: '#242670'
           }}>
             Thư viện CV
           </Text>
           {
-            checkShow ? <AntDesign name="appstore-o" size={24} color="black" onPress={() => setCheckShow(!checkShow)} /> : <Feather name="list" size={24} color="black" onPress={() => setCheckShow(!checkShow)} />
+            checkShow ? <AntDesign name="appstore-o" size={24} color="#242670" onPress={() => setCheckShow(!checkShow)} /> : <Feather name="list" size={24} color="black" onPress={() => setCheckShow(!checkShow)} />
           }
         </View>
         {
@@ -75,7 +80,7 @@ export default function CVScreen() {
       }
       <FAB
         onPress={() => {
-          setShowModalAddCv(true)
+          setShowModalAddCv(!showModalAddCv)
         }}
         placement="right"
         buttonStyle={{

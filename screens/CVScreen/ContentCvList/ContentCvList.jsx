@@ -19,21 +19,6 @@ export default function ContentCvList({ checkShow, profile }) {
         }
     }, [profile])
 
-    // useEffect(() => {
-    //     Animated.timing(itemOpacity, {
-    //         toValue: 1,
-    //         duration: 500,
-    //         useNativeDriver: true
-    //     }).start();
-
-    //     Animated.spring(itemScale, {
-    //         toValue: 1,
-    //         tension: 20,
-    //         friction: 4,
-    //         useNativeDriver: true
-    //     }).start()
-    // }, []);
-
     return (
         <Animated.View style={styles.container}>
             {checkShow ? (
@@ -94,7 +79,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                             </Text>
                                         </View>
                                         <TouchableOpacity onPress={() => {
-                                            setShowModalActionCv(true);
+                                            setShowModalActionCv(!showModalActionCv);
                                             setNameCv(item.name);
                                             setStatusCv(item.status);
                                             setIdCv(item.id);
@@ -168,7 +153,7 @@ export default function ContentCvList({ checkShow, profile }) {
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    setShowModalActionCv(true);
+                                    setShowModalActionCv(!showModalActionCv);
                                     setNameCv(item.name);
                                     setStatusCv(item.status);
                                     setIdCv(item.id);
@@ -209,7 +194,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        borderColor: '#97E7E1',
+        borderColor: '#242670',
         borderWidth: 0.5,
     },
     itemContainer: {
@@ -235,7 +220,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 80,
-        borderColor: '#97E7E1',
+        borderColor: '#242670',
         borderWidth: 0.5,
         marginVertical: 5,
         borderRadius: 5,

@@ -1,4 +1,4 @@
-import { View, ActivityIndicator } from 'react-native'
+import { View} from 'react-native'
 import React, { useEffect } from 'react'
 import HeaderOfScreen from '../Components/HeaderOfScreen/HeaderOfScreen'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,6 +14,7 @@ export default function SeenPDFScreen(prop) {
         dispatch(getProfileAction('vi'))
     }, [])
 
+
     useEffect(() => {
         if (profile) {
             const listCV = profile.profilesCvs;
@@ -25,9 +26,6 @@ export default function SeenPDFScreen(prop) {
     return (
         <View>
             <HeaderOfScreen title="CV đã xem" />
-            {
-                
-            }
         </View>
     )
 }

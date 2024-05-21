@@ -12,6 +12,6 @@ export function createCvInformation(name, email, phone, address, link, intent, t
     formData.append('part', part);
     formData.append('col', col);
     formData.append('cvIndex', cvIndex);
-    formData.append('avatarPath', avatarPath);
+    avatarPath && formData.append('avatarPath', avatarPath);
     return formData;
 }

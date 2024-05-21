@@ -29,7 +29,7 @@ export default function JobExpect({ profile }) {
                         ) : <View>
                             <Text style={{
                                 fontWeight: 'bold',
-                                color: 'blue',
+                                color: '#242670',
                             }}>Chưa cập nhật</Text>
                         </View>
                     }
@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     item: {
-        borderBottomColor: 'gray',
-        borderWidth: 0.1,
+        borderWidth: 0.5,
         alignSelf: 'flex-start',
+        borderColor: '#242670',
         marginLeft: 10,
         padding: 5,
         borderRadius: 5,
-        backgroundColor: 'white',
+        backgroundColor: '#FFEFEF',
         marginTop: 5,
     }
 })

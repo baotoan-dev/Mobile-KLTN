@@ -17,7 +17,7 @@ export default function UpdateProject(prop) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const cvProject = useSelector(state => state.cvProject.cvProject);
-  const { idParent, typeParent, timeParent, linkParent, participantParent, positionParent, functionalityParent, technologyParent } = prop.route.params;
+  const { cvIndexParent, nameParent, idParent, typeParent, timeParent, linkParent, participantParent, positionParent, functionalityParent, technologyParent } = prop.route.params;
   const [type, setType] = useState();
   const [listProject, setListProject] = useState([])
   const [position, setPosition] = useState();
@@ -27,10 +27,12 @@ export default function UpdateProject(prop) {
   const [technology, setTechnology] = useState();
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
+  const [name, setName] = useState();
 
   useEffect(() => {
-    dispatch(getCvProjectAction(0));
+    dispatch(getCvProjectAction(cvIndexParent));
     setType(typeParent);
+    setName(nameParent);
     setPosition(positionParent);
     setLink(linkParent);
     setParticipant(participantParent);
@@ -60,7 +62,7 @@ export default function UpdateProject(prop) {
   const handleSaveProject = () => {
     const newListProject = {
       col: listProject.col,
-      cvIndex: listProject.cvIndex,
+      cvIndex: cvIndexParent,
       part: listProject.part,
       row: listProject.row,
       type: listProject.type,
@@ -74,6 +76,7 @@ export default function UpdateProject(prop) {
           position: position,
           functionality: functionality,
           technology: technology,
+          name: name,
           padIndex: 0
         }
       ]
@@ -82,7 +85,7 @@ export default function UpdateProject(prop) {
 
     if (newCreateProject) {
       dispatch(createCvProjectAction([newCreateProject])).then(() => {
-        dispatch(getCvProjectAction(0));
+        dispatch(getCvProjectAction(cvIndexParent));
       });
     }
     navigation.goBack();
@@ -139,14 +142,14 @@ export default function UpdateProject(prop) {
                 marginLeft: 5,
               }}
               placeholder="Tên dự án"
-              onChangeText={(text) => setPosition(text)}
-              value={position}
+              onChangeText={(text) => setName(text)}
+              value={name}
             >
             </TextInput>
           </View>
         </View>
         {/* position */}
-        {/* <View>
+        <View>
           <View style={{
             flexDirection: 'row',
             marginTop: 10,
@@ -170,7 +173,7 @@ export default function UpdateProject(prop) {
             >
             </TextInput>
           </View>
-        </View> */}
+        </View>
         {/* link */}
         <View>
           <View style={{

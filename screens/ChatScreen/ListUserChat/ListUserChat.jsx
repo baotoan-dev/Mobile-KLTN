@@ -31,6 +31,8 @@ export default function ListUserChat() {
                                     id: item.id,
                                     userId: item.user_id,
                                     postId: item.post_id,
+                                    imageParent: item.image ? item.image : 'https://res.cloudinary.com/ddwjnjssj/image/upload/v1702047527/images/avatar/1702047524545-59c27fe7-3919-4a8d-a150-984d9428f184.jpg',
+                                    nameParent: item.company_name,
                                 })
                             }}
                             style={styles.item}>
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
     },
     name: {
         fontSize: 16,

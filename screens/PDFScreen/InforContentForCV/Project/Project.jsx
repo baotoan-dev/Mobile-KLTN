@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
@@ -10,21 +9,52 @@ import { createCvProjectAction, getCvProjectAction } from '../../../../redux/sto
 import { createCvListProject } from './helpers/CreateCvListProject';
 import { createCvProject, createMoreCvProject } from './helpers/CreateCvProject';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Project() {
+export default function Project(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { typeAction,templateId,cvIndexParent } = prop.route.params;
+    const profile = useSelector(state => state.profile.profile);
     const [listProject, setListProject] = useState([])
     const cvProject = useSelector(state => state.cvProject.cvProject);
+    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
-        dispatch(getCvProjectAction(0))
+        dispatch(getProfileAction('vi'))
     }, [])
+
+    useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                if (profile.profilesCvs.length === 0) {
+                    setCvIndex(0)
+                }
+                else {
+                    let maxIndex = 0;
+                    profile.profilesCvs.forEach((item, index) => {
+                        if (item.cvIndex > maxIndex) {
+                            maxIndex = item.cvIndex
+                        }
+                    })
+                    setCvIndex(maxIndex + 1)
+                }
+            }
+            else {
+                setCvIndex(cvIndexParent)
+            }
+        }
+    }, [typeAction, profile])
+
+    useEffect(() => {
+        dispatch(getCvProjectAction(cvIndex))
+    }, [typeAction, profile])
 
     useEffect(() => {
         if (cvProject) {
             const data = createCvListProject(cvProject);
-            setListProject(data[0]);
+            setListProject(data ? data[0] : {});
         }
     }, [cvProject]);
 
@@ -34,7 +64,7 @@ export default function Project() {
         const newListProject = listProject && listProject.moreCvProjects.filter(item => +item.id !== +id);
 
         newListProject.map((item, index) => {
-            const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, item.index, item.padIndex);
+            const createMoreCvProjectData = createMoreCvProject(item.time, item.link, item.participant, item.position, item.functionality, item.technology, item.index, item.padIndex, item.name);
             arrayMore.push(createMoreCvProjectData);
         });
 
@@ -42,11 +72,10 @@ export default function Project() {
 
         if (newCreateProject) {
             dispatch(createCvProjectAction([newCreateProject])).then(() => {
-                dispatch(getCvProjectAction(0));
+                dispatch(getCvProjectAction(cvIndex));
             });
         }
     };
-
 
     return (
         <View style={styles.container}>
@@ -65,12 +94,14 @@ export default function Project() {
                                         onPress={() => {
                                             navigation.navigate('UpdateProject', {
                                                 idParent: item.id,
+                                                nameParent: item.name,
                                                 timeParent: item.time,
                                                 linkParent: item.link,
                                                 participantParent: item.participant,
                                                 positionParent: item.position,
                                                 functionalityParent: item.functionality,
                                                 technologyParent: item.technology,
+                                                cvIndexParent: cvIndex,
                                             })
                                         }}
                                     >
@@ -85,7 +116,15 @@ export default function Project() {
                                                 fontWeight: 'bold',
                                                 fontSize: 16,
                                             }}>
-                                            {`Tên dự án: ${item.position}`}
+                                            {`Tên dự án: ${item.name}`}
+                                        </Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{
+                                                fontSize: 12,
+                                                textTransform: 'uppercase'
+                                            }}>
+                                            {`Vị trí: ${item.position}`}
                                         </Text>
                                         <Text
                                             numberOfLines={1}
@@ -151,7 +190,9 @@ export default function Project() {
             <View>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('AddProject')
+                        navigation.navigate('AddProject', {
+                            cvIndexParent: cvIndex ? cvIndex : 0,
+                        })
                     }}
                     style={{
                         margin: 20,

@@ -4,9 +4,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function InputChatBottom() {
+export default function InputChatBottom({
+    messageText,
+    setMessageText,
+    handleSendMessage,
+    handleSendPhoto,
+}) {
     const [checkClick, setCheckClick] = React.useState(false)
-    const [messageText, setMessageText] = React.useState('')
+
     return (
         <View style={styles.container}>
             {
@@ -14,7 +19,11 @@ export default function InputChatBottom() {
                     <View style={styles.left}>
                         <MaterialIcons name="keyboard-voice" size={24} color="black" />
                         <AntDesign name="camerao" size={24} color="black" />
-                        <AntDesign name="picture" size={24} color="black" />
+                        <TouchableOpacity
+                            onPress={() => handleSendPhoto()}
+                        >
+                            <AntDesign name="picture" size={24} color="black" />
+                        </TouchableOpacity>
                     </View>
                 )
             }
@@ -29,12 +38,13 @@ export default function InputChatBottom() {
                         setCheckClick(false)
                     }
                     placeholder="Nhập tin nhắn"
+                    value={messageText}
                     onChangeText={text => setMessageText(text)}
                 />
                 {
                     messageText.length > 0 && (
                         <TouchableOpacity
-                            onPress={() => setMessageText('')}
+                            onPress={() => handleSendMessage()}
                         >
                             <Ionicons name="send-sharp" size={24} color="black" />
                         </TouchableOpacity>

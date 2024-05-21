@@ -12,10 +12,12 @@ import { createCvProjectAction, getCvProjectAction } from '../../../../../redux/
 import { useState, useEffect } from 'react';
 import { createCvListProject } from '../helpers/CreateCvListProject';
 import { createCvProject } from '../helpers/CreateCvProject';
+import { TYPE_PROJECT } from '../../constant/constantContentCv';
 
-export default function AddProject() {
+export default function AddProject(prop) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { cvIndexParent } = prop.route.params;
   const cvProject = useSelector(state => state.cvProject.cvProject);
   const [type, setType] = useState('');
   const [position, setPosition] = useState('');
@@ -25,37 +27,45 @@ export default function AddProject() {
   const [technology, setTechnology] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [name, setName] = useState('');
   const [listProject, setListProject] = useState([])
 
   useEffect(() => {
-    dispatch(getCvProjectAction(0));
+    dispatch(getCvProjectAction(cvIndexParent));
   }, [])
 
   useEffect(() => {
     if (cvProject) {
       const data = createCvListProject(cvProject);
-      setListProject(data[0]);
+      setListProject(data ? data[0] : {});
     }
   }, [cvProject])
 
   const handleSaveProject = () => {
+    let col = listProject && listProject.col ? listProject.col : 0;
+    let cvIndex = cvIndexParent;
+    let part = listProject && listProject.part ? listProject.part : 0;
+    let row = listProject && listProject.row ? listProject.row : 0;
+    let type = listProject && listProject.type ? listProject.type : TYPE_PROJECT;
+    let padIndex = listProject && listProject.padIndex ? listProject.padIndex : 0;
     const newListProject = {
-      col: listProject.col,
-      cvIndex: listProject.cvIndex,
-      part: listProject.part,
-      row: listProject.row,
-      type: listProject.type,
-      padIndex: listProject.padIndex,
+      col: col,
+      cvIndex: cvIndex,
+      part: part,
+      row: row,
+      type: type,
+      padIndex: padIndex,
       moreCvProjects: [
-        ...listProject.moreCvProjects,
+        ...(listProject && listProject.moreCvProjects) ? listProject.moreCvProjects : [],
         {
+          name: name,
           time: `${startTime} - ${endTime}`,
           link: link,
           participant: participant,
           position: position,
           functionality: functionality,
           technology: technology,
-          id: listProject.moreCvProjects.length,
+          id: listProject ? listProject.moreCvProjects.length : 0,
           padIndex: 0,
         }
       ]
@@ -65,7 +75,7 @@ export default function AddProject() {
 
     if (newCreateProject) {
       dispatch(createCvProjectAction([newCreateProject])).then(() => {
-        dispatch(getCvProjectAction(0));
+        dispatch(getCvProjectAction(cvIndexParent));
       });
     }
     navigation.goBack();
@@ -123,13 +133,13 @@ export default function AddProject() {
                 marginLeft: 5,
               }}
               placeholder="Tên dự án"
-              onChangeText={(text) => setPosition(text)}
+              onChangeText={(text) => setName(text)}
             >
             </TextInput>
           </View>
         </View>
         {/* position */}
-        {/* <View>
+        <View>
           <View style={{
             flexDirection: 'row',
             marginTop: 10,
@@ -152,7 +162,7 @@ export default function AddProject() {
             >
             </TextInput>
           </View>
-        </View> */}
+        </View>
         {/* link */}
         <View>
           <View style={{

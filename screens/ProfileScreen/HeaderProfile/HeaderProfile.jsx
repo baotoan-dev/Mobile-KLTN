@@ -1,46 +1,70 @@
-import { View, StyleSheet, ImageBackground, Image, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { View, StyleSheet, ImageBackground, Image, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
 import { avatarApi } from '../../../api/profile/avatar/avatarApi';
-import { Buffer } from "buffer";
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
 
-export default function HeaderProfile({ profile, isScrolling }) {
+export default function HeaderProfile({ isScrolling }) {
+    const dispatch = useDispatch();
     const [image, setImage] = useState(null);
+    const profile = useSelector(state => state.profile.profile);
+    const [dataProfile, setDataProfile] = useState({});
+
+    useEffect(() => {
+        dispatch(getProfileAction('vi'));
+    }, []);
+
+    useEffect(() => {
+        if (profile) {
+            setDataProfile(profile);
+        }
+    }, [profile]);
+
+
+    const openImageLibrary = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!');
+        }
+
+        if (status === 'granted') {
+            const response = await DocumentPicker.getDocumentAsync({
+                type: 'image/*',
+                copyToCacheDirectory: true,
+            });
+
+            if (!response.cancelled) {
+                setImage(response);
+                await pickImage();
+            }
+        }
+    };
 
     const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            base64: true,
-            quality: 1,
+        const formData = new FormData();
+
+        formData.append('images', {
+            uri: image.uri,
+            name: image.name,
+            type: image.mimeType,
         });
 
-        if (!result.cancelled) {
-            const buffer = Buffer.from(result.assets[0].base64, 'base64');
-            console.log(buffer.data);
-
-            const dataUpload = {
-                filenames: 'images',
-                originalname: result.assets[0].uri.split('/').pop(),
-                encoding: '7bit',
-                mimetype: 'image/jpeg',
-                buffer: new Buffer(result.assets[0].base64, 'base64').data,
-                size: result.assets[0].base64.length,
+        try {
+            const response = await avatarApi.updateAvatar(formData);
+            if (response && response.code === 200) {
+                setImage(null);
+                dispatch(getProfileAction('vi'));
             }
-
-            console.log(dataUpload);
-
-            const data = new FormData();
-
-            data.append('files', [JSON.stringify(dataUpload)]);
-
-            // const res = await avatarApi.updateAvatar(data);
-
-            console.log('res', res);
+            
+        } catch (error) {
+            console.error('Error updating avatar:', error);
         }
+
     };
 
     const renderHeader = () => {
@@ -66,11 +90,11 @@ export default function HeaderProfile({ profile, isScrolling }) {
                                     height: '100%',
                                     borderRadius: 50,
                                 }}
-                                source={{ uri: profile.avatarPath }}
+                                source={{ uri: dataProfile.avatarPath }}
                             />
                             <TouchableOpacity
                                 onPress={() => {
-                                    pickImage();
+                                    openImageLibrary();
                                 }}
                                 style={{
                                     position: 'absolute',
@@ -100,10 +124,10 @@ export default function HeaderProfile({ profile, isScrolling }) {
                             <Text style={{
                                 fontSize: 16,
                                 fontWeight: 'bold',
-                                color: 'blue',
+                                color: '#242670',
                                 marginTop: 10,
                             }}>
-                                {profile.name}
+                                {dataProfile.name}
                             </Text>
                         </View>
                     </View>
@@ -180,14 +204,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
-        zIndex: 1000,
+        zIndex: 1000000000000000,
+        borderColor: '#242670',
+        borderWidth: 0.6,
     },
     avatar: {
         width: 80,
         height: 80,
         borderRadius: 50,
         marginLeft: 10,
-        borderColor: 'red',
+        borderColor: '#242670',
         borderWidth: 0.6,
         position: 'relative'
     },

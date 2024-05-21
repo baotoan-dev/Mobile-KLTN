@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
@@ -48,6 +49,15 @@ import BookmarkScreen from './screens/BookmarkScreen/BookmarkScreen';
 import NotifyJobProfileScreen from './screens/NotifyJobProfileScreen/NotifyJobProfileScreen';
 import JobFitScreen from './screens/JobFitScreen/JobFitScreen';
 import SeenPDFScreen from './screens/SeenPDFScreen/SeenPDFScreen';
+import Skill from './screens/PDFScreen/InforContentForCV/Skill/Skill';
+import Award from './screens/PDFScreen/InforContentForCV/Award/Award';
+import AddSkill from './screens/PDFScreen/InforContentForCV/Skill/AddSkill/AddSkill';
+import UpdateSkill from './screens/PDFScreen/InforContentForCV/Skill/UpdateSkill/UpdateSkill';
+import AddAward from './screens/PDFScreen/InforContentForCV/Award/AddAward/AddAward';
+import UpdateAward from './screens/PDFScreen/InforContentForCV/Award/UpdateAward/UpdateAward';
+import CreateBlogComponent from './screens/Components/Blog/CreateBlogComponent/CreateBlogComponent';
+import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen/ForgotPasswordScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -137,7 +147,26 @@ function BottomTabs() {
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
-    const { auth, setAuth } = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
+    const [isWaiting, setIsWaiting] = useState(true);
+
+    useEffect(() => {
+        if (!auth) {
+            const timer = setTimeout(() => {
+                setIsWaiting(false);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [auth]);
+
+    if (!auth && isWaiting) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
 
     return (
         <NavigationContainer>
@@ -196,6 +225,10 @@ function Navigation() {
                 <Stack.Screen name="SeeAllBlog" component={SeeAllBlog} options={{
                     headerShown: false,
                 }} />
+
+                {/* <Stack.Screen name="CreateBog" component={CreateBlogComponent} options={{
+                    headerShown: false,
+                }} /> */}
 
                 {/* applicaton */}
                 <Stack.Screen name="Application" component={Application} options={{
@@ -326,6 +359,44 @@ function Navigation() {
                 {/* See pdf link */}
 
                 <Stack.Screen name="SeenPDF" component={SeenPDFScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Skill */}
+
+                <Stack.Screen name="Skill" component={Skill} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="AddSkill" component={AddSkill} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="UpdateSkill" component={UpdateSkill} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Award */}
+
+                <Stack.Screen name="Award" component={Award} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="AddAward" component={AddAward} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="UpdateAward" component={UpdateAward} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Register */}
+                <Stack.Screen name='Register' component={RegisterScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Forgot password */}
+                <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

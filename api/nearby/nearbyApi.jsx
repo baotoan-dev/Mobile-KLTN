@@ -9,7 +9,6 @@ export const nearbyApi = {
         search
     ) => {
         const URL = `${CONST_API_V1}/api/v1/posts/nearby?page=${page ? +page : 0}&limit=${limit ? +limit : 10}` + (search ? `&search=${search}` : '');
-        console.log(URL);
         
         return axiosConfig(URL, {
             headers: {

@@ -15,4 +15,25 @@ export const applicationsApi = {
             },
         })
     },
+    updateApplication: async (id, status) => {
+        const URL = `${CONST_API_V1}/api/v1/application/update`
+        return await axiosConfig.put(
+            URL,
+            { id, status },
+            {
+                headers: {
+                    Authorization: `Bearer ${SecureStore.getItemAsync('token')}`,
+                },
+            }
+        )
+    },
+    applyAplication: async (data) => {
+        const URL = `${CONST_API_V1}/api/v1/application/create`
+        return await axiosConfig.post(URL, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${SecureStore.getItemAsync('token')}`,
+            },
+        })
+    },
 }

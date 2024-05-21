@@ -205,6 +205,7 @@ export default function PopularKeyowrd() {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 10,
+        backgroundColor: 'white',
     },
     title: {
         fontSize: 16,

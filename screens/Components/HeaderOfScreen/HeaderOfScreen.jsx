@@ -10,7 +10,7 @@ export default function HeaderOfScreen({ title }) {
         <Animated.View style={styles.container}>
             <Animated.View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="arrow-back-outline" size={24} color="black" />
+                    <Ionicons name="arrow-back-outline" size={24} color="#242670" />
                 </TouchableOpacity>
                 <Text style={styles.title}>{title}</Text>
             </Animated.View>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         fontSize: 16,
         fontWeight: 'bold',
-        color: 'black',
+        color: '#242670',
     }
 })
 

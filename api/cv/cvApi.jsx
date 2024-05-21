@@ -72,5 +72,13 @@ export const cvApi = {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         });
-    }
+    },
+    deleteCvInformation: (cvIndex) => {
+        const URL = `${CONST_API}/api/v3/cv-information`
+        return axiosConfig.delete(URL, { data: { cvindex: cvIndex } }, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+            },
+        });
+    },
 }

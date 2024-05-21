@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
     left: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: Color.primary
+        color: '#242670'
     },
     right: {
-        color: 'blue',
+        color: '#242670',
         fontSize: 14
     }
 })

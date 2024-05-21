@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 10,
+        color: '#242670',
     },
     item: {
         borderBottomColor: 'gray',

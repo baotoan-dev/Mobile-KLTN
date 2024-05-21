@@ -27,7 +27,7 @@ export default function HeadingBlog() {
 
 const styles = StyleSheet.create({
     contaier: {
-        backgroundColor: '#9999CC',
+        backgroundColor: '#F0EBE3',
         padding: 10,
         marginBottom: 10,
     }

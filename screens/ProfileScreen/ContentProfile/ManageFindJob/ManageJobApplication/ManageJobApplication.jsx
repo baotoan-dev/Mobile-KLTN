@@ -87,13 +87,13 @@ export default function ManageJobApplication() {
                 style={{ backgroundColor: 'white' }}
             >
                 <Tab.Item title="7 ngày">
-                    <Text>7 ngày</Text>
+                    <Text style={styles.title}>7 ngày</Text>
                 </Tab.Item>
                 <Tab.Item title="30 ngày">
-                    <Text>30 ngày</Text>
+                    <Text style={styles.title}>30 ngày</Text>
                 </Tab.Item>
                 <Tab.Item title="Tất cả">
-                    <Text>Tất cả</Text>
+                    <Text style={styles.title}>Tất cả</Text>
                 </Tab.Item>
             </Tab>
 
@@ -144,5 +144,7 @@ export default function ManageJobApplication() {
 }
 
 const styles = StyleSheet.create({
-
+    title: {
+        fontWeight: 'bold',
+    }
 })

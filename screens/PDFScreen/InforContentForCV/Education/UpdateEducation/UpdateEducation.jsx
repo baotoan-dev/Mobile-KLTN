@@ -10,13 +10,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from '../helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from '../helpers/CreateCvExtraInformation';
-import { TYPE_EDUCATION } from '../../Constant/constantContentCv';
+import { TYPE_EDUCATION } from '../../constant/constantContentCv';
 
 export default function UpdateEducation(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
-    const { idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
+    const { cvIndexParent, idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
     const [type, setType] = useState('');
@@ -27,7 +27,7 @@ export default function UpdateEducation(prop) {
     const [description, setDescription] = useState('');
 
     useEffect(() => {
-        dispatch(getCvExtraInformationAction(0));
+        dispatch(getCvExtraInformationAction(cvIndexParent));
         setType(typeParent);
         setCompany(companyParent);
         setPosition(positionParent);
@@ -62,7 +62,7 @@ export default function UpdateEducation(prop) {
     const handleUpdate = () => {
         const newListExtraInformation = {
             col: listExtraInformation.col,
-            cvIndex: listExtraInformation.cvIndex,
+            cvIndex: cvIndexParent,
             part: listExtraInformation.part,
             row: listExtraInformation.row,
             type: listExtraInformation.type,
@@ -85,7 +85,7 @@ export default function UpdateEducation(prop) {
         listOtherInformation.push(newDataCvExtraInformation);
 
         dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-            dispatch(getCvExtraInformationAction(0));
+            dispatch(getCvExtraInformationAction(cvIndexParent));
         });
 
         navigation.goBack();

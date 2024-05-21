@@ -194,9 +194,7 @@ export default function PostDetail(prop) {
                         >
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate('Application', {
-                                        id: post.id
-                                    })
+
                                 }}
                                 style={{
                                     width: '30%',

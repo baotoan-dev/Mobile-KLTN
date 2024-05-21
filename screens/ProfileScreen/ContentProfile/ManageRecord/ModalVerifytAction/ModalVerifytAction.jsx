@@ -66,16 +66,16 @@ export default function ModalVerifytAction({
                     <View style={styles.header}>
                         <View>
                             <Text style={styles.textHeader}>
-                                Vui lòng lựa chọn các CV
+                                Vui lòng lựa chọn CV
                             </Text>
                             <Text style={styles.textHeader}>
-                                bạn muốn bật tìm việc
+                                Bạn muốn bật tìm việc
                             </Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => handleOpenModal()}
                         >
-                            <MaterialIcons name="cancel" size={24} color="black" />
+                            <MaterialIcons name="cancel" size={24} color="white" />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.content}>
@@ -120,7 +120,7 @@ export default function ModalVerifytAction({
                             handleEnableSearch()
                         }}
                         style={[styles.buttonSearch, {
-                            backgroundColor: cvIds.length > 0 ? '#41C9E2' : 'gray',
+                            backgroundColor: cvIds.length > 0 ? '#242670' : 'gray',
                         }]}>
                         <Text style={{
                             color: 'white',
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderBottomColor: '#f0f0f0',
         borderBottomWidth: 1,
-        backgroundColor: '#41C9E2',
+        backgroundColor: '#242670',
         alignItems: 'center',
     },
     textHeader: {

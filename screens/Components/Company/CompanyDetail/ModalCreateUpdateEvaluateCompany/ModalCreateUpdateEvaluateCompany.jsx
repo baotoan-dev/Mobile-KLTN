@@ -127,7 +127,7 @@ export default function ModalCreateUpdateEvaluateCompany({
                                     fontSize: 16,
                                     fontWeight: 'bold',
                                     marginTop: 10,
-                                    color: 'blue'
+                                    color: '#242670'
                                 }}>
                                     Chỉnh sửa đánh giá của bạn
                                 </Text>
@@ -167,7 +167,7 @@ export default function ModalCreateUpdateEvaluateCompany({
                                 fontSize: 16,
                                 fontWeight: 'bold',
                                 marginTop: 10,
-                                color: 'blue'
+                                color: '#242670'
                             }}>
                                 Thêm đánh giá của bạn
                             </Text>

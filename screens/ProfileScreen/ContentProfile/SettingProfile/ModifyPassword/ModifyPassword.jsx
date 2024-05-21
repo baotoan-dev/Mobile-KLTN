@@ -30,13 +30,14 @@ export default function ModifyPassword() {
                 <TouchableOpacity onPress={() => {
                     navigation.goBack();
                 }}>
-                    <Ionicons name="arrow-back" size={24} color="black" />
+                    <Ionicons name="arrow-back" size={24} color="#242670" />
                 </TouchableOpacity>
                 <Text style={{
                     justifyContent: 'center',
                     fontSize: 15,
                     marginLeft: 5,
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    color: '#242670',
                 }}>
                     Đổi mật khẩu
                 </Text>
@@ -53,8 +54,8 @@ export default function ModifyPassword() {
                         selectTextOnFocus={false}
                         value={email}
                         style={{
-                            borderWidth: 1,
-                            borderColor: 'gray',
+                            borderWidth: 0.5,
+                            borderColor: '#242670',
                             borderRadius: 5,
                             backgroundColor: '#CCD3CA',
                             padding: 3,
@@ -74,8 +75,8 @@ export default function ModifyPassword() {
                         secureTextEntry={true}
                         onChangeText={setOldPassword}
                         style={{
-                            borderWidth: 1,
-                            borderColor: 'gray',
+                            borderWidth: 0.5,
+                            borderColor: '#242670',
                             borderRadius: 5,
                             padding: 3,
                             paddingHorizontal: 10,
@@ -94,8 +95,8 @@ export default function ModifyPassword() {
                         value={newPassword}
                         onChangeText={setNewPassword}
                         style={{
-                            borderWidth: 1,
-                            borderColor: 'gray',
+                            borderWidth: 0.5,
+                            borderColor: '#242670',
                             borderRadius: 5,
                             padding: 3,
                             paddingHorizontal: 10,
@@ -114,8 +115,8 @@ export default function ModifyPassword() {
                         secureTextEntry={true}
                         onChangeText={setReNewPassword}
                         style={{
-                            borderWidth: 1,
-                            borderColor: 'gray',
+                            borderWidth: 0.5,
+                            borderColor: '#242670',
                             borderRadius: 5,
                             padding: 3,
                             paddingHorizontal: 10,
@@ -144,7 +145,7 @@ export default function ModifyPassword() {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{
-                    backgroundColor: '#3B5998',
+                    backgroundColor: '#242670',
                     padding: 10,
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -172,8 +173,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        paddingBottom: 20,
-        paddingTop: 40,
+        paddingBottom: 10,
+        paddingTop: 30,
         paddingHorizontal: 10,
     },
     content: {

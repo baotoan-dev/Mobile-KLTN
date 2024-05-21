@@ -10,6 +10,7 @@ export function createCvListProject(cvProject) {
         padIndex: item.padIndex,
         moreCvProjects: item.moreCvProjects.map((moreItem, moreIndex) => {
           return {
+            name: moreItem.name,
             time: moreItem.time,
             link: moreItem.link,
             participant: moreItem.participant,

@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         maxHeight: 320,
-        marginBottom: 100,
+        marginBottom: 150,
     },
     wapper: {
         gap: 10,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     },
     item: {
         width: '45%',
-        height: 150,
+        height: 170,
         backgroundColor: 'white',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 4,
-        borderRadius: 10,
-        borderColor: '#97E7E1',
+        borderRadius: 5,
+        borderColor: '#242670',
         borderWidth: 0.5,
     },
     image: {

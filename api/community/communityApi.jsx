@@ -3,7 +3,17 @@ import { CONST_API } from "../contants/urlContant";
 import * as SecureStore from 'expo-secure-store';
 
 export const communityApi = {
-  getCommunityNews: (
+  createCommunity: async (data) => {
+    const URL = `${CONST_API}/api/v3/communications`;
+
+    return await axiosConfig.post(URL, data, {
+      headers: {
+        Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  getCommunityNews: async (
     page,
     limit,
     sort,
@@ -11,7 +21,7 @@ export const communityApi = {
     lang,
   ) => {
     const URL = `${CONST_API}/api/v3/communications/news?page=${page}&limit=${limit}&sort=${sort}&type=${type}&lang=${lang}`;
-    return axiosConfig.get(URL);
+    return await axiosConfig.get(URL);
   },
   getDetailCommunity: (id) => {
     const URL = `${CONST_API}/api/v3/communications/detail/${id}`;

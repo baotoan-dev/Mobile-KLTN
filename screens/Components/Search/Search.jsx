@@ -13,7 +13,7 @@ export default function Search() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    paddingTop: 25,
     height: '100%',
   }
 })

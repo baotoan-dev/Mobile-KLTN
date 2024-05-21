@@ -4,11 +4,11 @@ import Modal from 'react-native-modal';
 import { MaterialIcons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import ListJobExpect from '../ListJobExpect/ListJobExpect';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LENGTH_JOB_EXPECT } from '../../../../../utils/LengthLocationAndCategory';
 import { useDispatch } from 'react-redux';
 import { updateProfileCategoriesAction } from '../../../../../redux/store/Profile/ProfileCategories/Update/updateProfileCategories';
 import { getProfileAction } from '../../../../../redux/store/Profile/profileSilce';
+import Entypo from '@expo/vector-icons/Entypo';
 
 export default function ModalUpdateJobExpect({
     isOpenModal, handleOpenModal, profile
@@ -71,7 +71,7 @@ export default function ModalUpdateJobExpect({
                                 fontSize: 17,
                                 fontWeight: 'bold',
                                 padding: 10,
-                            }}>Chọn vị trí công việc</Text>
+                            }}>Chọn ngành nghề</Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => handleOpenModal()}
@@ -118,16 +118,17 @@ export default function ModalUpdateJobExpect({
                                     <View style={{
                                         alignSelf: 'flex-start',
                                         borderWidth: 0.5,
-                                        borderRadius: 10,
+                                        borderRadius: 5,
                                         backgroundColor: 'white',
                                         margin: 5,
+                                        marginTop: 10,
                                     }}>
                                         <View style={{
                                             flexDirection: 'row',
                                             alignItems: 'center',
                                             padding: 5,
-                                            backgroundColor: '#D2CFCF',
-                                            borderRadius: 10,
+                                            borderRadius: 5,
+                                            borderColor: '#242670',
                                         }}>
                                             <Text>{item.name}</Text>
                                             <TouchableOpacity
@@ -135,7 +136,7 @@ export default function ModalUpdateJobExpect({
                                                     setListJobExpectParent(listJobExpectParent.filter((job) => job.id !== item.id))
                                                 }}
                                             >
-                                                <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
+                                                <Entypo name="cross" size={24} color="#242670" />
                                             </TouchableOpacity>
                                         </View>
                                     </View>
@@ -169,7 +170,7 @@ export default function ModalUpdateJobExpect({
                     <Text style={{
                         textAlign: 'center',
                         padding: 10,
-                        backgroundColor: 'blue',
+                        backgroundColor: '#242670',
                         color: 'white',
                         borderRadius: 10,
                         marginHorizontal: 20,

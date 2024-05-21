@@ -5,7 +5,6 @@ import * as SecureStore from 'expo-secure-store'
 export const searchHistoryApi = {
     getHistoryKeyWord: async (limit, page, lang) => {
         const URL = `${CONST_API_V1}/api/v1/search/history?limit=${limit}&lang=${lang}&page=${page}`;
-        console.log(await SecureStore.getItemAsync("token"));
         return await axiosConfig.get(URL, {
             headers: {
                 Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,

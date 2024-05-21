@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useEffect } from 'react'
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { templateApi } from '../../../api/template/templateApi';
 import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
@@ -58,8 +57,8 @@ export default function ThemeCvList() {
                                     borderWidth: 0.3,
                                     borderRadius: 3,
                                     margin: 10,
-                                    borderColor: '#97E7E1',
-                                    backgroundColor: '#DFF5F3',
+                                    borderColor: '#242670',
+                                    backgroundColor: '#F8F9D7',
                                     padding: 10,
                                     shadowColor: "#000",
                                     shadowOffset: {
@@ -74,6 +73,11 @@ export default function ThemeCvList() {
                                         onPress={() => {
                                             navigation.navigate(
                                                 'PDFScreen',
+                                                {
+                                                    templateId: index,
+                                                    typeAction: 'create',
+                                                    cvIndexParent: 0,
+                                                }
                                             )
                                         }}
                                     >

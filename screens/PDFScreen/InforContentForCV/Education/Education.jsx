@@ -5,22 +5,53 @@ import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
+import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
-import { TYPE_EDUCATION } from '../Constant/constantContentCv';
+import { TYPE_EDUCATION } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Education() {
+export default function Education(prop) {
+    const { typeAction,templateId,cvIndexParent } = prop.route.params;
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const profile = useSelector(state => state.profile.profile);
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
+    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
-        dispatch(getCvExtraInformationAction(0))
+        dispatch(getProfileAction('vi'))
     }, [])
+
+    useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                if (profile.profilesCvs.length === 0) {
+                    setCvIndex(0)
+                }
+                else {
+                    let maxIndex = 0;
+                    profile.profilesCvs.forEach((item, index) => {
+                        if (item.cvIndex > maxIndex) {
+                            maxIndex = item.cvIndex
+                        }
+                    })
+                    setCvIndex(maxIndex + 1)
+                }
+            }
+            else {
+                setCvIndex(cvIndexParent)
+            }
+        }
+    }, [typeAction, profile])
+
+    useEffect(() => {
+        dispatch(getCvExtraInformationAction(cvIndex))
+    }, [typeAction, profile])
 
     useEffect(() => {
         if (cvExtraInformation) {
@@ -32,7 +63,7 @@ export default function Education() {
 
             setListOtherInformation(otherData);
 
-            setListExtraInformation(newData[0]);
+            setListExtraInformation(newData ? newData[0] : {});
         }
     }, [cvExtraInformation])
 
@@ -52,15 +83,9 @@ export default function Education() {
 
         if (newCreateCvExtraInformation) {
             dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-                dispatch(getCvExtraInformationAction(0));
+                dispatch(getCvExtraInformationAction(cvIndex));
             });
         }
-
-        // if (newListExtraInformation.length === 0) {
-        //     dispatch(deleteCvExtraInformationAction(0)).then(() => {
-        //         dispatch(getCvExtraInformationAction(0));
-        //     })
-        // }
     };
 
     return (
@@ -85,6 +110,7 @@ export default function Education() {
                                                 companyParent: item.company,
                                                 descriptionParent: item.description,
                                                 timeParent: item.time,
+                                                cvIndexParent: cvIndex,
                                             })
                                         }}
                                     >
@@ -104,8 +130,9 @@ export default function Education() {
                                         <Text
                                             numberOfLines={1}
                                             style={{
-                                                fontSize: 14,
+                                                fontSize: 12,
                                                 marginTop: 5,
+                                                textTransform: 'uppercase'
                                             }}>
                                             {`Công ty: ${item.company}`}
                                         </Text>
@@ -114,7 +141,8 @@ export default function Education() {
                                             style={{
                                                 fontSize: 12,
                                                 marginTop: 2,
-                                                color: 'gray'
+                                                color: 'gray',
+                                                numberOfLines: 1
                                             }}>
 
                                             {`Mô tả: ${item.description}`}
@@ -144,7 +172,9 @@ export default function Education() {
             <View>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('AddEducation')
+                        navigation.navigate('AddEducation', {
+                            cvIndexParent: cvIndex ? cvIndex : 0,
+                        })
                     }}
                     style={{
                         margin: 20,

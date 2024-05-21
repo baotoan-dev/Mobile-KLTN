@@ -10,14 +10,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCvExtraInformationAction, getCvExtraInformationAction } from '../../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from '../../Education/helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation } from '../../Education/helpers/CreateCvExtraInformation';
-import { TYPE_CETIFICATION } from '../../Constant/constantContentCv';
+import { TYPE_CETIFICATION } from '../../constant/constantContentCv';
 
 export default function UpdateCertification(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch()
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
     const [listOtherInformation, setListOtherInformation] = useState([]);
-    const { idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
+    const { cvIndexParent, idParent, typeParent, positionParent, timeParent, companyParent, descriptionParent } = prop.route.params;
     const [listExtraInformation, setListExtraInformation] = useState([]);
     const [type, setType] = useState('');
     const [company, setCompany] = useState('');
@@ -28,7 +28,7 @@ export default function UpdateCertification(prop) {
 
 
     useEffect(() => {
-        dispatch(getCvExtraInformationAction(0));
+        dispatch(getCvExtraInformationAction(cvIndexParent));
         setType(typeParent);
         setCompany(companyParent);
         setPosition(positionParent);
@@ -64,7 +64,7 @@ export default function UpdateCertification(prop) {
     const handleUpdate = () => {
         const newListExtraInformation = {
             col: listExtraInformation.col,
-            cvIndex: listExtraInformation.cvIndex,
+            cvIndex: cvIndexParent,
             part: listExtraInformation.part,
             row: listExtraInformation.row,
             type: listExtraInformation.type,
@@ -87,7 +87,7 @@ export default function UpdateCertification(prop) {
         listOtherInformation.push(newDataCvExtraInformation);
 
         dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-            dispatch(getCvExtraInformationAction(0));
+            dispatch(getCvExtraInformationAction(cvIndexParent));
         });
 
         navigation.goBack();

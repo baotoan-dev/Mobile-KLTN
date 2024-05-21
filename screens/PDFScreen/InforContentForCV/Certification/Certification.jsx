@@ -2,27 +2,56 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCvExtraInformationAction, deleteCvExtraInformationAction, getCvExtraInformationAction } from '../../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformation';
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
-import { TYPE_CETIFICATION } from '../Constant/constantContentCv';
+import { TYPE_CETIFICATION } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
+import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
-export default function Certification() {
+export default function Certification(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { typeAction,templateId,cvIndexParent } = prop.route.params;
+    const profile = useSelector(state => state.profile.profile);
+    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
     const [listCertification, setListCertification] = useState([]);
     const [listOtherInformation, setListOtherInformation] = useState([]);
-    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
-
+    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
-        dispatch(getCvExtraInformationAction(0))
+        dispatch(getProfileAction('vi'))
     }, [])
+
+    useEffect(() => {
+        if (profile) {
+            // get item have cvIndex highest
+            if (typeAction === 'create') {
+                if (profile.profilesCvs.length === 0) {
+                    setCvIndex(0)
+                }
+                else {
+                    let maxIndex = 0;
+                    profile.profilesCvs.forEach((item, index) => {
+                        if (item.cvIndex > maxIndex) {
+                            maxIndex = item.cvIndex
+                        }
+                    })
+                    setCvIndex(maxIndex + 1)
+                }
+            }
+            else {
+                setCvIndex(cvIndexParent)
+            }
+        }
+    }, [typeAction, profile])
+
+    useEffect(() => {
+        dispatch(getCvExtraInformationAction(cvIndex))
+    }, [typeAction, profile])
 
     useEffect(() => {
         if (cvExtraInformation) {
@@ -34,7 +63,7 @@ export default function Certification() {
 
             setListOtherInformation(otherData);
 
-            setListCertification(newData[0]);
+            setListCertification(newData ? newData[0] : {});
         }
     }, [cvExtraInformation])
 
@@ -55,7 +84,7 @@ export default function Certification() {
 
         if (newCreateCvExtraInformation) {
             dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-                dispatch(getCvExtraInformationAction(0));
+                dispatch(getCvExtraInformationAction(cvIndex));
             });
         }
     };
@@ -82,6 +111,7 @@ export default function Certification() {
                                                 companyParent: item.company,
                                                 descriptionParent: item.description,
                                                 timeParent: item.time,
+                                                cvIndexParent: cvIndex,
                                             })
                                         }}
                                     >
@@ -101,8 +131,9 @@ export default function Certification() {
                                         <Text
                                             numberOfLines={1}
                                             style={{
-                                                fontSize: 14,
+                                                fontSize: 12,
                                                 marginTop: 5,
+                                                textTransform: 'uppercase',
                                             }}>
                                             {`Tổ chức: ${item.company}`}
                                         </Text>
@@ -143,7 +174,9 @@ export default function Certification() {
             <View>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('AddCertification')
+                        navigation.navigate('AddCertification', {
+                            cvIndexParent: cvIndex ? cvIndex : 0,
+                        })
                     }}
                     style={{
                         margin: 20,

@@ -36,12 +36,12 @@ export default function ListBlogComponent({ blog }) {
 const styles = StyleSheet.create({
   item: {
     width: 200,
-    height: 210,
+    height: 220,
     margin: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     justifyContent: 'center',
     borderWidth: 0.5,
-    borderColor: '#97E7E1',
+    borderColor: '#242670',
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
@@ -55,10 +55,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 100,
-    borderRadius: 20,
     height: '70%',
-    width: '90%',
-    marginTop: 20,
+    width: '100%',
   },
   title: {
     width: '100%',

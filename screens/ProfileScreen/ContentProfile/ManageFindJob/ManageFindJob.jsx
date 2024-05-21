@@ -153,6 +153,7 @@ const styles = StyleSheet.create(({
     title: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#242670',
     },
     wapper: {
         flexDirection: 'row',
@@ -163,12 +164,13 @@ const styles = StyleSheet.create(({
     item: {
         flexDirection: 'column',
         alignItems: 'center',
-        borderWidth: 0.1,
+        borderWidth: 0.2,
         borderRadius: 2,
-        backgroundColor: '#D2D2D2',
+        backgroundColor: '#F0EBE3',
         width: '47%',
-        height: 100,
+        height: 130,
         justifyContent: 'center',
+        borderColor: '#242670',
     },
     content: {
         flexDirection: 'row',

@@ -10,8 +10,9 @@ export function createCvProject(type, row, col, cvIndex, part , moreCvProjects, 
     }
 }
 
-export function createMoreCvProject(time, link, participant, position, functionality, technology, index, padIndex) {
+export function createMoreCvProject(time, link, participant, position, functionality, technology, index, padIndex, name) {
     return {
+        name: name,
         time: time,
         link: link,
         participant: participant,

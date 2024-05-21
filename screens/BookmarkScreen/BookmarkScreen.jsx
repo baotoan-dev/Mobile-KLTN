@@ -40,7 +40,9 @@ export default function BookmarkScreen() {
     }
 
     return (
-        <View>
+        <View style={{
+            backgroundColor: 'white',
+        }}>
             <HeaderOfScreen title="Đã lưu" />
             {
                 listBookmark && listBookmark.length === 0 ? (
