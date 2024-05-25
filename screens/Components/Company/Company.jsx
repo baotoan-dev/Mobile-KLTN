@@ -1,30 +1,54 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Animated, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { companyApi } from '../../../api/company/companyApi';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Heading from '../Heading/Heading';
 import { Color } from '../../../utils/Color';
 import { CheckLengthTitle } from '../../../utils/CheckLengthTitle';
 import { useNavigation } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 
 export default function Company() {
     const [company, setCompany] = useState([]);
+    const translateY = useRef(new Animated.Value(0)).current
     const navigation = useNavigation()
 
     const getCompany = async () => {
         const response = await companyApi.getAllCompany();
 
         if (response && response.data.status === 200) {
-            setCompany(response.data.data.companies.slice(0, 4));
+            setCompany(response.data.data.companies.slice(0, 4))
         }
     }
 
     useEffect(() => {
         getCompany();
     }, [])
+
+    useEffect(() => {
+        const animation = Animated.loop(
+            Animated.sequence([
+                Animated.timing(translateY, {
+                    toValue: -5,
+                    duration: 1000,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(translateY, {
+                    toValue: 5,
+                    duration: 1000,
+                    useNativeDriver: true,
+                }),
+            ]),
+        )
+        animation.start()
+
+
+        // Clean up animation on component unmount
+        return () => animation.stop()
+    }, [translateY])
+
     return (
         <View style={styles.container}>
             <View style={{
@@ -38,7 +62,7 @@ export default function Company() {
             </View>
             <TouchableOpacity
                 onPress={() => {
-                    navigation.navigate('MoreInforOfTopCompany')
+                    navigation.navigate('HotCompany')
                 }}
                 style={{
                     paddingHorizontal: 10,
@@ -46,17 +70,22 @@ export default function Company() {
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}>
-                <Text style={{
+                <Animated.Text style={[{
                     fontSize: 12,
-                    color: 'rgba(105, 76, 232, 1)'
-                }}>
-                    Tìm hiểu thêm
-                </Text>
-                <View style={{
+                    color: 'red',
+                    fontWeight: 'bold',
+                }, {
+                    transform: [{ translateY: translateY }]
+                }]}>
+                    Công ty hot
+                </Animated.Text>
+                <Animated.View style={[{
                     marginLeft: 5,
-                }}>
-                    <AntDesign name="infocirlceo" size={16} color="rgba(105, 76, 232, 1)s" />
-                </View>
+                }, {
+                    transform: [{ translateY: translateY }]
+                }]}>
+                    <Fontisto name="fire" size={20} color="red" />
+                </Animated.View>
             </TouchableOpacity>
             <View style={[{
                 marginTop: 10,
