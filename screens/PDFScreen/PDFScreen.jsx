@@ -308,6 +308,8 @@ export default function PDFScreen(prop) {
         formData.append('name', nameCv);
         formData.append('cvIndex', cvIndex);
         formData.append('templateId', 0);
+        formData.append('device', 0);
+        formData.append('type', 0);
 
         // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
 

@@ -58,6 +58,7 @@ import UpdateAward from './screens/PDFScreen/InforContentForCV/Award/UpdateAward
 import CreateBlogComponent from './screens/Components/Blog/CreateBlogComponent/CreateBlogComponent';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen/ForgotPasswordScreen';
+import HotCompanyScreen from './screens/HotCompanyScreen/HotCompanyScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -226,9 +227,9 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
-                {/* <Stack.Screen name="CreateBog" component={CreateBlogComponent} options={{
+                <Stack.Screen name="CreateBog" component={CreateBlogComponent} options={{
                     headerShown: false,
-                }} /> */}
+                }} />
 
                 {/* applicaton */}
                 <Stack.Screen name="Application" component={Application} options={{
@@ -397,6 +398,10 @@ function Navigation() {
 
                 {/* Forgot password */}
                 <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} options={{
+                    headerShown: false,
+                }} />
+
+                <Stack.Screen name="HotCompany" component={HotCompanyScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

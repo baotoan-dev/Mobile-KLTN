@@ -3,19 +3,19 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { AntDesign } from '@expo/vector-icons';
 import ModalActionCv from '../ModalActionCv/ModalActionCv';
+import { CheckLengthTitle } from '../../../utils/CheckLengthTitle';
 
-export default function ContentCvList({ checkShow, profile }) {
+export default function ContentCvList({ checkShow, profile, type }) {
     const [listCvs, setListCvs] = React.useState([]);
-    const [itemOpacity] = React.useState(new Animated.Value(0));
-    const [itemScale] = React.useState(new Animated.Value(0));
     const [showModalActionCv, setShowModalActionCv] = React.useState(false);
     const [nameCv, setNameCv] = React.useState('');
     const [statusCv, setStatusCv] = React.useState(0);
     const [idCv, setIdCv] = React.useState('');
+    const [typeCv, setTypeCv] = React.useState(0);
 
     useEffect(() => {
-        if (profile) {
-            setListCvs(profile.profilesCvs);
+        if (profile && profile.profilesCvs) {
+            setListCvs(profile.profilesCvs.filter(item => item.status === type))
         }
     }, [profile])
 
@@ -64,13 +64,18 @@ export default function ContentCvList({ checkShow, profile }) {
                                         flexDirection: 'row',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
-                                        padding: 5
+                                        padding: 5,
+                                        width: '100%'
                                     }}>
-                                        <View>
-                                            <Text style={{
-                                                fontSize: 15,
-                                                fontWeight: 'bold'
-                                            }}>{item.name}</Text>
+                                        <View style={{
+                                            width: '80%'
+                                        }}>
+                                            <Text
+                                                numberOfLines={1}
+                                                style={{
+                                                    fontSize: 15,
+                                                    fontWeight: 'bold'
+                                                }}>{CheckLengthTitle(item.name)}</Text>
                                             <Text style={{
                                                 fontSize: 12,
                                                 color: 'gray'
@@ -83,6 +88,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                             setNameCv(item.name);
                                             setStatusCv(item.status);
                                             setIdCv(item.id);
+                                            setTypeCv(item.device);
                                         }}>
                                             <AntDesign name="ellipsis1" size={24} color="black" />
                                         </TouchableOpacity>
@@ -114,7 +120,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                 <Text style={{
                                     fontSize: 15,
                                     fontWeight: 'bold'
-                                }}>{item.name}</Text>
+                                }}>{CheckLengthTitle(item.name)}</Text>
                                 <Text style={{
                                     fontSize: 12,
                                     color: 'gray'
@@ -157,6 +163,7 @@ export default function ContentCvList({ checkShow, profile }) {
                                     setNameCv(item.name);
                                     setStatusCv(item.status);
                                     setIdCv(item.id);
+                                    setTypeCv(item.device);
                                 }}
                                 style={{
                                     marginTop: 5,
@@ -168,7 +175,7 @@ export default function ContentCvList({ checkShow, profile }) {
                 ))
             )}
             {
-                <ModalActionCv profile={profile} idCV={idCv} statusCv={statusCv} nameCv={nameCv} showModalActionCv={showModalActionCv} setShowModalActionCv={setShowModalActionCv} />
+                <ModalActionCv profile={profile} idCV={idCv} statusCv={statusCv} nameCv={nameCv} showModalActionCv={showModalActionCv} setShowModalActionCv={setShowModalActionCv} typeCv={typeCv}/>
             }
         </Animated.View>
     );
@@ -178,6 +185,7 @@ const styles = StyleSheet.create({
     largeContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        width: '100%',
         justifyContent: 'space-between',
     },
     item: {

@@ -1,8 +1,11 @@
-import { View} from 'react-native'
+import { View } from 'react-native'
 import React, { useEffect } from 'react'
 import HeaderOfScreen from '../Components/HeaderOfScreen/HeaderOfScreen'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
+import Buffer from 'buffer';
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
 export default function SeenPDFScreen(prop) {
     const dispatch = useDispatch();
@@ -23,9 +26,28 @@ export default function SeenPDFScreen(prop) {
         }
     }, [profile])
 
+    // fetch base64 pdf
+
+    const fetchBase64 = async (url) => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            console.log(base64data)
+        }
+    }
+    
+    useEffect(() => {
+        fetchBase64(linkPDF)
+    }, [linkPDF])
+
     return (
         <View>
-            <HeaderOfScreen title="CV đã xem" />
+            <HeaderOfScreen title="Xem CV" />
+            {/* show pdf from base64 */}
+            
         </View>
     )
 }
