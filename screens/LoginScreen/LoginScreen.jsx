@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
-import * as AppAuth from "expo-app-auth";
+// import * as AppAuth from "expo-app-auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../App";
@@ -49,7 +49,7 @@ const LoginScreen = () => {
       ],
       redirectUrl:"exp://192.168.1.8:8081/--/spotify-auth-callback"
     }
-    const result = await AppAuth.authAsync(config);
+    // const result = await AppAuth.authAsync(config);
     console.log(result);
     if(result.accessToken){
       const expirationDate = new Date(result.accessTokenExpirationDate).getTime();
