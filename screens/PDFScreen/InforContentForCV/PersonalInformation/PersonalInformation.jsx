@@ -58,7 +58,6 @@ export default function PersonalInformation(prop) {
                 }
             }
             if (typeAction === 'edit') {
-                console.log('cvIndexParent', cvIndexParent);
                 setCvIndex(cvIndexParent)
             }
         }

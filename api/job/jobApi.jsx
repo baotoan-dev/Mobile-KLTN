@@ -35,8 +35,6 @@ const jobApi = {
             `limit=${limit}${threshold ? `&threshold=${threshold}` : ``}` +
             `&lang=${lang}&page=${page}`;
 
-            console.log(URL);
-
         return await axios.get(URL, {
             headers: {
                 Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,

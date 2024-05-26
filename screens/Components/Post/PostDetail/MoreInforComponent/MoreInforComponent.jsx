@@ -11,7 +11,7 @@ export default function MoreInforComponent({ post, fitOfPost }) {
                 <View style={styles.salary}>
                     <FontAwesome name="money" size={24} color="black" style={{
                         textAlign: 'center',
-                        color: 'blue'
+                        color: '#242670'
                     }} />
                     <Text style={styles.textCenterGray}>Mức lương</Text>
                     <Text style={{
@@ -30,7 +30,7 @@ export default function MoreInforComponent({ post, fitOfPost }) {
                 <View style={styles.address}>
                     <FontAwesome name="map-marker" size={24} color="black" style={{
                         textAlign: 'center',
-                        color: 'blue'
+                        color: '#242670'
                     }} />
                     <Text style={styles.textCenterGray}>Địa chỉ</Text>
                     <Text style={styles.item}>{post.province_name}</Text>
@@ -38,7 +38,7 @@ export default function MoreInforComponent({ post, fitOfPost }) {
                 <View style={styles.compare}>
                     <FontAwesome name="check" size={24} color="black" style={{
                         textAlign: 'center',
-                        color: 'blue'
+                        color: '#242670'
                     }} />
                     <Text style={styles.textCenterGray}>Phù hợp</Text>
                     <Text style={styles.item}>{fitOfPost + '%'}</Text>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
     item: {
         fontSize: 12,
-        color: 'blue',
+        color: '#242670',
         fontWeight: 'bold',
         textAlign: 'center',
     }

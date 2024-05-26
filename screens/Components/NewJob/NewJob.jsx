@@ -252,10 +252,12 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         marginRight: 10,
+        width: '25%',
     },
     contentContainer: {
         flexDirection: 'column',
         gap: 1,
+        width: '65%',
     },
     extraInfor: {
         fontSize: 10,

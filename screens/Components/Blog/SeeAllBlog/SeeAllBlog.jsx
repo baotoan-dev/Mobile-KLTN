@@ -21,13 +21,15 @@ export default function SeeAllBlog(prop) {
     }, []);
 
     useEffect(() => {
-        if (currentPage === 0) {
-            setBlog(community.communications);
-        } else {
-            setBlog((prevBlog) => [...prevBlog, ...community?.communications]);
+        if (community && community.communications) {
+            if (currentPage === 0) {
+                setBlog(community.communications);
+            } else {
+                setBlog((prevBlog) => [...prevBlog, ...community?.communications]);
+            }
+            setIsOver(community.is_over);
+            setTotal(community.total);
         }
-        setIsOver(community.is_over);
-        setTotal(community.total);
     }, [community])
 
     useEffect(() => {

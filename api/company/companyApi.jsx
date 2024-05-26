@@ -67,6 +67,40 @@ export const companyApi = {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         });
+    },
+    filterCompany: async (
+        addresses,
+        categories,
+        companySizeId,
+        limit,
+        page,
+        lang
+    ) => {
+        const URL =
+            `${CONST_API}/api/v3/companies/search?` +
+            `${page ? `&page=${page}` : `page=0`}` +
+            `${limit ? `&limit=${limit}` : ``}` +
+            `${addresses.length > 0
+                ? `&${addresses
+                    ?.map((n, index) => `addresses=${n[0]}`)
+                    .join('&')}`
+                : ``
+            }` +
+            `${categories.length > 0
+                ? `&${categories
+                    ?.map((n, index) => `categories=${n[0]}`)
+                    .join('&')}`
+                : ``
+            }` +
+            `${companySizeId ? `&companySizeId=${companySizeId}` : ``}` +
+            `${lang ? `&lang=${lang}` : ``}`;
+
+        return await axiosConfig.get(URL);
+    },
+    getAllCompanySize: async () => {
+        const URL = `${CONST_API}/api/v3/company-sizes`
+
+        return await axios.get(URL);
     }
 }
 

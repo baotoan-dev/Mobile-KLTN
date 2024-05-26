@@ -90,6 +90,7 @@ export default function PostDetail(prop) {
                         height: 300,
                         width: '100%',
                         marginBottom: 10,
+                        paddingTop: 10,
                     }}>
                         <ImageBackground style={styles.image} source={{ uri: 'https://quangcaonhat.com/wp-content/uploads/2020/08/Untitled-1-scaled.jpg' }} >
                             <View style={styles.wrapper}>
@@ -159,7 +160,7 @@ export default function PostDetail(prop) {
                             style={{
                                 borderWidth: 1,
                                 padding: 10,
-                                borderColor: 'blue',
+                                borderColor: '#242670',
                                 borderRadius: 10,
                                 width: '80%'
                             }}>
@@ -200,7 +201,7 @@ export default function PostDetail(prop) {
                                     width: '30%',
                                     borderWidth: 0.5,
                                     padding: 13,
-                                    backgroundColor: 'blue',
+                                    backgroundColor: '#242670',
                                     borderRadius: 10,
                                 }}>
                                 <Text style={{
@@ -218,7 +219,7 @@ export default function PostDetail(prop) {
                                     width: '60%',
                                     borderWidth: 0.5,
                                     padding: 13,
-                                    backgroundColor: 'blue',
+                                    backgroundColor: '#242670',
                                     borderRadius: 10,
                                     marginLeft: 10
                                 }}>
@@ -278,8 +279,8 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 10,
         borderWidth: 0.7,
-        borderColor: 'blue',
-        shadowColor: "blue",
+        borderColor: '#242670',
+        shadowColor: "#242670",
         shadowOffset: {
             width: 0,
             height: 2,

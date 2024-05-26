@@ -67,7 +67,7 @@ export default function LoginScreeForEmailAndPassword() {
                         flexDirection: 'row',
                         alignItems: 'center',
                     }}>
-                        <Entypo name='email' size={24} color='black' style={{
+                        <Entypo name='email' size={20} color='black' style={{
                             marginRight: 10,
                         }} />
                         <TextInput
@@ -85,8 +85,9 @@ export default function LoginScreeForEmailAndPassword() {
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
+                        width: '90%',
                     }}>
-                        <Entypo name='lock' size={24} color='black' style={{
+                        <Entypo name='lock' size={20} color='black' style={{
                             marginRight: 10,
                         }} />
                         <TextInput
@@ -97,25 +98,31 @@ export default function LoginScreeForEmailAndPassword() {
                             secureTextEntry={showPassword ? false : true}
                         />
                     </View>
-                    <TouchableOpacity onPress={() => {
-                        setShowPassword(!showPassword);
+                    <View style={{
+                        width: '10%',
+                        alignItems: 'center',
                     }}>
-                        {
-                            showPassword ? <Entypo name='eye' size={24} color='black' /> : <Entypo name='eye-with-line' size={24} color='black' />
-                        }
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            setShowPassword(!showPassword);
+                        }}>
+                            {
+                                showPassword ? <Entypo name='eye' size={20} color='black' /> : <Entypo name='eye-with-line' size={20} color='black' />
+                            }
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
             </View>
 
-            <TouchableOpacity 
-            onPress={() => {
-                navigation.navigate('ForgotPassword');
-            }}
-            style={{ marginTop: 10, paddingHorizontal: 20 }}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate('ForgotPassword');
+                }}
+                style={{ marginTop: 10, paddingHorizontal: 20 }}>
                 <Text style={{
                     textAlign: "right",
-                    color: "rgba(52, 14, 231, 0.56)"
+                    color: "rgba(52, 14, 231, 0.56)",
+                    fontWeight: "bold",
                 }}>
                     Quên mật khẩu ?
                 </Text>
@@ -192,6 +199,7 @@ export default function LoginScreeForEmailAndPassword() {
                     <Text style={{
                         color: 'rgba(52, 14, 231, 0.56)',
                         marginLeft: 5,
+                        fontWeight: 'bold',
                     }}>
                         Đăng ký
                     </Text>
@@ -217,15 +225,15 @@ const styles = StyleSheet.create({
     input: {
         marginLeft: "auto",
         marginRight: "auto",
-        width: 300,
+        width: '90%',
         borderRadius: 20,
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
         alignItems: "center",
-        borderColor: "black",
         marginVertical: 10,
-        color: "black"
+        color: "black",
+        borderColor: "#242670"
     },
     button: {
         backgroundColor: "rgba(0, 3, 255, 0.56)",
@@ -243,7 +251,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: '#242670',
         marginTop: 20,
         paddingHorizontal: 10,
         paddingVertical: 3,

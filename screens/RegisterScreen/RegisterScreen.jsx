@@ -7,6 +7,12 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 export default function RegisterScreen() {
+  const fields = {
+    name: 'Vui lòng nhập tên',
+    email: 'Vui lòng nhập email',
+    password: 'Vui lòng nhập mật khẩu',
+    rePassword: 'Vui lòng nhập lại mật khẩu'
+  };
   const navigation = useNavigation();
   const [isCheckShowPassword, setIsCheckShowPassword] = React.useState(false)
   const [isCheckShowRePassword, setIsCheckShowRePassword] = React.useState(false)
@@ -21,10 +27,16 @@ export default function RegisterScreen() {
       ToastAndroid.show('Vui lòng đồng ý với điều khoản sử dụng', ToastAndroid.SHORT)
       return
     }
-    if (name === '' || email === '' || password === '' || rePassword === '') {
-      ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT)
-      return
+
+    const values = { name, email, password, rePassword };
+
+    for (const [key, message] of Object.entries(fields)) {
+      if (values[key] === '') {
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+        return;
+      }
     }
+
   }
 
   return (
@@ -44,7 +56,7 @@ export default function RegisterScreen() {
         </Text>
         <View style={styles.group}>
           <View style={styles.item}>
-            <Fontisto name="person" size={24} color="black" />
+            <Fontisto name="person" size={20} color="black" />
             <TextInput
               style={styles.ml}
               placeholder='Họ và tên'
@@ -54,7 +66,7 @@ export default function RegisterScreen() {
             />
           </View>
           <View style={styles.item}>
-            <MaterialIcons name="email" size={24} color="black" />
+            <MaterialIcons name="email" size={20} color="black" />
             <TextInput
               style={styles.ml}
               placeholder='Email'
@@ -70,7 +82,7 @@ export default function RegisterScreen() {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-              <Fontisto name="locked" size={24} color="black" />
+              <Fontisto name="locked" size={20} color="black" />
               <TextInput
                 style={styles.ml}
                 placeholder='Mật khẩu'
@@ -86,7 +98,7 @@ export default function RegisterScreen() {
               }}
             >
               {
-                isCheckShowPassword ? <FontAwesome name="eye-slash" size={24} color="black" /> : <FontAwesome name="eye" size={24} color="black" />
+                !isCheckShowPassword ? <FontAwesome name="eye-slash" size={20} color="black" /> : <FontAwesome name="eye" size={20} color="black" />
               }
             </TouchableOpacity>
 
@@ -98,7 +110,7 @@ export default function RegisterScreen() {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-              <Fontisto name="locked" size={24} color="black" />
+              <Fontisto name="locked" size={20} color="black" />
               <TextInput
                 style={styles.ml}
                 placeholder='Nhập lại mật khẩu'
@@ -114,7 +126,7 @@ export default function RegisterScreen() {
               }}
             >
               {
-                isCheckShowRePassword ? <FontAwesome name="eye-slash" size={24} color="black" /> : <FontAwesome name="eye" size={24} color="black" />
+                !isCheckShowRePassword ? <FontAwesome name="eye-slash" size={20} color="black" /> : <FontAwesome name="eye" size={20} color="black" />
               }
             </TouchableOpacity>
           </View>
@@ -189,7 +201,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 17,
+    fontSize: 25,
     fontWeight: 'bold',
     color: 'black',
     marginTop: 5,

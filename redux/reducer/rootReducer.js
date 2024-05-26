@@ -20,6 +20,7 @@ import companyRatingOfAccountReducer from "../store/CompanyRating/CompanyRatingO
 import cvInformationReducer from "../store/CvInFormation/cvInformationSlice";
 import communityReducer from "../store/Community/communitySlice";
 import themeCompanyReducer from "../store/ThemeCompany/themeCompanySlice";
+import allFilterCompanyReducer from "../store/Company/FilterCompany/getFilterCompanySlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
     companyRatingOfAccount: companyRatingOfAccountReducer,
     community: communityReducer,
     themeCompany: themeCompanyReducer,
+    allFilterCompany: allFilterCompanyReducer
 });
 
 export default rootReducer;
