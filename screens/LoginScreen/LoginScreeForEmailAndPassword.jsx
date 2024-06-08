@@ -7,6 +7,7 @@ import { AuthContext } from '../../App';
 import { useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export default function LoginScreeForEmailAndPassword() {
     const navigation = useNavigation();
@@ -19,6 +20,34 @@ export default function LoginScreeForEmailAndPassword() {
 
     const handleLogin = async () => {
         try {
+            if (email === "" || password === "") {
+                Toast.show({
+                    type: 'error',
+                    position: 'top',
+                    text1: 'Lỗi',
+                    text2: 'Vui lòng nhập đầy đủ thông tin',
+                    visibilityTime: 4000,
+                    autoHide: true,
+                    topOffset: 40,
+                    bottomOffset: 100,
+                });
+                return;
+            }
+            // check regex email
+            if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
+                Toast.show({
+                    type: 'error',
+                    position: 'top',
+                    text1: 'Lỗi',
+                    text2: 'Email không hợp lệ',
+                    visibilityTime: 4000,
+                    autoHide: true,
+                    topOffset: 40,
+                    bottomOffset: 100,
+                });
+                return;
+            }
+
             const response = await authCandidate.signInCandidate(email, password);
 
             if (response.code === 200) {
@@ -56,8 +85,6 @@ export default function LoginScreeForEmailAndPassword() {
             <Text style={styles.title}>
                 Login
             </Text>
-
-
             <View style={{
                 marginTop: 10,
                 paddingHorizontal: 20,
@@ -205,6 +232,7 @@ export default function LoginScreeForEmailAndPassword() {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
     )
 }
@@ -250,11 +278,18 @@ const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#242670',
+        backgroundColor: '#f0f0f0',
         marginTop: 20,
         paddingHorizontal: 10,
         paddingVertical: 3,
         borderRadius: 10,
+        shadowColor: "blue",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     }
 })

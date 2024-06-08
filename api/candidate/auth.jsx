@@ -1,4 +1,5 @@
 import axiosConfig from "../../config/axiosConfig";
+import * as SecureStore from "expo-secure-store";
 import { CONST_API_V1 } from "../contants/urlContant";
 
 export const authCandidate = {
@@ -19,13 +20,13 @@ export const authCandidate = {
         const URL = `${CONST_API_V1}/api/v1/sign-in/modify-password`;
 
         const data = {
-            password: password,
+            oldPassword: password,
             newPassword: newPassword,
         };
 
         return await axiosConfig.post(URL, data, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         })
     }

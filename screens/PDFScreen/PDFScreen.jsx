@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ToastAndroid } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
@@ -7,12 +7,12 @@ import ContentHeaderPDFScreen from './ContentHeaderPDFScreen/ContentHeaderPDFScr
 import { useNavigation } from '@react-navigation/native';
 import ContentCenterPDFScreen from './ContentCenterPDFScreen/ContentCenterPDFScreen';
 import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
 import { getCvProjectAction } from '../../redux/store/CvProject/cvProjectSlice';
 import { getCvExtraInformationAction } from '../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { getCvInformationAction } from '../../redux/store/CvInFormation/cvInformationSlice';
 import ModalActionSave from './ModalActionSave/ModalActionSave';
 import { cvProfileApi } from '../../api/cv-profile/cvProfileApi';
+import Toast from 'react-native-toast-message';
 
 
 export default function PDFScreen(prop) {
@@ -294,7 +294,13 @@ export default function PDFScreen(prop) {
 
         if (!nameCv) {
             setShowModalAction(false);
-            ToastAndroid.show('Vui lòng nhập tên file', ToastAndroid.SHORT);
+            Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Vui lòng nhập tên file',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
             return;
         }
 
@@ -319,7 +325,13 @@ export default function PDFScreen(prop) {
             dispatch(getProfileAction('vi'))
             setShowModalAction(false);
             navigation.navigate('CV');
-            ToastAndroid.show('Thêm CV thành công', ToastAndroid.SHORT);
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Tạo CV thành công',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
         }
     };
 
@@ -368,6 +380,7 @@ export default function PDFScreen(prop) {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <Toast ref={(ref) => Toast.setRef(ref)} />
             <ModalActionSave
                 showModalAction={showModalAction}
                 setShowModalAction={setShowModalAction}
@@ -385,6 +398,7 @@ export default function PDFScreen(prop) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white',
     },
     header: {
         flexDirection: 'row',
@@ -410,8 +424,6 @@ const styles = StyleSheet.create({
     },
     a4Paper: {
         width: '90%',
-        height: '90%',
-        borderWidth: 0.5,
-        borderColor: 'black',
+        height: '90%'
     },
 });

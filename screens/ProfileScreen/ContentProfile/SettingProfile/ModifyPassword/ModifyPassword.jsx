@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '../../../../../redux/store/Profile/profileSilce';
 import Toast from 'react-native-toast-message';
+import { authCandidate } from '../../../../../api/candidate/auth';
 
 export default function ModifyPassword() {
     const profile = useSelector(state => state.profile.profile);
@@ -25,7 +26,8 @@ export default function ModifyPassword() {
         }
     }, [profile])
 
-    const handleModifyPassword = () => {
+    const handleModifyPassword = async () => {
+        let res;
         if (!oldPassword || !newPassword || !reNewPassword) {
             Toast.show({
                 type: 'error',
@@ -44,7 +46,30 @@ export default function ModifyPassword() {
             });
             return;
         }
-    }
+
+        try {
+            res = await authCandidate.modifyPassword(oldPassword, newPassword);
+
+            if (res.code === 200) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Thành công',
+                    text2: 'Đổi mật khẩu thành công',
+                    position: 'bottom',
+                });
+                navigation.goBack();
+            }
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Lỗi',
+                text2: res.message,
+                position: 'bottom',
+            });
+        }
+
+    };
+
 
     return (
         <View style={styles.container}>

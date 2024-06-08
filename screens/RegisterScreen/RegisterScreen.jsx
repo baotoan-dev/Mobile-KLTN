@@ -1,10 +1,11 @@
-import { View, Text, Image, StyleSheet, ScrollView, TextInput, TouchableOpacity, ToastAndroid } from 'react-native'
+import { View, Text, Image, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Fontisto } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export default function RegisterScreen() {
   const fields = {
@@ -24,7 +25,16 @@ export default function RegisterScreen() {
 
   const handleRegister = () => {
     if (!isCheckPolicy) {
-      ToastAndroid.show('Vui lòng đồng ý với điều khoản sử dụng', ToastAndroid.SHORT)
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Lỗi',
+        text2: 'Vui lòng đồng ý với điều khoản sử dụng',
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 50,
+      });
       return
     }
 
@@ -32,7 +42,16 @@ export default function RegisterScreen() {
 
     for (const [key, message] of Object.entries(fields)) {
       if (values[key] === '') {
-        ToastAndroid.show(message, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Lỗi',
+          text2: message,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 40,
+          bottomOffset: 50,
+        });
         return;
       }
     }
@@ -180,6 +199,7 @@ export default function RegisterScreen() {
           </TouchableOpacity>
         </View>
       </View>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </ScrollView>
   )
 }

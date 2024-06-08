@@ -61,6 +61,7 @@ import ForgotPasswordScreen from './screens/ForgotPasswordScreen/ForgotPasswordS
 import HotCompanyScreen from './screens/HotCompanyScreen/HotCompanyScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllNoticationAction } from './redux/store/Notification/getAllNotificationSlice';
+import VerifyOTPScreen from './screens/VerifyOTPScreen/VerifyOTPScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -465,6 +466,12 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
+                <Stack.Screen name="VerifyOTP" component={VerifyOTPScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Hot company */}
+
                 <Stack.Screen name="HotCompany" component={HotCompanyScreen} options={{
                     headerShown: false,
                 }} />
@@ -476,18 +483,18 @@ function Navigation() {
 const styles = StyleSheet.create({
     badge: {
         position: 'absolute',
-        right: -6,
-        top: -6,
+        right: 0,
+        top: 0,
         backgroundColor: 'red',
         borderRadius: 10,
-        width: 20,
-        height: 20,
+        width: 15,
+        height: 15,
         justifyContent: 'center',
         alignItems: 'center',
     },
     badgeText: {
         color: 'white',
-        fontSize: 12,
+        fontSize: 10,
         fontWeight: 'bold',
     },
 })
