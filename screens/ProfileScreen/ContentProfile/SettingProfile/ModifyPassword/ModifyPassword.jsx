@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '../../../../../redux/store/Profile/profileSilce';
+import Toast from 'react-native-toast-message';
 
 export default function ModifyPassword() {
     const profile = useSelector(state => state.profile.profile);
@@ -26,7 +27,21 @@ export default function ModifyPassword() {
 
     const handleModifyPassword = () => {
         if (!oldPassword || !newPassword || !reNewPassword) {
-            alert('Vui lòng nhập đầy đủ thông tin');
+            Toast.show({
+                type: 'error',
+                text1: 'Lỗi',
+                text2: 'Vui lòng nhập đầy đủ thông tin',
+                position: 'bottom',
+            });
+            return;
+        }
+        if (newPassword !== reNewPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'Lỗi',
+                text2: 'Mật khẩu mới không trùng khớp',
+                position: 'bottom',
+            });
             return;
         }
     }
@@ -151,16 +166,16 @@ export default function ModifyPassword() {
                         Hủy
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={handleModifyPassword}
-                style={{
-                    backgroundColor: '#242670',
-                    padding: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '45%',
-                    borderRadius: 5,
-                }}>
+                <TouchableOpacity
+                    onPress={handleModifyPassword}
+                    style={{
+                        backgroundColor: '#242670',
+                        padding: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '45%',
+                        borderRadius: 5,
+                    }}>
                     <Text style={{
                         color: 'white',
                         fontWeight: 'bold',
@@ -169,6 +184,7 @@ export default function ModifyPassword() {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <Toast />
         </View>
     )
 }
