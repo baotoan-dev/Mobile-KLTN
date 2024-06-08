@@ -1,7 +1,10 @@
 export function FunctionFilterByCreateAtText(text) {
-    const numberPattern = /\d+/; 
-    const matches = text.match(numberPattern); 
-    const number = matches ? parseInt(matches[0]) : null; 
+    const date = new Date();
+    const dateNow = date.getTime();
+    const dateText = new Date(text);
+    const dateTextTime = dateText.getTime();
+
+    const number = Math.floor((dateNow - dateTextTime) / (1000 * 60 * 60 * 24));
 
     return number;
 }

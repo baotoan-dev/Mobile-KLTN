@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1075588409343",
+    "project_id": "testfcm-f6a42",
+    "storage_bucket": "testfcm-f6a42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075588409343:android:f90d243be41263a0a069ca",
+        "android_client_info": {
+          "package_name": "com.hbt.fcmtoken"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoIYoo6Gi0D8RFCgSjXcMf1oljUzLQQqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075588409343:android:a3b6836889c4a4a9a069ca",
+        "android_client_info": {
+          "package_name": "com.hbt.fcmtoken1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoIYoo6Gi0D8RFCgSjXcMf1oljUzLQQqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -21,6 +21,8 @@ import cvInformationReducer from "../store/CvInFormation/cvInformationSlice";
 import communityReducer from "../store/Community/communitySlice";
 import themeCompanyReducer from "../store/ThemeCompany/themeCompanySlice";
 import allFilterCompanyReducer from "../store/Company/FilterCompany/getFilterCompanySlice";
+import allKeywordNotificationReducer from "../store/KeywordNotificaiton/getAllKeywordNotification/getAllKeywordNotificationSlice";
+import allNotificationReducer from "../store/Notification/getAllNotificationSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -44,7 +46,9 @@ const rootReducer = combineReducers({
     companyRatingOfAccount: companyRatingOfAccountReducer,
     community: communityReducer,
     themeCompany: themeCompanyReducer,
-    allFilterCompany: allFilterCompanyReducer
+    allFilterCompany: allFilterCompanyReducer,
+    allKeywordNotification: allKeywordNotificationReducer,
+    allNotification: allNotificationReducer,
 });
 
 export default rootReducer;

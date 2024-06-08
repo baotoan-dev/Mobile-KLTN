@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, Easing, Animated, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
@@ -59,10 +59,27 @@ import CreateBlogComponent from './screens/Components/Blog/CreateBlogComponent/C
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import HotCompanyScreen from './screens/HotCompanyScreen/HotCompanyScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllNoticationAction } from './redux/store/Notification/getAllNotificationSlice';
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
+    const dispatch = useDispatch()
+    const allNotification = useSelector((state) => state.allNotification.notifications)
+    const [totalNotSeen, setTotalNotSeen] = useState(0)
+
+
+    useEffect(() => {
+        dispatch(getAllNoticationAction())
+    }, [])
+
+    useEffect(() => {
+        if (allNotification) {
+            setTotalNotSeen(allNotification.total_is_not_read)
+        }
+    }, [allNotification])
+
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -121,7 +138,23 @@ function BottomTabs() {
                 options={{
                     tabBarLabel: 'Notification',
                     tabBarIcon: ({ color, size, focused }) => (
-                        focused ? <MaterialCommunityIcons name="bell" size={24} color={Color.primary} /> : <MaterialCommunityIcons name="bell" size={24} color={Color.secondary} />
+                        focused ?
+                            <View>
+                                <MaterialCommunityIcons name="bell" size={24} color={Color.primary} />
+                                {totalNotSeen > 0 && (
+                                    <View style={styles.badge}>
+                                        <Text style={styles.badgeText}>{totalNotSeen}</Text>
+                                    </View>
+                                )}
+                            </View> :
+                            <View>
+                                <MaterialCommunityIcons name="bell" size={24} color={Color.secondary} />
+                                {totalNotSeen > 0 && (
+                                    <View style={styles.badge}>
+                                        <Text style={styles.badgeText}>{totalNotSeen}</Text>
+                                    </View>
+                                )}
+                            </View>
                     ),
                     headerShown: false,
                     tabBarLabelStyle: {
@@ -150,6 +183,7 @@ const Stack = createNativeStackNavigator();
 function Navigation() {
     const { auth } = useContext(AuthContext);
     const [isWaiting, setIsWaiting] = useState(true);
+    const rotation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         if (!auth) {
@@ -161,10 +195,40 @@ function Navigation() {
         }
     }, [auth]);
 
+    useEffect(() => {
+        Animated.loop(
+            Animated.timing(rotation, {
+                toValue: 1,
+                duration: 2000,
+                easing: Easing.linear,
+                useNativeDriver: true,
+            })
+        ).start();
+    }, [rotation]);
+
+    const rotate = rotation.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
+
     if (!auth && isWaiting) {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Loading...</Text>
+            <View style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <Animated.Image source={require('./assets/images/loading.png')} style={{
+                    width: 60,
+                    height: 60,
+                    transform: [{ rotate }],
+                }} />
+                <Text style={{
+                    color: '#000',
+                    fontSize: 16,
+                    marginTop: 10,
+                    fontWeight: 'bold'
+                }}>Loading...</Text>
             </View>
         );
     }
@@ -408,5 +472,24 @@ function Navigation() {
         </NavigationContainer>
     )
 }
+
+const styles = StyleSheet.create({
+    badge: {
+        position: 'absolute',
+        right: -6,
+        top: -6,
+        backgroundColor: 'red',
+        borderRadius: 10,
+        width: 20,
+        height: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    badgeText: {
+        color: 'white',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+})
 
 export default Navigation;

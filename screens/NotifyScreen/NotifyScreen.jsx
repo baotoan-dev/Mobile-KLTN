@@ -1,48 +1,67 @@
 import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { notificationApi } from '../../api/notification/notificationApi'
 import { useNavigation } from '@react-navigation/native'
 import moment from 'moment'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { getAllNoticationAction } from '../../redux/store/Notification/getAllNotificationSlice'
+import { notificationApi } from '../../api/notification/notificationApi'
 
 export default function NotifyScreen() {
   const navigation = useNavigation()
   const [dataNotify, setDataNotify] = React.useState([])
   const [isOver, setIsOver] = React.useState(false)
+  const dispatch = useDispatch()
+  const allNotification = useSelector((state) => state.allNotification.notifications)
+
+
+  const fetchDataUpdate = async (notificationId) => {
+
+    const res = await notificationApi.updateNotification(
+      notificationId,
+      1
+    )
+
+    if (res && res.data.code === 200) {
+      dispatch(getAllNoticationAction())
+    }
+
+  }
 
   const handleClickNoty = (
     postId,
     commentId,
     applicationId,
-    typeText
+    typeText,
+    notificationId
   ) => {
     if (typeText === "recruiter") {
 
     }
     if (typeText === "applicator") {
-      navigation.navigate('PostDetail', {
-        id: postId
-      })
+      navigation.navigate('ManageJobApplication')
     }
     if (typeText === "communicationComment") {
       navigation.navigate('DetailBlog', {
         id: commentId
       })
     }
+    fetchDataUpdate(notificationId)
   };
 
 
-  const fetchData = async () => {
-    const response = await notificationApi.getNotification('vi')
-
-    if (response && response.status === 200) {
-      setIsOver(response.data.data.is_over)
-      setDataNotify(response.data.data.notifications)
-    }
-  }
-
-  React.useEffect(() => {
-    fetchData()
+  useEffect(() => {
+    dispatch(getAllNoticationAction())
   }, [])
+
+  useEffect(() => {
+    if (allNotification) {
+      setDataNotify(allNotification)
+      setIsOver(allNotification.is_over)
+      setDataNotify(allNotification.notifications)
+    }
+  }, [allNotification])
+
   return (
     <View style={styles.container}>
       <Text style={
@@ -57,12 +76,15 @@ export default function NotifyScreen() {
               data={dataNotify}
               keyExtractor={(item) => item.data.notificationId.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.item}
+                <TouchableOpacity style={[styles.item, {
+                  backgroundColor: item.data.isRead === false ? '#e6f7ff' : '#ffffff'
+                }]}
                   onPress={() => handleClickNoty(
                     item.data.postId,
                     item.data.communicationId,
                     item.data.applicationId,
-                    item.data.typeText
+                    item.data.typeText,
+                    item.data.notificationId
                   )}
                 >
                   <Text style={{
@@ -135,7 +157,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 10,
-    backgroundColor: '#FEFDED',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

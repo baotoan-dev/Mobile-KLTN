@@ -52,7 +52,7 @@ export default function ManageJobApplication() {
     useEffect(() => {
         if (index === 0) {
             const newList = listApply.filter(item => {
-                const number = FunctionFilterByCreateAtText(item.created_at_text);
+                const number = FunctionFilterByCreateAtText(item.created_at);
 
                 if (number < 7) {
                     return item;
@@ -63,7 +63,7 @@ export default function ManageJobApplication() {
         }
         if (index === 1) {
             const newList = listApply.filter(item => {
-                const number = FunctionFilterByCreateAtText(item.created_at_text);
+                const number = FunctionFilterByCreateAtText(item.created_at);
 
                 if (number < 30) {
                     return item;

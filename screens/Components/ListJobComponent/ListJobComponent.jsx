@@ -64,8 +64,9 @@ export default function ListJobComponent({
                                     <View style={styles.extraInfor}>
                                         <View style={styles.boderExtra}>
                                             <Text style={{
-                                                color: 'gray',
-                                                fontSize: 12
+                                                color: 'white',
+                                                fontSize: 12,
+                                                fontWeight: 'bold'
                                             }}>
                                                 {
                                                     item.district_name
@@ -76,8 +77,9 @@ export default function ListJobComponent({
                                             marginLeft: 10
                                         }, styles.boderExtra]}>
                                             <Text style={{
-                                                color: 'gray',
-                                                fontSize: 12
+                                                color: 'white',
+                                                fontSize: 12,
+                                                fontWeight: 'bold'
                                             }}>
                                                 {
                                                     item.salary_min && item.salary_max ? `${item.salary_min > 1000000 ? item.salary_min / 1000000 + 'tr' : item.salary_min} - ${item.salary_max > 1000000 ? item.salary_max / 1000000 + 'tr' : item.salary_max}` : 'Thương lượng'
@@ -94,11 +96,12 @@ export default function ListJobComponent({
                                                     padding: 2,
                                                     borderRadius: 4,
                                                     marginTop: 5,
-                                                    backgroundColor: item.application_status === 1 ? '#DFF5FF' : item.application_status === 2 ? 'green' : item.application_status === 3 ? 'red' : 'blue'
+                                                    backgroundColor: item.application_status === 1 ? '#DFF5FF' : item.application_status === 2 ? 'green' : item.application_status === 3 ? 'red' : 'blue',
                                                 }]}>
                                                     <Text
                                                         style={{
-                                                            color: 'gray',
+                                                            color: 'white',
+                                                            fontWeight: 'bold',
                                                             fontSize: 12
                                                         }}>
                                                         {
@@ -175,9 +178,9 @@ const styles = StyleSheet.create({
     boderExtra: {
         borderColor: '#97E7E1',
         borderWidth: 0.5,
-        padding: 2,
+        padding: 4,
         borderRadius: 4,
-        backgroundColor: '#DFF5FF',
-        marginTop: 5
+        backgroundColor: '#242670',
+        marginTop: 5,
     }
 }) 

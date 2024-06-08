@@ -107,9 +107,9 @@ export default function CVScreen() {
           backgroundColor: '#FF6347'
         }}
         icon={{
-          name: "add",
-          size: 15,
-          color: "white"
+          type: 'font-awesome',
+          name: 'plus',
+          color: 'white'
         }}
       />
     </View>

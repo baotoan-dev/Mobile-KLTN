@@ -4,7 +4,7 @@ import { CONST_API_V1 } from "../contants/urlContant"
 
 export const notificationApi = {
     getNotification: async (lang) => {
-        const URL = `${CONST_API_V1}/api/v1/notification/all?lang=${lang}`
+        const URL = `${CONST_API_V1}/api/v2/notification/all?lang=${lang}`
 
         return await axiosConfig.get(URL, {
             headers: {
@@ -12,4 +12,16 @@ export const notificationApi = {
             },
         })
     },
+    updateNotification: async (notificationId, isRead) => {
+        const URL = `${CONST_API_V1}/api/v1/notification/update`
+
+        return await axiosConfig.put(URL, {
+            notification_id: notificationId,
+            is_read: isRead
+        }, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+            },
+        })
+    }
 }
