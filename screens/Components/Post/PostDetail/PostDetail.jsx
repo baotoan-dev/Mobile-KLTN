@@ -195,7 +195,13 @@ export default function PostDetail(prop) {
                         >
                             <TouchableOpacity
                                 onPress={() => {
-
+                                    // navigation.navigate('ChatDetail', {
+                                    //     id: item.id,
+                                    //     userId: item.user_id,
+                                    //     postId: item.post_id,
+                                    //     imageParent: item.image ? item.image : 'https://res.cloudinary.com/ddwjnjssj/image/upload/v1702047527/images/avatar/1702047524545-59c27fe7-3919-4a8d-a150-984d9428f184.jpg',
+                                    //     nameParent: item.company_name,
+                                    // })
                                 }}
                                 style={{
                                     width: '30%',

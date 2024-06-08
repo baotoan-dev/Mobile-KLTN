@@ -1,4 +1,5 @@
 import axiosConfig from "../../config/axiosConfig";
+import { CONST_API_V1 } from "../contants/urlContant";
 
 export const authCandidate = {
     signInCandidate: async (email, password) => {
@@ -14,4 +15,18 @@ export const authCandidate = {
             return res.data;
         });
     },
+    modifyPassword: async (password, newPassword) => {
+        const URL = `${CONST_API_V1}/api/v1/sign-in/modify-password`;
+
+        const data = {
+            password: password,
+            newPassword: newPassword,
+        };
+
+        return await axiosConfig.post(URL, data, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+    }
 };

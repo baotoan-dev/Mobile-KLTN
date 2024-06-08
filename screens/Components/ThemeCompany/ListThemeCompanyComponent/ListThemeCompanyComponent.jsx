@@ -1,49 +1,75 @@
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, Linking, ScrollView } from 'react-native'
 import React from 'react'
 
 export default function ListThemeCompanyComponent({ data }) {
   return (
-    <View>
+    <ScrollView>
       {
         data && data.length > 0 ?
-          <FlatList
-            data={data}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.item}>
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '100%',
+          <View>
+            {
+              data.length > 0 && (<View>
+                <Text style={{
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  marginTop: 10,
+                  marginBottom: 10,
                 }}>
-                  <View style={{
-                    width: '80%',
-                  }}>
-                    <Text numberOfLines={1} style={styles.name}>{item.name}</Text>
-                  </View>
-                  <View style={{
-                    width: '20%',
-                  }}>
-
-                  </View>
-                </View>
-                <Text style={styles.des}>
-                  {item.description}
+                  {
+                    `Các chủ đề công ty (${data.length})`
+                  }
                 </Text>
-                <TouchableOpacity>
-                  <Text style={styles.btn}>
-                    {item.nameButton}
+              </View>)
+            }
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              style={{
+                marginBottom: 10,
+                height: '90%',
+              }}
+              data={data}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <View style={styles.item}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}>
+                    <View style={{
+                      width: '80%',
+                    }}>
+                      <Text numberOfLines={1} style={styles.name}>{item.name}</Text>
+                    </View>
+                    <View style={{
+                      width: '20%',
+                    }}>
+
+                    </View>
+                  </View>
+                  <Text style={styles.des}>
+                    {item.description}
                   </Text>
-                </TouchableOpacity>
-                <View>
-                  <Image
-                    source={{ uri: item.image }}
-                    style={styles.imageBanner}
-                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      Linking.openURL(item.link)
+                    }}
+                  >
+                    <Text style={styles.btn}>
+                      {item.nameButton}
+                    </Text>
+                  </TouchableOpacity>
+                  <View>
+                    <Image
+                      source={{ uri: item.image }}
+                      style={styles.imageBanner}
+                    />
+                  </View>
                 </View>
-              </View>
-            )}
-          />
+              )}
+            />
+          </View>
           :
           <View style={{
             justifyContent: 'center',
@@ -62,20 +88,21 @@ export default function ListThemeCompanyComponent({ data }) {
             </Text>
           </View>
       }
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   image: {
     width: 100,
     height: 100,
   },
   item: {
-    backgroundColor: '#EBE4D1',
+    backgroundColor: '#CAE6B2',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -88,6 +115,7 @@ const styles = StyleSheet.create({
   },
   des: {
     marginBottom: 10,
+    textAlign: 'justify',
   },
   btn: {
     color: '#fff',

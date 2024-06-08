@@ -24,6 +24,13 @@ export default function ModifyPassword() {
         }
     }, [profile])
 
+    const handleModifyPassword = () => {
+        if (!oldPassword || !newPassword || !reNewPassword) {
+            alert('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -144,7 +151,9 @@ export default function ModifyPassword() {
                         Hủy
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{
+                <TouchableOpacity 
+                onPress={handleModifyPassword}
+                style={{
                     backgroundColor: '#242670',
                     padding: 10,
                     alignItems: 'center',

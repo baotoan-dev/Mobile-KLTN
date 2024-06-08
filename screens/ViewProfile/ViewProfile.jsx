@@ -18,6 +18,7 @@ export default function ViewProfile() {
     const [animation] = React.useState(new Animated.Value(0));
     const [itemOpacity] = React.useState(new Animated.Value(0));
     const [itemScale] = React.useState(new Animated.Value(0))
+
     const loadMoreItem = () => {
         if (!isLastPage) {
             setCurrentPage((prev) => prev + 1)
@@ -25,8 +26,8 @@ export default function ViewProfile() {
     }
 
     useEffect(() => {
-        dispatch(getViewProfilesAction(currentPage, 10))
-    }, []);
+        dispatch(getViewProfilesAction(currentPage, 10));
+    }, [dispatch, currentPage]);
 
     useEffect(() => {
         Animated.timing(itemOpacity, {
@@ -40,12 +41,12 @@ export default function ViewProfile() {
             friction: 4,
             useNativeDriver: true
         }).start();
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (viewProfile) {
-            setListViewProfile(viewProfile.data);
-            setIsLastPage(viewProfile.isLastPage)
+            setListViewProfile((prev) => currentPage === 0 ? viewProfile.data : [...prev, ...viewProfile.data]);
+            setIsLastPage(viewProfile.isLastPage);
         }
         startAnimationLoop();
     }, [viewProfile]);
@@ -64,23 +65,6 @@ export default function ViewProfile() {
             startAnimationLoop();
         }, 3000);
     };
-
-    useEffect(() => {
-        dispatch(getViewProfilesAction(currentPage, 10)).then(() => {
-            setIsLastPage(viewProfile.isLastPage)
-        });
-
-        if (currentPage === 0) {
-            setListViewProfile(viewProfile.data);
-        }
-        else {
-            setListViewProfile({
-                ...listViewProfile,
-                listViewProfile: listViewProfile.concat(viewProfile.data),
-            });
-        }
-    }, [currentPage]);
-
 
     return (
         <Animated.View>
@@ -101,8 +85,8 @@ export default function ViewProfile() {
                         data={listViewProfile}
                         keyExtractor={item => item.id}
                         onEndReached={loadMoreItem}
-                        onEndReachedThreshold={1}
-                        ListFooterComponentStyle={LoaderComponent}
+                        onEndReachedThreshold={0.1}
+                        ListFooterComponent={<LoaderComponent isOver={isLastPage} />}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => {
