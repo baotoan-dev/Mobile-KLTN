@@ -1,53 +1,52 @@
-import { View } from 'react-native'
-import React, { useEffect } from 'react'
-import HeaderOfScreen from '../Components/HeaderOfScreen/HeaderOfScreen'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
-import Buffer from 'buffer';
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
+import { WebView } from 'react-native-webview';
+import HeaderOfScreen from '../Components/HeaderOfScreen/HeaderOfScreen';
 
-export default function SeenPDFScreen(prop) {
+export default function SeenPDFScreen(props) {
     const dispatch = useDispatch();
-    const id = prop.route.params.id;
+    const id = props.route.params.id;
     const profile = useSelector(state => state.profile.profile);
-    const [linkPDF, setLinkPDF] = React.useState('')
+    const [linkPDF, setLinkPDF] = React.useState('');
 
     useEffect(() => {
-        dispatch(getProfileAction('vi'))
-    }, [])
-
+        dispatch(getProfileAction('vi'));
+    }, []);
 
     useEffect(() => {
         if (profile) {
             const listCV = profile.profilesCvs;
             const cv = listCV.find(cv => cv.id === id);
-            setLinkPDF(cv.pdfURL)
+            if (cv) {
+                setLinkPDF(cv.pdfURL);
+            }
         }
-    }, [profile])
-
-    // fetch base64 pdf
-
-    const fetchBase64 = async (url) => {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-            const base64data = reader.result;
-            console.log(base64data)
-        }
-    }
-    
-    useEffect(() => {
-        fetchBase64(linkPDF)
-    }, [linkPDF])
+    }, [profile]);
 
     return (
-        <View>
+        <View style={styles.container}>
             <HeaderOfScreen title="Xem CV" />
-            {/* show pdf from base64 */}
-            
+            {linkPDF ? (
+                <WebView
+                    source={{ uri: `https://docs.google.com/viewer?url=${linkPDF}&embedded=true` }}
+                    style={styles.pdf}
+                />
+            ) : null}
         </View>
-    )
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    pdf: {
+        flex: 1,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+});

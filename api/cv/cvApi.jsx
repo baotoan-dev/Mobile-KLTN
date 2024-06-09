@@ -81,4 +81,29 @@ export const cvApi = {
             },
         });
     },
+    createCvLayout: (data) => {
+        const URL = `${CONST_API}/api/v3/cv-layout`;
+        return axiosConfig.post(URL, data, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+                'Content-Type': 'application/json',
+            },
+        });
+    },
+    getCvLayout: (cvIndex) => {
+        const URL = `${CONST_API}/api/v3/cv-layout?cvIndex=${cvIndex}`;
+        return axiosConfig.get(URL, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+            },
+        });
+    },
+    deleteCvLayout: (cvIndex) => {
+        const URL = `${CONST_API}/api/v3/cv-layout/${cvIndex}`
+        return axiosConfig.delete(URL, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+            },
+        });
+    },
 }

@@ -13,6 +13,8 @@ import { getCvInformationAction } from '../../redux/store/CvInFormation/cvInform
 import ModalActionSave from './ModalActionSave/ModalActionSave';
 import { cvProfileApi } from '../../api/cv-profile/cvProfileApi';
 import Toast from 'react-native-toast-message';
+import InforModifyUI from './InforModifyUI/InforModifyUI';
+import { getCvLayoutAction } from '../../redux/store/CvLayout/cvLayoutSlice';
 
 
 export default function PDFScreen(prop) {
@@ -20,11 +22,13 @@ export default function PDFScreen(prop) {
     const profile = useSelector((state) => state.profile.profile);
     const { typeAction, templateId, cvIndexParent } = prop.route.params;
     const dispatch = useDispatch();
+    const [clickUpdateUI, setClickUpdateUI] = useState(false);
     const [avatar, setAvatar] = useState(null);
     const [showModalAction, setShowModalAction] = useState(false);
     const cvProject = useSelector(state => state.cvProject.cvProject);
     const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
     const cvInformation = useSelector(state => state.cvInformation.cvInformation);
+    const cvLayout = useSelector(state => state.cvLayout.cvLayout);
     const [listPersonalInformation, setListPersonalInformation] = useState({});
     const [listProject, setListProject] = useState([]);
     const [listSkill, setListSkill] = useState([]);
@@ -32,58 +36,66 @@ export default function PDFScreen(prop) {
     const [listEducation, setListEducation] = useState([]);
     const [nameCv, setNameCv] = useState('');
     const [cvIndex, setCvIndex] = useState(0);
+    const [dataModify, setDataModify] = useState({
+        color: '#529300',
+        size: 'small',
+    })
+
+    useEffect(() => {
+        dispatch(getProfileAction('vi'));
+    }, [dispatch]);
 
     useEffect(() => {
         if (profile) {
-            // get item have cvIndex highest
             if (typeAction === 'create') {
                 if (profile.profilesCvs.length === 0) {
-                    setCvIndex(0)
-                }
-                else {
+                    setCvIndex(0);
+                } else {
                     let maxIndex = 0;
-                    profile.profilesCvs.forEach((item, index) => {
+                    profile.profilesCvs.forEach((item) => {
                         if (item.cvIndex > maxIndex) {
-                            maxIndex = item.cvIndex
+                            maxIndex = item.cvIndex;
                         }
-                    })
-                    setCvIndex(maxIndex + 1)
+                    });
+                    setCvIndex(maxIndex + 1);
                 }
-            }
-            else {
-                setCvIndex(cvIndexParent)
+            } else {
+                setCvIndex(cvIndexParent);
             }
         }
+    }, [profile, typeAction, cvIndexParent]);
 
-        dispatch(getProfileAction('vi'));
-        dispatch(getCvProjectAction(cvIndex))
-        dispatch(getCvExtraInformationAction(cvIndex))
-        dispatch(getCvInformationAction(cvIndex))
-
-    }, [profile])
+    useEffect(() => {
+        if (cvIndex !== 0 || typeAction !== 'create') {
+            dispatch(getCvProjectAction(cvIndex));
+            dispatch(getCvExtraInformationAction(cvIndex));
+            dispatch(getCvInformationAction(cvIndex));
+            dispatch(getCvLayoutAction(cvIndex));
+        }
+    }, [dispatch, cvIndex, typeAction]);
 
     useEffect(() => {
         if (cvInformation && cvInformation.data) {
             setListPersonalInformation(cvInformation.data);
         }
-    }, [cvInformation])
+    }, [cvInformation]);
 
     useEffect(() => {
-        if (cvProject) {
+        if (cvProject && cvProject.length > 0) {
             setListProject(cvProject[0]?.moreCvProjects);
         }
-    }, [cvProject])
+    }, [cvProject]);
 
     useEffect(() => {
         if (cvExtraInformation && cvExtraInformation.length > 0) {
-            const skills = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_skill');
-            const awards = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_award');
-            const educations = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_study');
-            setListSkill((skills && skills.length > 0) ? skills[0].moreCvExtraInformations : []);
-            setListAward((awards && awards.length > 0) ? awards[0].moreCvExtraInformations : []);
-            setListEducation((educations && educations.length > 0) ? educations[0].moreCvExtraInformations : []);
+            const skills = cvExtraInformation.filter((item) => item.type === 'info_skill');
+            const awards = cvExtraInformation.filter((item) => item.type === 'info_award');
+            const educations = cvExtraInformation.filter((item) => item.type === 'info_study');
+            setListSkill(skills.length > 0 ? skills[0].moreCvExtraInformations : []);
+            setListAward(awards.length > 0 ? awards[0].moreCvExtraInformations : []);
+            setListEducation(educations.length > 0 ? educations[0].moreCvExtraInformations : []);
         }
-    }, [cvExtraInformation])
+    }, [cvExtraInformation]);
 
 
     const html = `
@@ -105,25 +117,28 @@ export default function PDFScreen(prop) {
                             <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
                                 PERSONAL INFORMATION 
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+                             <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+                                    ${listPersonalInformation.email ? `
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-envelope" style="font-size: 30px"></i>
                                         <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.email}</div>
-                                    </div>
-                            
+                                    </div>` : ''}
+                                    ${listPersonalInformation.phone ? `
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-phone" style="font-size: 30px"></i>
                                         <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.phone}</div>
-                                    </div>
+                                    </div>` : ''}
+                                    ${listPersonalInformation.address ? `
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-address-book" style="font-size: 30px"></i>
                                         <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.address}</div>
-                                    </div>
+                                    </div>` : ''}
+                                    ${listPersonalInformation.link ? `
                                     <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
                                         <i class="fas fa-link" style="font-size: 30px"></i>
                                         <div style="font-size: 25px; word-wrap: break-word;">${listPersonalInformation.link}</div>
-                                    </div>
-                            </div>
+                                    </div>` : ''}
+                                </div>
                         </div>                        
                         </div>
                         <div style="padding: 30px;">
@@ -158,7 +173,7 @@ export default function PDFScreen(prop) {
                 </div>
                 <div style="width: 55%; height: 100%">
                     <div style="margin: 40px; font-size: 30px; font-weight: 700;">
-                        ${listPersonalInformation.name}
+                        ${listPersonalInformation.name ? listPersonalInformation.name : 'Name'}
                     </div>
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
@@ -167,7 +182,7 @@ export default function PDFScreen(prop) {
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div> 
                         <div style="font-size: 20px; margin-top: 20px; padding: 30px; text-align: justify; line-height: 1.5;">
-                            ${listPersonalInformation.intent}
+                            ${listPersonalInformation.intent ? listPersonalInformation.intent : ''}
                         </div>
                     </div>
                     <div>
@@ -347,49 +362,98 @@ export default function PDFScreen(prop) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <View>
-                    <TouchableOpacity onPress={() => {
-                        navigation.goBack();
-                    }}>
-                        <Text style={{
-                            fontWeight: 'bold',
-                        }}>
-                            Hủy
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TextInput
-                        placeholder="Tên file"
-                        onChangeText={(text) => setNameCv(text)}
-                        style={{
-                            borderWidth: 0.5,
-                            borderColor: 'gray',
-                            borderRadius: 5,
-                            padding: 3,
-                            width: 100,
-                        }}
-                    />
-                </View>
-                <TouchableOpacity onPress={handleAction} >
-                    <Text style={{
-                        fontWeight: 'bold',
-                    }}>
-                        Lưu
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            <Toast ref={(ref) => Toast.setRef(ref)} />
+            {
+                clickUpdateUI === false ? (
+                    <View style={styles.header}>
+                        <View>
+                            <TouchableOpacity onPress={() => {
+                                navigation.goBack();
+                            }}>
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                }}>
+                                    Hủy
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <TextInput
+                                placeholder="Tên file"
+                                onChangeText={(text) => setNameCv(text)}
+                                style={{
+                                    borderRadius: 10,
+                                    padding: 5,
+                                    width: 100,
+                                    backgroundColor: '#789292',
+                                    fontWeight: 'bold',
+                                }}
+                            />
+                        </View>
+                        <TouchableOpacity onPress={handleAction} >
+                            <Text style={{
+                                fontWeight: 'bold',
+                            }}>
+                                Lưu
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <View style={styles.header}>
+                        <View>
+                            <TouchableOpacity onPress={() => {
+                                setClickUpdateUI(!clickUpdateUI)
+                            }}>
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                }}>
+                                    Hủy
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <Text style={{
+                                fontWeight: 'bold',
+                                textDecorationLine: 'underline',
+                            }}>
+                                Sửa giao diện
+                            </Text>
+                        </View>
+                        <View>
+                            <TouchableOpacity>
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                }}>
+                                    Áp dụng
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )
+            }
             <ModalActionSave
                 showModalAction={showModalAction}
                 setShowModalAction={setShowModalAction}
                 handlePrint={handlePrint}
                 printToFile={printToFile}
             />
-            <ContentHeaderPDFScreen />
-            <ContentCenterPDFScreen typeAction={typeAction} />
-            <ContentBottomPDFScreen typeAction={typeAction} />
+            {/* <ContentHeaderPDFScreen /> */}
+            <ContentCenterPDFScreen
+                typeAction={typeAction}
+            />
+            <InforModifyUI 
+                clickUpdateUI={clickUpdateUI}
+                setClickUpdateUI={setClickUpdateUI}
+                dataModify={dataModify}
+                setDataModify={setDataModify}
+            />
+            <ContentBottomPDFScreen
+                typeAction={typeAction}
+                clickUpdateUI={clickUpdateUI}
+                setClickUpdateUI={setClickUpdateUI}
+                dataModify={dataModify}
+                setDataModify={setDataModify}
+            />
+            <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
 
     );
@@ -398,7 +462,7 @@ export default function PDFScreen(prop) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#F0EBE3',
     },
     header: {
         flexDirection: 'row',
@@ -410,6 +474,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingBottom: 10,
         justifyContent: 'space-between',
+        backgroundColor: 'white',
     },
     content: {
         flex: 1,

@@ -324,6 +324,8 @@ function Navigation() {
                     headerShown: false,
                 }} />
 
+                {/* Bottom of CV */}
+
                 <Stack.Screen name="InforContentForCV" component={InforContentForCV} options={{
                     headerShown: false,
                 }} />

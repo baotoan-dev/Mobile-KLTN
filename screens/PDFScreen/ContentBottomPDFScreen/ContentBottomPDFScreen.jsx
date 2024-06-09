@@ -3,17 +3,25 @@ import React from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ContentBottomPDFScreen({typeAction}) {
+export default function ContentBottomPDFScreen({
+    typeAction,
+    clickUpdateUI,
+    setClickUpdateUI,
+}) {
     const navigation = useNavigation()
     return (
         <View style={styles.bottom}>
             <TouchableOpacity
+                onPress={() => {
+                    setClickUpdateUI(!clickUpdateUI)
+                }}
                 style={styles.button}
             >
-                <AntDesign name="rocket1" size={24} color="black" />
+                <AntDesign name="rocket1" size={24} color="white" />
                 <Text style={{
                     marginLeft: 5,
                     fontWeight: 'bold',
+                    color: 'white',
                 }}>
                     Sửa giao diện
                 </Text>
@@ -28,10 +36,11 @@ export default function ContentBottomPDFScreen({typeAction}) {
                     })
                 }}
             >
-                <AntDesign name="edit" size={24} color="black" />
+                <AntDesign name="edit" size={24} color="white" />
                 <Text style={{
                     marginLeft: 5,
                     fontWeight: 'bold',
+                    color: 'white',
                 }}>
                     Sửa nội dung
                 </Text>
@@ -49,16 +58,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderTopColor: 'gray',
         borderTopWidth: 0.2,
-        bacjgroundColor: 'white',
+        backgroundColor: 'white',
     },
     button: {
         width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        bacjgroundColor: 'white',
         padding: 10,
         borderRadius: 5,
         borderWidth: 0.5,
         borderColor: 'gray',
+        backgroundColor: '#789292'
     }
 });

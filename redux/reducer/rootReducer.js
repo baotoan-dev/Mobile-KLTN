@@ -23,6 +23,7 @@ import themeCompanyReducer from "../store/ThemeCompany/themeCompanySlice";
 import allFilterCompanyReducer from "../store/Company/FilterCompany/getFilterCompanySlice";
 import allKeywordNotificationReducer from "../store/KeywordNotificaiton/getAllKeywordNotification/getAllKeywordNotificationSlice";
 import allNotificationReducer from "../store/Notification/getAllNotificationSlice";
+import cvLayoutReducer from "../store/CvLayout/cvLayoutSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
     cvProject: cvProjectReducer,
     cvExtraInformation: cvExtraInformationReducer,
     cvInformation: cvInformationReducer,
+    cvLayout: cvLayoutReducer,
     profileAnalytic: profileAnalyticReducer,
     chat: messageReducer,
     follow: followCompanyReducer,
