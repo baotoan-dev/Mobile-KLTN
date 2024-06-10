@@ -81,11 +81,11 @@ export const cvApi = {
             },
         });
     },
-    createCvLayout: (data) => {
+    createCvLayout: async (data) => {
         const URL = `${CONST_API}/api/v3/cv-layout`;
         return axiosConfig.post(URL, data, {
             headers: {
-                Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+                Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,
                 'Content-Type': 'application/json',
             },
         });

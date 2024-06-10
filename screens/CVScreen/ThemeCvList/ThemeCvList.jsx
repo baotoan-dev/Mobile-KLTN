@@ -3,21 +3,77 @@ import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { templateApi } from '../../../api/template/templateApi';
 import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
+import { getCvLayoutAction } from '../../../redux/store/CvLayout/cvLayoutSlice';
+import ModalConfirmCreate from '../ModalComfirmCreate/ModalConfirmCreate';
 
 export default function ThemeCvList() {
+    const colors = [
+        '#529300',
+        '#3B82F6'
+    ]
+
     const navigation = useNavigation()
+    const dispatch = useDispatch()
+    const cvLayout = useSelector(state => state.cvLayout.cvLayout);
+    const profile = useSelector((state) => state.profile.profile);
+    const [showModalConfirmCreate, setShowModalConfirmCreate] = React.useState(false)
     const [themeCv, setThemeCv] = React.useState([])
+    const [cvIndex, setCvIndex] = React.useState(0)
+    const [templateId, setTemplateId] = React.useState(0)
     const fetchThemeCv = async () => {
         const res = await templateApi.getAllTemplates()
 
         if (res && res.data && res.data.status === 200) {
             setThemeCv(res.data.data)
+            setThemeCv(res.data.data.slice(0, 1))
         }
     }
 
     useEffect(() => {
         fetchThemeCv()
     }, [])
+
+    useEffect(() => {
+        dispatch(getProfileAction('vi'));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (profile) {
+            if (profile.profilesCvs.length === 0) {
+                setCvIndex(0);
+            } else {
+                let maxIndex = 0;
+                profile.profilesCvs.forEach((item) => {
+                    if (item.cvIndex > maxIndex) {
+                        maxIndex = item.cvIndex;
+                    }
+                });
+                setCvIndex(maxIndex + 1);
+            }
+        }
+    }, [profile]);
+
+    useEffect(() => {
+        dispatch(getCvLayoutAction(cvIndex));
+    }, [cvIndex])
+
+    const handleCheckData = (index) => {
+        if (cvLayout && cvLayout?.color?.length > 0) {
+            setShowModalConfirmCreate(true)
+        } else {
+            navigation.navigate(
+                'PDFScreen',
+                {
+                    templateId: index,
+                    typeAction: 'create',
+                    cvIndexParent: 0,
+                }
+            )
+        }
+    }
+
     return (
         <View style={styles.container}>
             <HeaderOfScreen title="Chọn mẫu CV" />
@@ -53,12 +109,12 @@ export default function ThemeCvList() {
                             return (
                                 <View key={index} style={{
                                     width: '44%',
-                                    height: 200,
+                                    height: 220,
                                     borderWidth: 0.3,
                                     borderRadius: 3,
                                     margin: 10,
                                     borderColor: '#242670',
-                                    backgroundColor: '#F8F9D7',
+                                    backgroundColor: 'white',
                                     padding: 10,
                                     shadowColor: "#000",
                                     shadowOffset: {
@@ -71,14 +127,8 @@ export default function ThemeCvList() {
                                 }}>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            navigation.navigate(
-                                                'PDFScreen',
-                                                {
-                                                    templateId: index,
-                                                    typeAction: 'create',
-                                                    cvIndexParent: 0,
-                                                }
-                                            )
+                                            setTemplateId(item.id)
+                                            handleCheckData(item.id)
                                         }}
                                     >
                                         <View style={{
@@ -102,6 +152,28 @@ export default function ThemeCvList() {
                                                 fontWeight: 'bold',
                                                 color: 'black'
                                             }}>{item.name}</Text>
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                marginTop: 5
+                                            }}>
+                                                {
+                                                    colors.map((color, index) => {
+                                                        return (
+                                                            <View
+                                                                key={index}
+                                                                style={{
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                    borderRadius: 15,
+                                                                    backgroundColor: color,
+                                                                    marginRight: 10
+                                                                }}
+                                                            >
+                                                            </View>
+                                                        )
+                                                    })
+                                                }
+                                            </View>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -110,7 +182,17 @@ export default function ThemeCvList() {
                     </View>
                 </ScrollView>
             </View>
-        </View >
+            {
+                showModalConfirmCreate && (
+                    <ModalConfirmCreate
+                        cvIndex={cvIndex}
+                        templateId={templateId}
+                        showModalConfirmCreate={showModalConfirmCreate}
+                        setShowModalConfirmCreate={setShowModalConfirmCreate}
+                    />
+                )
+            }
+        </View>
 
     )
 }

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, Clipboard } from 'react-native'
 import React from 'react'
 import { communityApi } from '../../../../api/community/communityApi';
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import RenderHtml from 'react-native-render-html';
 import { AntDesign } from '@expo/vector-icons';
 import ModalComment from '../ModalComment/ModalComment';
+import Toast from 'react-native-toast-message';
 
 export default function DetailBlog(prop) {
     const id = prop.route.params.id;
@@ -31,6 +32,14 @@ export default function DetailBlog(prop) {
     React.useEffect(() => {
         fetchData();
     }, []);
+
+    const copyContentToClipboard = async (content) => {
+        await Clipboard.setString(content);
+        Toast.show({
+            type: 'success',
+            text1: 'Sao chép nội dung thành công',
+        });
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -269,14 +278,18 @@ export default function DetailBlog(prop) {
                                 <View style={{
                                     width: '33%',
                                 }}>
-                                    <TouchableOpacity style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        padding: 10,
-                                        borderRadius: 10,
-                                        marginTop: 10,
-                                    }}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            copyContentToClipboard(detailBlog.content);
+                                        }}
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            padding: 10,
+                                            borderRadius: 10,
+                                            marginTop: 10,
+                                        }}>
                                         <AntDesign name="link" size={24} color="black" />
                                         <Text style={{
                                             color: 'black',
@@ -302,6 +315,7 @@ export default function DetailBlog(prop) {
                 )
 
             }
+            <Toast ref={(ref) => Toast.setRef(ref)} />
         </SafeAreaView>
     )
 }

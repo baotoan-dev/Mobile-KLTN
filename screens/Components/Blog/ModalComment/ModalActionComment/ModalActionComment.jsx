@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Clipboard } from 'react-native'
 import React from 'react'
 import Modal from 'react-native-modal'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -6,6 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { communityApi } from '../../../../../api/community/communityApi';
 import ModalVerifyAction from '../ModalVerifyAction/ModalVerifyAction';
 import ModalUpdateComment from '../ModalUpdateComment/ModalUpdateComment';
+import Toast from 'react-native-toast-message';
 
 export default function ModalActionComment({
     viewAction,
@@ -25,6 +26,15 @@ export default function ModalActionComment({
             fetchData()
             setViewAction(false)
         }
+    }
+
+    const coppyClipboard = (content) => {
+        Clipboard.setString(content)
+        Toast.show({
+            type: 'success',
+            position: 'top',
+            text1: 'Sao chép bình luận thành công',
+        });
     }
     return (
         <View>
@@ -72,14 +82,19 @@ export default function ModalActionComment({
                             <AntDesign name="edit" size={24} color="black" />
                             <Text style={styles.ml}>Chỉnh sửa bình luận</Text>
                         </TouchableOpacity>
-                        <View style={[styles.item, {
+                        <TouchableOpacity 
+                        onPress={() => {
+                            coppyClipboard(contentComment)
+                        }}
+                        style={[styles.item, {
                             marginTop: 20
                         }]}>
                             <AntDesign name="link" size={24} color="black" />
                             <Text style={styles.ml}>Sao chép</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
+                <Toast ref={(ref) => Toast.setRef(ref)} />
             </Modal>
             {
                 openModalVeritfyAction && (

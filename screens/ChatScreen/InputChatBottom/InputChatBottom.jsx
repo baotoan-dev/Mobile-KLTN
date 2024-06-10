@@ -17,8 +17,12 @@ export default function InputChatBottom({
             {
                 !checkClick && (
                     <View style={styles.left}>
-                        <MaterialIcons name="keyboard-voice" size={24} color="black" />
-                        <AntDesign name="camerao" size={24} color="black" />
+                        <TouchableOpacity>
+                            <MaterialIcons name="keyboard-voice" size={24} color="black" />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <AntDesign name="camerao" size={24} color="black" />
+                        </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => handleSendPhoto()}
                         >

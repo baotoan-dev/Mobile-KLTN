@@ -37,9 +37,9 @@ export default function ModalAddCv({
         }
     }, [profile])
 
-    const handleUploadCv = async () => {
-        try {
-            if (Platform.OS === 'android') {
+    const requestStoragePermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
                     {
@@ -52,10 +52,26 @@ export default function ModalAddCv({
                 );
                 if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
                     Alert.alert('Permission Denied', 'You need to grant storage permission to upload CVs.');
-                    return;
+                    return false;
                 }
+                return true;
+            } catch (err) {
+                console.warn(err);
+                Alert.alert('Permission Error', 'An error occurred while requesting storage permission.');
+                return false;
             }
+        }
+        return true;
+    };
 
+
+    const handleUploadCv = async () => {
+        try {
+            // const permissionGranted = await requestStoragePermission();
+
+            // if (!permissionGranted) {
+            //     return;
+            // }
 
             let result = await DocumentPicker.getDocumentAsync({
                 type: 'application/pdf',
@@ -214,6 +230,6 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     flexItem: {
-        
+
     }
 })

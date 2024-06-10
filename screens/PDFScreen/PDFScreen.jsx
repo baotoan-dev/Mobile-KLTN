@@ -14,7 +14,7 @@ import ModalActionSave from './ModalActionSave/ModalActionSave';
 import { cvProfileApi } from '../../api/cv-profile/cvProfileApi';
 import Toast from 'react-native-toast-message';
 import InforModifyUI from './InforModifyUI/InforModifyUI';
-import { getCvLayoutAction } from '../../redux/store/CvLayout/cvLayoutSlice';
+import { createCvLayoutAction, getCvLayoutAction } from '../../redux/store/CvLayout/cvLayoutSlice';
 
 
 export default function PDFScreen(prop) {
@@ -87,6 +87,22 @@ export default function PDFScreen(prop) {
     }, [cvProject]);
 
     useEffect(() => {
+        if (cvLayout && cvLayout?.layout?.length > 0) {
+            const layout = cvLayout?.layout?.length > 0 ? cvLayout.layout[0].split(',') : [];
+            const color = cvLayout?.color?.length > 0 ? cvLayout.color[0].split(',') : [];
+            console.log('color Parent', color[0]);
+            const pad = cvLayout?.pad?.length > 0 ? cvLayout.pad[0].split(',') : [];
+            const padPart = cvLayout?.padPart?.length > 0 ? cvLayout.padPart[0] : 0;
+            const colorTopic = cvLayout?.colorTopic;
+            const indexTopic = cvLayout?.indexTopic;
+            setDataModify({
+                color: color[0],
+                size: pad[0] === '1' ? 'small' : 'big',
+            });
+        }
+    }, [cvLayout]);
+
+    useEffect(() => {
         if (cvExtraInformation && cvExtraInformation.length > 0) {
             const skills = cvExtraInformation.filter((item) => item.type === 'info_skill');
             const awards = cvExtraInformation.filter((item) => item.type === 'info_award');
@@ -97,7 +113,35 @@ export default function PDFScreen(prop) {
         }
     }, [cvExtraInformation]);
 
-
+    const handleApplyForCvLayout = () => {
+        const dataUpload = {
+            cvIndex: cvIndex,
+            layout: [
+                "40, 60"
+            ],
+            color: [
+                `${dataModify.color}, #`,
+            ],
+            pad: [
+                `${dataModify.size === 'small' ? '1' : '2'}, ${dataModify.size === 'small' ? '1' : '2'}`
+            ],
+            padPart: [+`${dataModify.size === 'small' ? '1' : '2'}`],
+            colorTopic: "#529300,#3B82F6",
+            indexTopic: +`${dataModify.color === '#529300' ? 1 : 2}`,
+        }
+        dispatch(createCvLayoutAction(dataUpload));
+        dispatch(getCvLayoutAction(cvIndex)).then(() => {
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Áp dụng giao diện thành công',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
+        });
+    }
+    
+    
     const html = `
     <!DOCTYPE html>
     <html>
@@ -107,7 +151,7 @@ export default function PDFScreen(prop) {
         </head>
         <body style="height: fit-content; margin: 0;">
             <div style="display: flex; flex-direction: row; width: 100%; height: 100%">
-                <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: #c1e8e4;">
+                <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: ${dataModify.color};">
                     <div>
                         <div>
                             <div style="text-align: center; margin-top: 10px;">
@@ -384,8 +428,10 @@ export default function PDFScreen(prop) {
                                     borderRadius: 10,
                                     padding: 5,
                                     width: 100,
-                                    backgroundColor: '#789292',
                                     fontWeight: 'bold',
+                                    textAlign: 'center',
+                                    borderColor: 'gray',
+                                    borderWidth: 0.5,
                                 }}
                             />
                         </View>
@@ -419,7 +465,11 @@ export default function PDFScreen(prop) {
                             </Text>
                         </View>
                         <View>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    handleApplyForCvLayout()
+                                }}
+                            >
                                 <Text style={{
                                     fontWeight: 'bold',
                                 }}>
@@ -438,9 +488,14 @@ export default function PDFScreen(prop) {
             />
             {/* <ContentHeaderPDFScreen /> */}
             <ContentCenterPDFScreen
-                typeAction={typeAction}
+                dataModify={dataModify}
+                listAward={listAward}
+                listPersonalInformation={listPersonalInformation}
+                listProject={listProject}
+                listSkill={listSkill}
+                listEducation={listEducation}
             />
-            <InforModifyUI 
+            <InforModifyUI
                 clickUpdateUI={clickUpdateUI}
                 setClickUpdateUI={setClickUpdateUI}
                 dataModify={dataModify}

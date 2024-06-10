@@ -1,75 +1,17 @@
 import { View, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import WebView from 'react-native-webview';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
-import { getCvProjectAction } from '../../../redux/store/CvProject/cvProjectSlice';
-import { getCvExtraInformationAction } from '../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
-import { getCvInformationAction } from '../../../redux/store/CvInFormation/cvInformationSlice';
 
-export default function ContentCenterPDFScreen({ typeAction }) {
-    const dispatch = useDispatch();
-    const profile = useSelector((state) => state.profile.profile);
-    const cvProject = useSelector(state => state.cvProject.cvProject);
-    const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
-    const cvInformation = useSelector(state => state.cvInformation.cvInformation);
-    const [listPersonalInformation, setListPersonalInformation] = useState({});
-    const [listProject, setListProject] = useState([]);
-    const [listSkill, setListSkill] = useState([]);
-    const [listAward, setListAward] = useState([]);
-    const [listEducation, setListEducation] = useState([]);
-    const [cvIndex, setCvIndex] = useState(0);
-
-    useEffect(() => {
-        if (typeAction === 'create') {
-            // get item have cvIndex highest
-            if (profile.profilesCvs.length === 0) {
-                setCvIndex(0)
-            }
-            else {
-                let maxIndex = 0;
-                profile.profilesCvs.forEach((item, index) => {
-                    if (item.cvIndex > maxIndex) {
-                        maxIndex = item.cvIndex
-                    }
-                })
-                setCvIndex(maxIndex + 1)
-            }
-        }
-        else {
-
-        }
-    }, [typeAction])
-
-    useEffect(() => {
-        dispatch(getProfileAction('vi'));
-        dispatch(getCvProjectAction(cvIndex))
-        dispatch(getCvExtraInformationAction(cvIndex))
-        dispatch(getCvInformationAction(cvIndex))
-    }, [])
-
-    useEffect(() => {
-        if (cvInformation && cvInformation.data) {
-            setListPersonalInformation(cvInformation.data);
-        }
-    }, [cvInformation])
-
-    useEffect(() => {
-        if (cvProject) {
-            setListProject(cvProject[0]?.moreCvProjects ? cvProject[0]?.moreCvProjects : []);
-        }
-    }, [cvProject])
-
-    useEffect(() => {
-        if (cvExtraInformation && cvExtraInformation.length > 0) {
-            const skills = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_skill');
-            const awards = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_award');
-            const educations = cvExtraInformation && cvExtraInformation.filter((item) => item.type === 'info_study');
-            setListSkill((skills && skills.length > 0) ? skills[0].moreCvExtraInformations : []);
-            setListAward((awards && awards.length > 0) ? awards[0].moreCvExtraInformations : []);
-            setListEducation((educations && educations.length > 0) ? educations[0].moreCvExtraInformations : []);
-        }
-    }, [cvExtraInformation])
+export default function ContentCenterPDFScreen({ 
+    dataModify, 
+    listAward, 
+    listPersonalInformation,
+    listProject,
+    listSkill,
+    listEducation
+}) {
+    
+    console.log('dataModify', dataModify);
 
     const html = `
     <!DOCTYPE html>
@@ -79,8 +21,8 @@ export default function ContentCenterPDFScreen({ typeAction }) {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         </head>
         <body style="height: fit-content; margin: 0;">
-            <div style="display: flex; flex-direction: row; width: 100%; height: 100%">
-                <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: #529300;">
+            <div style="display: flex; flex-direction: row; width: 100%; height: 100%; padding: ${dataModify.size === 'small' ? '10px' : '20px'}">
+                <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: ${dataModify.color};">
                     <div>
                         <div>
                             <div style="text-align: center; margin-top: 10px;">
@@ -120,12 +62,12 @@ export default function ContentCenterPDFScreen({ typeAction }) {
                             </div>
                             <div>
                                 ${listSkill?.map((item, index) => {
-                        return `
+        return `
                                     <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                         <div style="font-size: 25px;margin-bottom: 5px">${item.company}</div>
                                         <div style="font-size: 25px;text-align: justify;">${item.description}</div>
                                     </div>`;
-                         }).join('')}
+    }).join('')}
                             </div>
                         </div> 
                         <div style="padding: 30px;">
@@ -134,12 +76,12 @@ export default function ContentCenterPDFScreen({ typeAction }) {
                             </div>
                             <div>
                                 ${listAward?.map((item, index) => {
-                         return `
+        return `
                                     <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                         <div style="font-size: 25px;margin-bottom: 5px">${item.company}</div>
                                         <div style="font-size: 25px;margin-bottom: 5px;text-align: justify;">${item.description}</div>
                                     </div>`;
-                        }).join('')}
+    }).join('')}
                             </div>
                         </div> 
                     </div>
@@ -166,7 +108,7 @@ export default function ContentCenterPDFScreen({ typeAction }) {
                         </div>   
                         <div>
                             ${listProject?.map((item, index) => {
-                    return `
+        return `
                                 <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
@@ -205,7 +147,7 @@ export default function ContentCenterPDFScreen({ typeAction }) {
                                         </div>
                                     </div>
                                 </div>`;
-                        }).join('')}
+    }).join('')}
                         </div>
                     </div>
                     <div>
@@ -216,7 +158,7 @@ export default function ContentCenterPDFScreen({ typeAction }) {
                         </div>   
                         <div>
                             ${listEducation?.map((item, index) => {
-                        return `
+        return `
                                 <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
