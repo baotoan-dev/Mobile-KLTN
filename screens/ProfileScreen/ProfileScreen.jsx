@@ -1,10 +1,9 @@
-import { View, SafeAreaView, ScrollView, Text } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { View, ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
 import { useState } from 'react';
-import { AuthContext } from '../../App';
 import * as SecureStore from 'expo-secure-store';
 import HeaderProfile from './HeaderProfile/HeaderProfile';
 import ContentProfile from './ContentProfile/ContentProfile';

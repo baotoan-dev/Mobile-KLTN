@@ -11,35 +11,49 @@ export default function ContentComponent({
     setContent,
 }) {
     const handleUploadImage = async () => {
-        if (Platform.OS === 'android') {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                {
-                    title: 'Permission Required',
-                    message: 'This app needs access to your storage to upload CVs.',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
-                },
-            );
-            if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-                Alert.alert('Permission Denied', 'You need to grant storage permission to upload CVs.');
-                return;
-            }
+        // if (Platform.OS === 'android') {
+        //     const granted = await PermissionsAndroid.request(
+        //         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        //         {
+        //             title: 'Permission Required',
+        //             message: 'This app needs access to your storage to upload CVs.',
+        //             buttonNeutral: 'Ask Me Later',
+        //             buttonNegative: 'Cancel',
+        //             buttonPositive: 'OK',
+        //         },
+        //     );
+        //     if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        //         Alert.alert('Permission Denied', 'You need to grant storage permission to upload CVs.');
+        //         return;
+        //     }
 
-            let result = await DocumentPicker.getDocumentAsync({
-                type: 'image/*',
-                copyToCacheDirectory: true,
-                multiple: true
-            });
+        //     let result = await DocumentPicker.getDocumentAsync({
+        //         type: 'image/*',
+        //         copyToCacheDirectory: true,
+        //         multiple: true
+        //     });
 
-            if (result && result.type === 'success') {
-                setImages([...images, {
-                    uri: result.uri,
-                    name: result.name,
-                    type: 'image/*'
-                }])
-            }
+        //     if (result && result.type === 'success') {
+        //         setImages([...images, {
+        //             uri: result.uri,
+        //             name: result.name,
+        //             type: 'image/*'
+        //         }])
+        //     }
+        // }
+
+        let result = await DocumentPicker.getDocumentAsync({
+            type: 'image/*',
+            copyToCacheDirectory: true,
+            multiple: true
+        });
+
+        if (result && result.type === 'success') {
+            setImages([...images, {
+                uri: result.uri,
+                name: result.name,
+                type: 'image/*'
+            }])
         }
     }
 

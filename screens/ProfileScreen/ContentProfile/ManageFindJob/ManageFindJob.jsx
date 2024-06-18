@@ -44,13 +44,13 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={() => {
-                    navigation.navigate('Bookmark');
-                }}
-                style={[styles.item, {
-                    marginLeft: '5%',
-                }]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('Bookmark');
+                    }}
+                    style={[styles.item, {
+                        marginLeft: '5%',
+                    }]}>
                     <View style={styles.icon}>
                         <Entypo name="save" size={24} color="black" />
                     </View>
@@ -63,13 +63,13 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={() => {
-                    navigation.navigate('JobFit');
-                }}
-                style={[styles.item, {
-                    marginTop: '5%',
-                }]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('JobFit');
+                    }}
+                    style={[styles.item, {
+                        marginTop: '5%',
+                    }]}>
                     <View style={styles.icon}>
                         <Ionicons name="duplicate" size={24} color="black" />
                     </View>
@@ -120,13 +120,13 @@ export default function ManageFindJob() {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={() => {
-                    navigation.navigate('NotifyJobProfile');
-                }}
-                style={[styles.item, {
-                    marginLeft: '5%',
-                }]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('NotifyJobProfile');
+                    }}
+                    style={[styles.item, {
+                        marginLeft: '5%',
+                    }]}>
                     <View style={styles.icon}>
                         <Entypo name="bell" size={24} color="black" />
                     </View>
@@ -138,6 +138,26 @@ export default function ManageFindJob() {
                             {
                                 listProfileAnalytic.totalKeywordNotification
                             }
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                {/* Blog cua ban */}
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('BlogProfile');
+                    }}
+                    style={[styles.item, {
+                        marginTop: '5%',
+                    }]}>
+                    <View style={styles.icon}>
+                        <Entypo name="news" size={24} color="black" />
+                    </View>
+                    <View style={styles.content}>
+                        <Text>
+                            Blog của bạn
+                        </Text>
+                        <Text style={styles.count}>
+                            {listProfileAnalytic.totalBlog ? listProfileAnalytic.totalBlog : 0}
                         </Text>
                     </View>
                 </TouchableOpacity>

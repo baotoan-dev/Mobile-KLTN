@@ -63,6 +63,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllNoticationAction } from './redux/store/Notification/getAllNotificationSlice';
 import VerifyOTPScreen from './screens/VerifyOTPScreen/VerifyOTPScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
+import BlogProfileScreen from './screens/BlogProfileScreen/BlogProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -481,6 +482,11 @@ function Navigation() {
 
                 {/* Reset password */}
                 <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Blog profile */}
+                <Stack.Screen name="BlogProfile" component={BlogProfileScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

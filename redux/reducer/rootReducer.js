@@ -24,6 +24,7 @@ import allFilterCompanyReducer from "../store/Company/FilterCompany/getFilterCom
 import allKeywordNotificationReducer from "../store/KeywordNotificaiton/getAllKeywordNotification/getAllKeywordNotificationSlice";
 import allNotificationReducer from "../store/Notification/getAllNotificationSlice";
 import cvLayoutReducer from "../store/CvLayout/cvLayoutSlice";
+import allCommunityOfProfileReducer from "../store/CommunityProfile/GetAllCommunitOfProile/getAllCommunitOfProileSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -51,6 +52,7 @@ const rootReducer = combineReducers({
     allFilterCompany: allFilterCompanyReducer,
     allKeywordNotification: allKeywordNotificationReducer,
     allNotification: allNotificationReducer,
+    allCommunityOfProfile: allCommunityOfProfileReducer,
 });
 
 export default rootReducer;

@@ -38,7 +38,10 @@ export default function CreateBlogComponent() {
         }
     }
     return (
-        <View>
+        <View style={{
+            backgroundColor: 'white',
+            height: '100%'
+        }}>
             <HeaderOfScreen title="Tạo bài Blog" />
             <ContentComponent
                 setTitle={setTitle}
@@ -46,11 +49,11 @@ export default function CreateBlogComponent() {
                 images={images}
                 setImages={setImages}
             />
-            <TouchableOpacity 
-            onPress={() => {
-                handlePostBlog()
-            }}
-            style={styles.buttonPost}>
+            <TouchableOpacity
+                onPress={() => {
+                    handlePostBlog()
+                }}
+                style={styles.buttonPost}>
                 <Text>
                     Đăng tải
                 </Text>
