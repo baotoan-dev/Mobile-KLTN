@@ -4,11 +4,12 @@ import HeaderOfScreen from '../Components/HeaderOfScreen/HeaderOfScreen'
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { authCandidate } from '../../api/candidate/auth';
 
 export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
-  const [email, setEmail] = React.useState('') 
-  const handleForgotPassword = () => {
+  const [email, setEmail] = React.useState('')
+  const handleForgotPassword = async () => {
     if (email === '') {
       Toast.show({
         type: 'error',
@@ -21,6 +22,23 @@ export default function ForgotPasswordScreen() {
         bottomOffset: 100,
       });
       return;
+    }
+    const res = await authCandidate.forgotPaswordApp(email)
+
+    if (res.data.statusCode === 200) {
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Thành công',
+        text2: 'Vui lòng kiểm tra email của bạn',
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 90,
+        bottomOffset: 100,
+      });
+      navigation.navigate('VerifyOTP', {
+        email: email
+      })
     }
   }
   return (
@@ -61,7 +79,6 @@ export default function ForgotPasswordScreen() {
       </View>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('VerifyOTP')
           handleForgotPassword()
         }}
         style={styles.button}>

@@ -2,16 +2,14 @@ import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import WebView from 'react-native-webview';
 
-export default function ContentCenterPDFScreen({ 
-    dataModify, 
-    listAward, 
+export default function ContentCenterPDFScreen({
+    dataModify,
+    listAward,
     listPersonalInformation,
     listProject,
     listSkill,
     listEducation
 }) {
-    
-    console.log('dataModify', dataModify);
 
     const html = `
     <!DOCTYPE html>

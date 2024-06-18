@@ -1,10 +1,15 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import { useRef } from 'react';
+import Toast from 'react-native-toast-message';
+import { authCandidate } from '../../api/candidate/auth';
 
-export default function VerifyOTPScreen() {
+export default function VerifyOTPScreen(prop) {
+    const { email } = prop.route.params;
+    const [newEmail, setNewEmail] = React.useState(email);
+    const [isClickModify, setIsClickModify] = React.useState(false);
     const navigation = useNavigation();
 
     // hide header
@@ -16,6 +21,7 @@ export default function VerifyOTPScreen() {
     const input2Ref = useRef(null);
     const input3Ref = useRef(null);
     const input4Ref = useRef(null);
+    const inputEmailRef = useRef(null);
 
     const [codeOfInput1, setCodeOfInput1] = React.useState('')
     const [codeOfInput2, setCodeOfInput2] = React.useState('')
@@ -25,6 +31,69 @@ export default function VerifyOTPScreen() {
     const focusNextInput = (nextInputRef) => {
         nextInputRef.current && nextInputRef.current.focus();
     };
+
+    useEffect(() => {
+        setNewEmail(email)
+    }, [email])
+
+    useEffect(() => {
+        if (isClickModify) {
+            inputEmailRef.current && inputEmailRef.current.focus();
+        }
+    }, [isClickModify]);
+
+    const handleSubmitOtp = async () => {
+        console.log('vao day');
+        const otp = codeOfInput1 + codeOfInput2 + codeOfInput3 + codeOfInput4;
+
+        const res = await authCandidate.confirmOtpApp(newEmail, otp);
+
+        if (res.data.statusCode === 200) {
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Thành công',
+                text2: 'Xác nhận OTP thành công',
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 90,
+                bottomOffset: 100,
+            });
+            navigation.navigate('ResetPassword', {
+                email: newEmail
+            })
+        }
+        else {
+            Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Lỗi',
+                text2: 'Mã xác nhận không đúng',
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 90,
+                bottomOffset: 100,
+            });
+            return;
+        }
+    }
+
+    const handleResendOtp = async () => {
+        const res = await authCandidate.forgotPaswordApp(newEmail);
+
+        if (res.data.statusCode === 200) {
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Thành công',
+                text2: 'Vui lòng kiểm tra email của bạn',
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 90,
+                bottomOffset: 100,
+            });
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -71,12 +140,23 @@ export default function VerifyOTPScreen() {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <Text style={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: 'gray'
-                }}>baotoanddd2016@gmail.com</Text>
-                <TouchableOpacity>
+                <TextInput
+                    ref={inputEmailRef}
+                    editable={isClickModify}
+                    style={{
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: 'gray'
+                    }}>
+                    {
+                        newEmail
+                    }
+                </TextInput>
+                <TouchableOpacity
+                    onPress={() => {
+                        setIsClickModify(!isClickModify)
+                    }}
+                >
                     <Image
                         source={require('../../assets/images/modify.png')}
                         style={{
@@ -150,7 +230,7 @@ export default function VerifyOTPScreen() {
             <View style={{ width: '100%', marginTop: 30 }}>
                 <TouchableOpacity
                     onPress={() => {
-
+                        handleSubmitOtp()
                     }}
                     style={{
                         marginTop: 20,
@@ -162,11 +242,15 @@ export default function VerifyOTPScreen() {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginTop: 20
-            }}>
+            <TouchableOpacity
+                onPress={() => {
+                    handleResendOtp()
+                }}
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginTop: 20
+                }}>
                 <Text style={{
                     fontSize: 12,
                     color: 'gray',
@@ -175,6 +259,7 @@ export default function VerifyOTPScreen() {
                     Gửi lại mã xác nhận
                 </Text>
             </TouchableOpacity>
+            <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
     )
 }

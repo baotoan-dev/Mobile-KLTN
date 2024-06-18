@@ -62,6 +62,7 @@ import HotCompanyScreen from './screens/HotCompanyScreen/HotCompanyScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllNoticationAction } from './redux/store/Notification/getAllNotificationSlice';
 import VerifyOTPScreen from './screens/VerifyOTPScreen/VerifyOTPScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -475,6 +476,11 @@ function Navigation() {
                 {/* Hot company */}
 
                 <Stack.Screen name="HotCompany" component={HotCompanyScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Reset password */}
+                <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

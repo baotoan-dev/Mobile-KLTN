@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { keywordNotificationApi } from '../../../../api/keywordNotification/keywordNotificationApi';
 import { getProfileAnalyticsAction } from '../../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice';
+import moment from 'moment';
 
 export default function ListKeywordNotificationComponent() {
     const dispatch = useDispatch();
@@ -53,6 +54,13 @@ export default function ListKeywordNotificationComponent() {
                                 >
                                     <View>
                                         <Text style={styles.name}>{item.keyword}</Text>
+                                        <Text style={{
+                                            color: 'gray'
+                                        }}>
+                                            {
+                                                `Đã tạo: ` + moment(item.created_at).format('DD/MM/YYYY')
+                                            }
+                                        </Text>
                                     </View>
                                     <View style={{
                                         flexDirection: 'row',

@@ -46,6 +46,11 @@ export default function NotifyScreen() {
         id: commentId
       })
     }
+    if (typeText === "keyword") {
+      navigation.navigate('PostDetail', {
+        id: postId
+      })
+    }
     fetchDataUpdate(notificationId)
   };
 

@@ -1,6 +1,6 @@
 import axiosConfig from "../../config/axiosConfig";
 import * as SecureStore from "expo-secure-store";
-import { CONST_API_V1 } from "../contants/urlContant";
+import { CONST_API, CONST_API_V1 } from "../contants/urlContant";
 
 export const authCandidate = {
     signInCandidate: async (email, password) => {
@@ -29,5 +29,34 @@ export const authCandidate = {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
             },
         })
-    }
+    },
+    forgotPaswordApp: async (email) => {
+        const URL = `${CONST_API}/api/v3/users/app/forgot-password`;
+
+        const data = {
+            email: email,
+        };
+
+        return await axiosConfig.post(URL, data);
+    },
+    confirmOtpApp: async (email, otp) => {
+        const URL = `${CONST_API}/api/v3/users/app/confirm-otp`;
+
+        const data = {
+            email: email,
+            otp: otp,
+        };
+
+        return await axiosConfig.post(URL, data);
+    },
+    resetPasswordApp: async (email, password) => {
+        const URL = `${CONST_API}/api/v3/users/app/reset-password`;
+
+        const data = {
+            email: email,
+            newPassword: password,
+        };
+
+        return await axiosConfig.post(URL, data);
+    },
 };
