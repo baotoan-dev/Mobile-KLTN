@@ -12,14 +12,18 @@ export default function BlogProfileScreen() {
     const allCommunityOfProfile = useSelector(state => state.allCommunityOfProfile.allCommunitOfProile)
     const [currentPage, setCurrentPage] = React.useState(0)
     const [communityData, setCommunityData] = React.useState([])
+    const [isOver, setIsOver] = React.useState(false)
+    const [total, setTotal] = React.useState(0)
 
     useEffect(() => {
         dispatch(getAllCommunityOfProileAction(currentPage, 10, 'v'))
     }, [])
 
     useEffect(() => {
-        if (allCommunityOfProfile.length > 0) {
-            setCommunityData(allCommunityOfProfile)
+        if (allCommunityOfProfile && allCommunityOfProfile.data) {
+            setCommunityData(allCommunityOfProfile.data.communications)
+            setIsOver(allCommunityOfProfile.data.is_over)
+            setTotal(allCommunityOfProfile.data.total)
         }
     }, [allCommunityOfProfile])
 
@@ -58,14 +62,17 @@ export default function BlogProfileScreen() {
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('CreateBog')
+                        navigation.navigate('CreateBog', {
+                            type: 'create',
+                            data: null
+                        })
                     }}
                 >
                     <Ionicons name="add-circle-sharp" size={24} color="black" />
                 </TouchableOpacity>
             </View>
             <View>
-                <ListBlogProfileComponent />
+                <ListBlogProfileComponent communityData={communityData} total={total} />
             </View>
         </View>
     )

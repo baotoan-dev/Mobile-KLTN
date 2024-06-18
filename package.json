@@ -45,6 +45,7 @@
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.3",
     "react-native-pdf": "^6.7.4",
+    "react-native-pell-rich-editor": "^1.9.0",
     "react-native-reanimated": "~3.3.0",
     "react-native-reanimated-carousel": "^3.5.1",
     "react-native-render-html": "^6.3.4",

@@ -89,7 +89,7 @@ export default function SeeAllBlog(prop) {
                                 }}>
                                 <View style={styles.item}>
                                     <View style={styles.left}>
-                                        <Image source={{ uri: item.images[0].image }} style={styles.logo} />
+                                        <Image source={{ uri: item?.images[0]?.image }} style={styles.logo} />
                                     </View>
                                     <View style={styles.center}>
                                         <Text

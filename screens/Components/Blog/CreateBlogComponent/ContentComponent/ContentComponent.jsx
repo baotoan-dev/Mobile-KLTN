@@ -1,16 +1,31 @@
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Platform, PermissionsAndroid, Alert, Image } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Platform, PermissionsAndroid, Alert, Image, Button } from 'react-native'
+import React, { useEffect, useRef } from 'react'
 import { Octicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import { Entypo } from '@expo/vector-icons';
+import { RichEditor, RichToolbar, actions } from 'react-native-pell-rich-editor';
+import Toast from 'react-native-toast-message';
 
 export default function ContentComponent({
     images,
     setTitle,
     setImages,
     setContent,
+    title,
+    content,
+    type
 }) {
+    const richText = useRef();
+
+    useEffect(() => {
+        if (richText.current && content) {
+            richText.current.setContentHTML(content);
+        }
+    }, []);
+
+
     const handleUploadImage = async () => {
+        const limitImage = 1;
         // if (Platform.OS === 'android') {
         //     const granted = await PermissionsAndroid.request(
         //         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
@@ -48,12 +63,25 @@ export default function ContentComponent({
             multiple: true
         });
 
-        if (result && result.type === 'success') {
+        if (result && result.canceled === false) {
             setImages([...images, {
-                uri: result.uri,
-                name: result.name,
+                uri: result.assets[0].uri,
+                name: result.assets[0].name,
                 type: 'image/*'
             }])
+        }
+
+        if (images.length > limitImage) {
+            Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Lỗi',
+                text2: `Chỉ được chọn tối đa ${limitImage} hình ảnh`,
+                visibilityTime: 4000,
+                autoHide: true,
+                topOffset: 30,
+                bottomOffset: 40,
+            });
         }
     }
 
@@ -66,6 +94,7 @@ export default function ContentComponent({
                 </View>
                 <View style={styles.input}>
                     <TextInput
+                        value={title}
                         placeholder="Tiêu đề"
                         onChangeText={(text) => setTitle(text)}
                         multiline={true}
@@ -80,12 +109,35 @@ export default function ContentComponent({
                     </Text>
                     <Octicons style={styles.ml} name="north-star" size={12} color="red" />
                 </View>
-                <View style={styles.input}>
-                    <TextInput
-                        placeholder="Nội dung"
-                        onChangeText={(text) => setContent(text)}
-                        multiline={true}
-                        numberOfLines={4}
+                <View style={{
+                    height: 200,
+                    borderWidth: 1,
+                    borderColor: 'gray',
+                    borderRadius: 5,
+                    marginVertical: 10,
+                    marginHorizontal: 10
+                }}>
+                    <ScrollView style={styles.editorContainer}>
+                        <RichEditor
+                            ref={richText}
+                            onChange={(text) => setContent(text)}
+                            style={styles.richEditor}
+                            placeholder="Nội dung"
+                        />
+                    </ScrollView>
+                    <RichToolbar
+                        editor={richText}
+                        actions={[
+                            actions.insertImage,
+                            actions.setBold,
+                            actions.setItalic,
+                            actions.setUnderline,
+                            actions.insertBulletsList,
+                            actions.insertOrderedList,
+                            actions.alignLeft,
+                            actions.alignCenter,
+                            actions.alignRight,
+                        ]}
                     />
                 </View>
             </View>
@@ -146,6 +198,7 @@ export default function ContentComponent({
                     }
                 </View>
             </View>
+            <Toast ref={(ref) => Toast.setRef(ref)} />
         </ScrollView>
     )
 }

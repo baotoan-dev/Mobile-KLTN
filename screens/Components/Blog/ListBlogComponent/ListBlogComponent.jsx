@@ -17,7 +17,7 @@ export default function ListBlogComponent({ blog }) {
               navigation.navigate('DetailBlog', { id: item.id })
             }}>
               <View style={styles.item}>
-                <Image source={{ uri: item.images[0].image }} style={styles.image} />
+                <Image source={{ uri: item?.images[0]?.image }} style={styles.image} />
                 <View style={styles.title}>
                   <Text
                     numberOfLines={1}
