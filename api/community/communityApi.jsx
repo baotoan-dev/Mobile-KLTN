@@ -13,6 +13,16 @@ export const communityApi = {
       },
     });
   },
+  updateCommunity: async (data, id) => {
+    const URL = `${CONST_API}/api/v3/communications/${id}`;
+
+    return await axiosConfig.put(URL, data, {
+      headers: {
+        Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
   getCommunityNews: async (
     page,
     limit,

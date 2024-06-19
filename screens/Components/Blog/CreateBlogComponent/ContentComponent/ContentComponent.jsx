@@ -13,7 +13,7 @@ export default function ContentComponent({
     setContent,
     title,
     content,
-    type
+    setDeleteImages
 }) {
     const richText = useRef();
 
@@ -21,7 +21,7 @@ export default function ContentComponent({
         if (richText.current && content) {
             richText.current.setContentHTML(content);
         }
-    }, []);
+    }, [content]);
 
 
     const handleUploadImage = async () => {
@@ -180,6 +180,7 @@ export default function ContentComponent({
 
                                     <TouchableOpacity
                                         onPress={() => {
+                                            setDeleteImages(images[0].id)
                                             setImages([])
                                         }}
                                         style={{

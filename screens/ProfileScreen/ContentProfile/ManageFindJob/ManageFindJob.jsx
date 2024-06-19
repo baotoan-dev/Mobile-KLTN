@@ -157,7 +157,7 @@ export default function ManageFindJob() {
                             Blog của bạn
                         </Text>
                         <Text style={styles.count}>
-                            {listProfileAnalytic.totalBlog ? listProfileAnalytic.totalBlog : 0}
+                            {listProfileAnalytic.totalCommunication ? listProfileAnalytic.totalCommunication : 0}
                         </Text>
                     </View>
                 </TouchableOpacity>

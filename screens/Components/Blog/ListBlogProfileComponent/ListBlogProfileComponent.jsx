@@ -3,11 +3,34 @@ import React from 'react'
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { communityApi } from '../../../../api/community/communityApi';
+import Toast from 'react-native-toast-message';
+import { getAllCommunityOfProileAction } from '../../../../redux/store/CommunityProfile/GetAllCommunitOfProile/getAllCommunitOfProileSlice';
 
 export default function ListBlogProfileComponent({
   communityData, total
 }) {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const hideOrShowCommunity = async (id, status) => {
+    const formData = new FormData() 
+    formData.append('status', status)
+    
+    const res = await communityApi.updateCommunity(formData, id)
+
+    if (res && res.data.status) {
+      dispatch(getAllCommunityOfProileAction(0, 10, 'v'))
+      Toast.show({
+        type: 'success',
+        text1: 'Cập nhật thành công',
+        position: 'top',
+        visibilityTime: 2000,
+        topOffset: 0,
+      })
+    
+    }
+  }
   return (
     <View style={styles.container}>
       <Text style={{
@@ -55,11 +78,19 @@ export default function ListBlogProfileComponent({
                 }
                 {
                   item.status === 1 ? (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                          hideOrShowCommunity(item.id, 0)
+                        }}
+                    >
                       <Entypo name="eye-with-line" size={20} color="black" />
                     </TouchableOpacity>
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        hideOrShowCommunity(item.id, 1)
+                      }}
+                    >
                       <Entypo name="eye" size={20} color="black" />
                     </TouchableOpacity>
                   )
@@ -70,6 +101,7 @@ export default function ListBlogProfileComponent({
         }}
         keyExtractor={(item) => item.id}
       />
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   )
 }
