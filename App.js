@@ -29,11 +29,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <ChatContextProvider>
-        <AuthContext.Provider value={{ auth, setAuth }}>
-          <Navigation />
-        </AuthContext.Provider>
-      </ChatContextProvider>
+        <ChatContextProvider>
+          <AuthContext.Provider value={{ auth, setAuth }}>
+            <Navigation />
+          </AuthContext.Provider>
+        </ChatContextProvider>
     </Provider>
 
   );

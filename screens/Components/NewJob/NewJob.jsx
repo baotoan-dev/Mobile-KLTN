@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Image, Dimensions, ActivityIndicator } from 'react-native'
 import React from 'react'
 import Heading from '../Heading/Heading'
 import { StyleSheet } from 'react-native'
@@ -16,6 +16,7 @@ import { getProfileAnalyticsAction } from '../../../redux/store/Profile/ProfileA
 import { getNewPostAction } from '../../../redux/store/NewPost/newPostSlice'
 import { useSelector } from 'react-redux'
 
+
 const SCREEN_WIDTH = Dimensions.get("screen").width - 45;
 
 export default function NewJob() {
@@ -26,7 +27,7 @@ export default function NewJob() {
     const isCarousel = React.useRef(null)
     const [index, setIndex] = React.useState(0)
     const [accountId, setAccountId] = useState('');
-    const newPost = useSelector(state => state.newPost.newPost);
+    const { newPost, loading } = useSelector(state => state.newPost);
 
     const getNewJob = () => {
         dispatch(getNewPostAction(
@@ -103,125 +104,135 @@ export default function NewJob() {
     return (
         <View style={styles.container}>
             <Heading props={{ title: 'Công việc mới nhất', extra: 'Xem thêm', handleSeeMore: handleSeeMore }} />
-            <Carousel
-                data={newJob}
-                sliderWidth={SCREEN_WIDTH}
-                itemWidth={SCREEN_WIDTH}
-                layout={'default'}
-                ref={isCarousel}
-                useScrollView={true}
-                // loop={true}
-                // autoplayInterval={5000}
-                onSnapToItem={(index) => {
-                    if (index === newJob.length - 1) {
-                        getNewJob();
-                    }
-                    setIndex(index)
-                }}
-                renderItem={({ item, index }) => (
-                    <FlatList
-                        style={{ marginTop: 10 }}
-                        data={item}
-                        horizontal={false}
-                        keyExtractor={item => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => {
-                                navigation.navigate('PostDetail', { id: item.id });
-                            }}>
-                                <View style={styles.item}>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                    }}>
-                                        <View style={styles.imageContainer}>
-                                            <Image source={{ uri: item.image }} style={styles.image} />
-                                        </View>
-                                        <View style={styles.contentContainer}>
-                                            <Text
-                                                numberOfLines={1}
-                                                style={{
-                                                    fontSize: 12,
-                                                    fontWeight: 'bold',
-                                                    color: Color.primary,
-                                                    width: 150,
-                                                    overflow: 'hidden',
-                                                    whiteSpace: 'nowrap',
-                                                    textOverflow: 'ellipsis',
-                                                }}
-                                            >{(item.title)}</Text>
-                                            <Text
-                                                numberOfLines={1}
-                                                style={{
-                                                    fontSize: 10,
-                                                    color: 'gray',
+            {
+                loading ? (
+                    <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                        <ActivityIndicator size="large" color={Color.primary} />
+                    </View>
+                ) : (
+                    <View>
+                        <Carousel
+                            data={newJob}
+                            sliderWidth={SCREEN_WIDTH}
+                            itemWidth={SCREEN_WIDTH}
+                            layout={'default'}
+                            ref={isCarousel}
+                            useScrollView={true}
+                            // loop={true}
+                            // autoplayInterval={5000}
+                            onSnapToItem={(index) => {
+                                if (index === newJob.length - 1) {
+                                    getNewJob();
+                                }
+                                setIndex(index)
+                            }}
+                            renderItem={({ item, index }) => (
+                                <FlatList
+                                    style={{ marginTop: 10 }}
+                                    data={item}
+                                    horizontal={false}
+                                    keyExtractor={item => item.id.toString()}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity onPress={() => {
+                                            navigation.navigate('PostDetail', { id: item.id });
+                                        }}>
+                                            <View style={styles.item}>
+                                                <View style={{
+                                                    flexDirection: 'row',
                                                 }}>
-                                                {item.companyName}
-                                            </Text>
-                                            <View style={{
-                                                flexDirection: 'row',
-                                                gap: 10,
-                                                alignItems: 'center',
-                                                marginTop: 5,
-                                                flexWrap: 'wrap',
-                                            }}>
-                                                <Text style={styles.extraInfor}>
-                                                    {item.location.district.fullName}
-                                                </Text>
-                                                <Text style={styles.extraInfor}>
-                                                    {item.jobType.name}
-                                                </Text>
-                                            </View>
-                                            <Text
-                                                style={styles.textSalary}
-                                                numberOfLines={1}
-                                            >
-                                                {item.salaryMin + ' - ' + item.salaryMax + ' ' + item.moneyType}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    {
-                                        item.accountId !== accountId && (
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    if (item.bookmarked) {
-                                                        handleDeleteBookmark(item.id)
-                                                        return
-                                                    }
-                                                    else {
-                                                        handleCreateBookmark(item.id)
-                                                        return
-                                                    }
-                                                }}
-                                            >
-                                                {item.bookmarked === true ? <Ionicons name="bookmark" size={24} color="black" /> : <Feather name="bookmark" size={24} color="black" />}
-                                            </TouchableOpacity>
-                                        )
-                                    }
+                                                    <View style={styles.imageContainer}>
+                                                        <Image source={{ uri: item.image }} style={styles.image} />
+                                                    </View>
+                                                    <View style={styles.contentContainer}>
+                                                        <Text
+                                                            numberOfLines={1}
+                                                            style={{
+                                                                fontSize: 12,
+                                                                fontWeight: 'bold',
+                                                                color: Color.primary,
+                                                                width: 150,
+                                                                overflow: 'hidden',
+                                                                whiteSpace: 'nowrap',
+                                                                textOverflow: 'ellipsis',
+                                                            }}
+                                                        >{(item.title)}</Text>
+                                                        <Text
+                                                            numberOfLines={1}
+                                                            style={{
+                                                                fontSize: 10,
+                                                                color: 'gray',
+                                                            }}>
+                                                            {item.companyName}
+                                                        </Text>
+                                                        <View style={{
+                                                            flexDirection: 'row',
+                                                            gap: 10,
+                                                            alignItems: 'center',
+                                                            marginTop: 5,
+                                                            flexWrap: 'wrap',
+                                                        }}>
+                                                            <Text style={styles.extraInfor}>
+                                                                {item.location.district.fullName}
+                                                            </Text>
+                                                            <Text style={styles.extraInfor}>
+                                                                {item.jobType.name}
+                                                            </Text>
+                                                        </View>
+                                                        <Text
+                                                            style={styles.textSalary}
+                                                            numberOfLines={1}
+                                                        >
+                                                            {item.salaryMin + ' - ' + item.salaryMax + ' ' + item.moneyType}
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                {
+                                                    item.accountId !== accountId && (
+                                                        <TouchableOpacity
+                                                            onPress={() => {
+                                                                if (item.bookmarked) {
+                                                                    handleDeleteBookmark(item.id)
+                                                                    return
+                                                                }
+                                                                else {
+                                                                    handleCreateBookmark(item.id)
+                                                                    return
+                                                                }
+                                                            }}
+                                                        >
+                                                            {item.bookmarked === true ? <Ionicons name="bookmark" size={24} color="black" /> : <Feather name="bookmark" size={24} color="black" />}
+                                                        </TouchableOpacity>
+                                                    )
+                                                }
 
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                    />
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
+                                />
+                            )
+                            }
+                        >
+                        </Carousel>
+                        <Pagination
+                            dotsLength={newJob.length}
+                            activeDotIndex={index}
+                            carouselRef={isCarousel}
+                            dotStyle={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: 5,
+                                backgroundColor: '#6AD4DD',
+                            }}
+                            tappableDots={true}
+                            inactiveDotStyle={{
+                                backgroundColor: 'black',
+                            }}
+                            inactiveDotOpacity={0.4}
+                            inactiveDotScale={0.6}
+                        />
+                    </View>
                 )
-                }
-            >
-            </Carousel>
-            <Pagination
-                dotsLength={newJob.length}
-                activeDotIndex={index}
-                carouselRef={isCarousel}
-                dotStyle={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: '#6AD4DD',
-                }}
-                tappableDots={true}
-                inactiveDotStyle={{
-                    backgroundColor: 'black',
-                }}
-                inactiveDotOpacity={0.4}
-                inactiveDotScale={0.6}
-            />
+            }
         </View>
     )
 }

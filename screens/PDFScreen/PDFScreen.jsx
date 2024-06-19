@@ -90,7 +90,6 @@ export default function PDFScreen(prop) {
         if (cvLayout && cvLayout?.layout?.length > 0) {
             const layout = cvLayout?.layout?.length > 0 ? cvLayout.layout[0].split(',') : [];
             const color = cvLayout?.color?.length > 0 ? cvLayout.color[0].split(',') : [];
-            console.log('color Parent', color[0]);
             const pad = cvLayout?.pad?.length > 0 ? cvLayout.pad[0].split(',') : [];
             const padPart = cvLayout?.padPart?.length > 0 ? cvLayout.padPart[0] : 0;
             const colorTopic = cvLayout?.colorTopic;
@@ -128,9 +127,12 @@ export default function PDFScreen(prop) {
             padPart: [+`${dataModify.size === 'small' ? '1' : '2'}`],
             colorTopic: "#529300,#3B82F6",
             indexTopic: +`${dataModify.color === '#529300' ? 1 : 2}`,
+            colorText: [
+                "#000000,#000000",
+            ]
         }
         dispatch(createCvLayoutAction(dataUpload));
-        dispatch(getCvLayoutAction(cvIndex)).then(() => {
+        dispatch(getCvLayoutAction(cvIndex)).then((data) => {
             Toast.show({
                 type: 'success',
                 position: 'top',
@@ -138,10 +140,10 @@ export default function PDFScreen(prop) {
                 visibilityTime: 2000,
                 autoHide: true,
             });
+            setDataModify(dataModify);
         });
     }
-    
-    
+
     const html = `
     <!DOCTYPE html>
     <html>

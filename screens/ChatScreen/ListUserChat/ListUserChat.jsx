@@ -19,6 +19,7 @@ export default function ListUserChat() {
     React.useEffect(() => {
         fetchData();
     }, [])
+    
     return (
         <ScrollView style={styles.container}>
             <FlatList
