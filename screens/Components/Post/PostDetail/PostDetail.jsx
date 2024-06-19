@@ -12,6 +12,7 @@ import { bookmarksApi } from '../../../../api/bookmarks/bookmarksApi';
 import { useDispatch } from 'react-redux';
 import { getProfileAnalyticsAction } from '../../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice';
 import { getNewPostAction } from '../../../../redux/store/NewPost/newPostSlice';
+import Toast from 'react-native-toast-message';
 
 export default function PostDetail(prop) {
     const id = prop.route.params.id;
@@ -87,7 +88,7 @@ export default function PostDetail(prop) {
                     handleScroll(e)
                 }}>
                     <View style={{
-                        height: 300,
+                        height: 330,
                         width: '100%',
                         marginBottom: 10,
                         paddingTop: 10,
@@ -106,7 +107,36 @@ export default function PostDetail(prop) {
                                 <View style={styles.companyContainer}>
                                     <Text style={styles.companyName}>{post.company_name}</Text>
                                 </View>
-
+                                {
+                                    post?.applied === true && (
+                                        <View style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            marginTop: 10,
+                                            marginLeft: 10,
+                                        }}>
+                                            <Text style={{
+                                                color: 'gray',
+                                            }}>Đã ứng tuyển</Text>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    navigation.navigate('SeenCvApplication', {
+                                                        cv: post.cvApplication
+                                                    })
+                                                }}
+                                            >
+                                                <Text style={{
+                                                    color: 'blue',
+                                                    marginLeft: 5,
+                                                    textDecorationLine: 'underline'
+                                                }}>
+                                                    Xem CV
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                                }
                                 <MoreInforComponent post={post} fitOfPost={fitOfPost} />
                             </View>
                             <TouchableOpacity
@@ -217,9 +247,24 @@ export default function PostDetail(prop) {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate('Application', {
-                                        id: post.id
-                                    })
+                                    if (post?.applied === false) {
+                                        navigation.navigate('ApplyPost', {
+                                            id: post.id,
+                                            title: post.title,
+                                            company_name: post.company_name,
+                                            image: post.image,
+                                            fit: fitOfPost,
+                                        })
+                                    }
+                                    else {
+                                        Toast.show({
+                                            type: 'info',
+                                            position: 'top',
+                                            text1: 'Thông báo',
+                                            text2: 'Bạn đã ứng tuyển rồi',
+                                            visibilityTime: 2000,
+                                        })
+                                    }
                                 }}
                                 style={{
                                     width: '60%',
@@ -232,11 +277,14 @@ export default function PostDetail(prop) {
                                 <Text style={{
                                     textAlign: 'center',
                                     color: 'white'
-                                }}> Ứng tuyển ngay</Text>
+                                }}> {
+                                        post?.applied === true ? 'Đã ứng tuyển' : 'Ứng tuyển'
+                                    }</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
+                <Toast ref={(ref) => Toast.setRef(ref)} />
             </View>
         ) : (
             <></>

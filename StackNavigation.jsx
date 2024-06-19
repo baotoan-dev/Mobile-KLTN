@@ -64,6 +64,7 @@ import { getAllNoticationAction } from './redux/store/Notification/getAllNotific
 import VerifyOTPScreen from './screens/VerifyOTPScreen/VerifyOTPScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import BlogProfileScreen from './screens/BlogProfileScreen/BlogProfileScreen';
+import SeenCVApplied from './screens/Components/Post/PostDetail/SeenCVApplied/SeenCVApplied';
 
 const Tab = createBottomTabNavigator();
 
@@ -487,6 +488,11 @@ function Navigation() {
 
                 {/* Blog profile */}
                 <Stack.Screen name="BlogProfile" component={BlogProfileScreen} options={{
+                    headerShown: false,
+                }} />
+
+                {/* Seen CV */}
+                <Stack.Screen name="SeenCvApplication" component={SeenCVApplied} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>

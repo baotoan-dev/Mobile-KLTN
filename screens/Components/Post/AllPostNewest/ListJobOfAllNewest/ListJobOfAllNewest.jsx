@@ -2,6 +2,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ActivityIndi
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'
 
 export default function ListJobOfAllNewest({
     listJob,
@@ -10,6 +11,7 @@ export default function ListJobOfAllNewest({
     handleCreateBookmark,
     handleDeleteBookmark
 }) {
+    const navigation = useNavigation()
     return (
         <FlatList
             showsVerticalScrollIndicator={false}
@@ -25,6 +27,11 @@ export default function ListJobOfAllNewest({
             renderItem={({ item }) => {
                 return (
                     <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('PostDetail', {
+                                id: item.id
+                            })
+                        }}
                         style={styles.item}
                     >
                         <View style={styles.left}>
