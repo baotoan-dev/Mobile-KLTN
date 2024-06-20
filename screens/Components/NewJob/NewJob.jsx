@@ -70,16 +70,43 @@ export default function NewJob() {
         navigation.navigate('AllPostNewest')
     }
 
-    useEffect(() => {
-        getNewJob();
-    }, [currentPage])
+    const setSave = async (postId, bookmark) => {
+        if (bookmark) {
+            setNewJob(newJob.map((item) => {
+                return item.map((post) => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            bookmarked: false
+                        }
+                    }
+                    return post
+                })
+            }
+            ))
+        }
+        else {
+            setNewJob(newJob.map((item) => {
+                return item.map((post) => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            bookmarked: true
+                        }
+                    }
+                    return post
+                })
+            }
+            ))
+        }
+    }
 
     const handleCreateBookmark = async (postId) => {
         try {
             const res = await bookmarksApi.createBookMark(postId);
 
             if (res && res.data && res.data.code === 200) {
-                getNewJob();
+                setSave(postId, false)
                 dispatch(getProfileAnalyticsAction())
             }
         } catch (error) {
@@ -93,7 +120,7 @@ export default function NewJob() {
             const res = await bookmarksApi.deleteBookMark(postId);
 
             if (res && res.data && res.data.code === 200) {
-                getNewJob();
+                setSave(postId, true)
                 dispatch(getProfileAnalyticsAction())
             }
         } catch (error) {
@@ -121,7 +148,7 @@ export default function NewJob() {
                             // loop={true}
                             // autoplayInterval={5000}
                             onSnapToItem={(index) => {
-                                if (index === newJob.length - 1) {
+                                if (index === newJob.length) {
                                     getNewJob();
                                 }
                                 setIndex(index)

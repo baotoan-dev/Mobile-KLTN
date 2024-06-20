@@ -12,10 +12,11 @@ export default function ContentCvList({ checkShow, profile, type }) {
     const [statusCv, setStatusCv] = React.useState(0);
     const [idCv, setIdCv] = React.useState('');
     const [typeCv, setTypeCv] = React.useState(0);
+    const [linkCv, setLinkCv] = React.useState('');
 
     useEffect(() => {
         if (profile && profile.profilesCvs) {
-            setListCvs(profile.profilesCvs.filter(item => item.status === type))
+            setListCvs(profile.profilesCvs.filter(item => item.device === type))
         }
     }, [profile])
 
@@ -89,6 +90,7 @@ export default function ContentCvList({ checkShow, profile, type }) {
                                             setStatusCv(item.status);
                                             setIdCv(item.id);
                                             setTypeCv(item.device);
+                                            setLinkCv(item.pdfURL);
                                         }}>
                                             <AntDesign name="ellipsis1" size={24} color="black" />
                                         </TouchableOpacity>
@@ -164,6 +166,7 @@ export default function ContentCvList({ checkShow, profile, type }) {
                                     setStatusCv(item.status);
                                     setIdCv(item.id);
                                     setTypeCv(item.device);
+                                    setLinkCv(item.pdfURL);
                                 }}
                                 style={{
                                     marginTop: 5,
@@ -175,7 +178,17 @@ export default function ContentCvList({ checkShow, profile, type }) {
                 ))
             )}
             {
-                <ModalActionCv profile={profile} idCV={idCv} statusCv={statusCv} nameCv={nameCv} showModalActionCv={showModalActionCv} setShowModalActionCv={setShowModalActionCv} typeCv={typeCv}/>
+                <ModalActionCv
+                    profile={profile}
+                    idCV={idCv}
+                    statusCv={statusCv}
+                    nameCv={nameCv}
+                    showModalActionCv={showModalActionCv}
+                    setShowModalActionCv={setShowModalActionCv}
+                    typeCv={typeCv}
+                    linkCv={linkCv}
+
+                />
             }
         </Animated.View>
     );

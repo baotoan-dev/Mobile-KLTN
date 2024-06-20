@@ -6,10 +6,15 @@ import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
 import * as Animatable from 'react-native-animatable';
 
 export default function InforContentForCV(prop) {
-    const { typeAction } = prop.route.params;
+    const { typeAction, cvIndex } = prop.route.params;
     const navigation = useNavigation()
+
+    console.log('cvContent Index', cvIndex);
     return (
-        <View>
+        <View style={{
+            flex: 1,
+            backgroundColor: 'white',
+        }}>
             <HeaderOfScreen title='Thông tin cơ bản' />
             <View style={styles.container}>
                 {
@@ -18,7 +23,8 @@ export default function InforContentForCV(prop) {
                             <TouchableOpacity
                                 onPress={() => {
                                     navigation.navigate(item.screen, {
-                                        typeAction: typeAction
+                                        typeAction: typeAction,
+                                        cvIndexParent: cvIndex,
                                     })
                                 }}
                                 style={styles.item} key={index}>
@@ -63,14 +69,13 @@ export default function InforContentForCV(prop) {
 const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
-        padding: 10,
-        borderWidth: 0.5,
+        paddingHorizontal: 10,
+        paddingVertical: 15,
         borderRadius: 5,
         margin: 10,
         width: '44%',
         alignItems: 'center',
-        backgroundColor: 'white',
-        borderColor: '#242670',
+        backgroundColor: '#E2DFD0',
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,

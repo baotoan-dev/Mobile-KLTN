@@ -75,11 +75,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '90%',
         marginLeft: 10,
+        marginBottom: 10,
     },
     container: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
     }
 })

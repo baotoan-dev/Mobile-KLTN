@@ -43,7 +43,6 @@ export default function VerifyOTPScreen(prop) {
     }, [isClickModify]);
 
     const handleSubmitOtp = async () => {
-        console.log('vao day');
         const otp = codeOfInput1 + codeOfInput2 + codeOfInput3 + codeOfInput4;
 
         const res = await authCandidate.confirmOtpApp(newEmail, otp);

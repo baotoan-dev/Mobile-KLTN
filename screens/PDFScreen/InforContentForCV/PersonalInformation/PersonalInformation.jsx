@@ -12,11 +12,12 @@ import { createCvInformationAction, getCvInformationAction } from '../../../../r
 import { createCvInformation } from './helpers/CreateCvInformation';
 import { TYPE_PERSONAL } from '../constant/constantContentCv';
 import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
+import Toast from 'react-native-toast-message';
 
 export default function PersonalInformation(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { typeAction,templateId,cvIndexParent } = prop.route.params;
+    const { cvIndexParent } = prop.route.params;
     const cvInformation = useSelector(state => state.cvInformation.cvInformation);
     const profile = useSelector(state => state.profile.profile);
     const [name, setName] = React.useState('');
@@ -25,43 +26,20 @@ export default function PersonalInformation(prop) {
     const [address, setAddress] = React.useState('');
     const [link, setLink] = React.useState('');
     const [intent, setIntent] = React.useState('');
-    const [urlAvatar, setUrlAvatar] = React.useState(null);
     const [listImage, setListImage] = React.useState({});
     const [part, setPart] = React.useState(0);
     const [row, setRow] = React.useState(0);
     const [col, setCol] = React.useState(0);
     const [cvIndex, setCvIndex] = React.useState(0);
+    const [avatarPath, setAvatarPath] = React.useState(null);
 
     useEffect(() => {
         dispatch(getProfileAction('vi'))
-    }, [typeAction])
+    }, [cvIndexParent])
 
     useEffect(() => {
-        dispatch(getCvInformationAction(cvIndex))
-    }, [cvIndex]);
-
-    useEffect(() => {
-        if (profile) {
-            // get item have cvIndex highest
-            if (typeAction === 'create') {
-                if (profile.profilesCvs.length === 0) {
-                    setCvIndex(0)
-                }
-                else {
-                    let maxIndex = 0;
-                    profile.profilesCvs.forEach((item, index) => {
-                        if (item.cvIndex > maxIndex) {
-                            maxIndex = item.cvIndex
-                        }
-                    })
-                    setCvIndex(maxIndex + 1)
-                }
-            }
-            if (typeAction === 'edit') {
-                setCvIndex(cvIndexParent)
-            }
-        }
-    }, [profile])
+        dispatch(getCvInformationAction(cvIndexParent))
+    }, [cvIndexParent]);
 
     useEffect(() => {
         if (cvInformation && cvInformation.data) {
@@ -71,42 +49,41 @@ export default function PersonalInformation(prop) {
             setAddress(cvInformation?.data?.address);
             setLink(cvInformation?.data?.link);
             setIntent(cvInformation?.data?.intent);
-            // setUrlAvatar(cvInformation?.data?.avatar);
             setPart(cvInformation?.data?.part ? cvInformation?.data?.part : 0);
             setRow(cvInformation?.data?.row ? cvInformation?.data?.row : 0);
             setCol(cvInformation?.data?.col ? cvInformation?.data?.col : 0);
+            setAvatarPath(cvInformation?.data?.avatar ? cvInformation?.data?.avatar : null);
         }
 
     }, [cvInformation])
 
     const handleUploadImage = async () => {
         try {
-            if (Platform.OS === 'android') {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                    {
-                        title: 'Permission Required',
-                        message: 'This app needs access to your storage to upload images.',
-                        buttonNeutral: 'Ask Me Later',
-                        buttonNegative: 'Cancel',
-                        buttonPositive: 'OK',
-                    },
-                );
-                if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-                    Alert.alert('Permission Denied', 'You need to grant storage permission to upload images.');
-                    return;
-                }
-            }
+            // if (Platform.OS === 'android') {
+            //     const granted = await PermissionsAndroid.request(
+            //         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            //         {
+            //             title: 'Permission Required',
+            //             message: 'This app needs access to your storage to upload images.',
+            //             buttonNeutral: 'Ask Me Later',
+            //             buttonNegative: 'Cancel',
+            //             buttonPositive: 'OK',
+            //         },
+            //     );
+            //     if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+            //         Alert.alert('Permission Denied', 'You need to grant storage permission to upload images.');
+            //         return;
+            //     }
+            // }
 
             let result = await DocumentPicker.getDocumentAsync({
                 type: 'image/*',
                 copyToCacheDirectory: true
             });
-
-            if (result && result.type === 'success') {
+            if (result && result.canceled === false) {
                 setListImage({
-                    uri: result.uri,
-                    name: result.name,
+                    uri: result.assets[0].uri,
+                    name: result.assets[0].name,
                     type: 'image/*'
                 })
             }
@@ -116,10 +93,20 @@ export default function PersonalInformation(prop) {
     }
 
     const handleSavePersonalInformation = () => {
-        const formData = createCvInformation(name, email, phone, address, link, intent, TYPE_PERSONAL, listImage, row, part, col, cvIndex, null);
+        const formData = createCvInformation(name, email, phone, address, link, intent, TYPE_PERSONAL, listImage, row, part, col, cvIndex, avatarPath);
 
         dispatch(createCvInformationAction(formData)).then(() => {
-            dispatch(getCvInformationAction(cvIndex));
+            dispatch(getCvInformationAction(cvIndexParent));
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Thông báo',
+                text2: 'Lưu thông tin cá nhân thành công!',
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 30,
+                bottomOffset: 40,
+            });
         });
     }
 
@@ -149,9 +136,9 @@ export default function PersonalInformation(prop) {
                     marginTop: 20,
                 }}>
                     <Image
-                        source={(cvInformation && cvInformation?.data && cvInformation?.data?.avatar) 
-                            ? { uri: cvInformation?.data?.avatar } : ((listImage && listImage.uri) ? { uri: listImage.uri } 
-                            : require('../../../../images/default_image.png'))}
+                        source={(cvInformation && cvInformation?.data && cvInformation?.data?.avatar)
+                            ? { uri: cvInformation?.data?.avatar } : ((listImage && listImage.uri) ? { uri: listImage.uri }
+                                : require('../../../../images/default_image.png'))}
                         style={{
                             width: 100,
                             height: 100,
@@ -404,6 +391,7 @@ export default function PersonalInformation(prop) {
                     Lưu
                 </Text>
             </TouchableOpacity>
+            <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
     )
 }
@@ -413,6 +401,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         height: '100%',
         width: '100%',
+        backgroundColor: 'white',
     },
     header: {
         flexDirection: 'row',
@@ -422,7 +411,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.2,
         borderBottomColor: 'gray',
         paddingHorizontal: 10,
-        height: 70,
+        height: 70
     },
     content: {
         height: '90%',

@@ -10,6 +10,9 @@ import { useDispatch } from 'react-redux';
 import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
 import ModalConfirmDelete from '../ModalConfirmDelete/ModalConfirmDelete';
 import { CheckLengthTitle } from '../../../utils/CheckLengthTitle';
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing'
+import Toast from 'react-native-toast-message';
 
 export default function ModalActionCv({
   showModalActionCv,
@@ -19,6 +22,7 @@ export default function ModalActionCv({
   idCV,
   profile,
   typeCv,
+  linkCv
 }) {
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -75,6 +79,15 @@ export default function ModalActionCv({
         })
     }
   }
+
+  const downloadPDF = async (url) => {
+    const uri = url
+    const fileUri = FileSystem.cacheDirectory + 'cv.pdf'
+    const options = { from: uri, to: fileUri }
+    await FileSystem.downloadAsync(uri, fileUri)
+    await shareAsync(fileUri)
+  };
+
 
   return (
     <View>
@@ -147,7 +160,13 @@ export default function ModalActionCv({
             <View style={[styles.itemContainer]}>
               <TouchableOpacity
                 onPress={() => {
-
+                  downloadPDF(linkCv)
+                  setShowModalActionCv(false)
+                  Toast.show({
+                    type: 'success',
+                    position: 'bottom',
+                    text1: 'Tải xuống CV thành công',
+                  });
                 }}
                 style={styles.item}>
                 <AntDesign name="download" size={20} color="black" />
@@ -210,6 +229,7 @@ export default function ModalActionCv({
           handleDeleteCv={handleDeleteCv}
         />
       }
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   )
 }

@@ -50,7 +50,6 @@ const LoginScreen = () => {
       redirectUrl:"exp://192.168.1.8:8081/--/spotify-auth-callback"
     }
     // const result = await AppAuth.authAsync(config);
-    console.log(result);
     if(result.accessToken){
       const expirationDate = new Date(result.accessTokenExpirationDate).getTime();
       AsyncStorage.setItem("token",result.accessToken);

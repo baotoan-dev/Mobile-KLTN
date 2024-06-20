@@ -7,6 +7,7 @@ export default function ContentBottomPDFScreen({
     typeAction,
     clickUpdateUI,
     setClickUpdateUI,
+    cvIndex
 }) {
     const navigation = useNavigation()
     return (
@@ -17,11 +18,11 @@ export default function ContentBottomPDFScreen({
                 }}
                 style={styles.button}
             >
-                <AntDesign name="rocket1" size={24} color="white" />
+                <AntDesign name="rocket1" size={24} color="black" />
                 <Text style={{
-                    marginLeft: 5,
+                    marginLeft: 10,
                     fontWeight: 'bold',
-                    color: 'white',
+                    color: 'black',
                 }}>
                     Sửa giao diện
                 </Text>
@@ -32,15 +33,16 @@ export default function ContentBottomPDFScreen({
                 }]}
                 onPress={() => {
                     navigation.navigate('InforContentForCV', {
-                        typeAction: typeAction
+                        typeAction: typeAction,
+                        cvIndex: cvIndex,
                     })
                 }}
             >
-                <AntDesign name="edit" size={24} color="white" />
+                <AntDesign name="edit" size={24} color="black" />
                 <Text style={{
-                    marginLeft: 5,
+                    marginLeft: 10,
                     fontWeight: 'bold',
-                    color: 'white',
+                    color: 'black',
                 }}>
                     Sửa nội dung
                 </Text>
@@ -61,15 +63,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     button: {
-        width: '50%',
+        width: '48%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         bacjgroundColor: 'white',
         padding: 10,
         borderRadius: 5,
-        borderWidth: 0.5,
         borderColor: 'gray',
-        backgroundColor: '#789292'
+        backgroundColor: '#DDDDDD'
     }
 });

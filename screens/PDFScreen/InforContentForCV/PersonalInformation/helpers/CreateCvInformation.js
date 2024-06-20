@@ -7,7 +7,7 @@ export function createCvInformation(name, email, phone, address, link, intent, t
     formData.append('link', link);
     formData.append('intent', intent);
     formData.append('type', tpye);
-    formData.append('images', images);
+    images && formData.append('images', images);
     formData.append('row', row);
     formData.append('part', part);
     formData.append('col', col);

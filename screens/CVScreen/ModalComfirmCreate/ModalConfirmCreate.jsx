@@ -8,6 +8,7 @@ import { deleteCvLayoutAction } from '../../../redux/store/CvLayout/cvLayoutSlic
 import { deleteCvExtraInformationAction } from '../../../redux/store/CvExtraInformation/CvExtraInformationSlice';
 import { deleteCvInformationAction } from '../../../redux/store/CvInFormation/cvInformationSlice';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export default function ModalConfirmCreate({
     showModalConfirmCreate,
@@ -24,16 +25,13 @@ export default function ModalConfirmCreate({
         dispatch(deleteCvExtraInformationAction(cvIndex))
         dispatch(deleteCvInformationAction(cvIndex))
 
-        setTimeout(() => {
-            navigation.navigate(
-                'PDFScreen',
-                {
-                    templateId: templateId,
-                    typeAction: 'create',
-                    cvIndexParent: 0,
-                }
-            )
-        }, 1000)
+        Toast.show({
+            type: 'success',
+            position: 'top',
+            text1: 'Hủy thành công',
+            text2: 'Hãy chọn mẫu CV khác',
+        })
+        navigation.navigate('ThemeCvList')
 
     }
     return (
@@ -52,7 +50,7 @@ export default function ModalConfirmCreate({
                             fontSize: 16,
                             fontWeight: 'bold',
                         }}>
-                            Khôi phục CV
+                            Lưu thay đổi
                         </Text>
                     </View>
                     <TouchableOpacity
@@ -70,7 +68,7 @@ export default function ModalConfirmCreate({
                         textAlign: 'center',
                         color: 'gray'
                     }}>
-                        Bạn có chắc chắn muốn khôi phục CV này không?
+                        Bạn có chắc chắn muốn lưu thay đổi
                     </Text>
                 </View>
                 <View style={{
@@ -102,14 +100,23 @@ export default function ModalConfirmCreate({
                                 fontSize: 14,
                                 borderRadius: 5,
                             }}>
-                                Hủy
+                                Không lưu
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
                                 width: '50%',
                             }}
-                            onPress={() => setShowModalConfirmCreate(false)}
+                            onPress={() =>{
+                                setShowModalConfirmCreate(false)
+                                Toast.show({
+                                    type: 'success',
+                                    position: 'top',
+                                    text1: 'Lưu thành công',
+                                    text2: 'Hãy kiểm tra lại thông tin',
+                                })
+                                navigation.navigate('ThemeCvList')
+                            }}
                         >
                             <Text style={{
                                 color: 'white',
@@ -122,7 +129,7 @@ export default function ModalConfirmCreate({
                                 fontSize: 14,
                                 borderRadius: 5,
                             }}>
-                                Khôi phục
+                                Xác nhận
                             </Text>
                         </TouchableOpacity>
                     </View>

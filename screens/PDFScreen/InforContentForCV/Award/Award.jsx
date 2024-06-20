@@ -13,46 +13,20 @@ import { createCvListExtraInformaion } from '../Certification/helpers/CreateCvLi
 import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
 export default function Ward(prop) {
-  const { typeAction } = prop.route.params;
+  const { cvIndexParent } = prop.route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [listSkill, setListSkill] = useState([]);
   const [listOtherInformation, setListOtherInformation] = useState([]);
-  const profile = useSelector(state => state.profile.profile);
   const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
-  const [cvIndex, setCvIndex] = useState(0);
 
   useEffect(() => {
     dispatch(getProfileAction('vi'))
   }, [])
 
   useEffect(() => {
-    if (profile) {
-      // get item have cvIndex highest
-      if (typeAction === 'create') {
-        if (profile.profilesCvs.length === 0) {
-          setCvIndex(0)
-        }
-        else {
-          let maxIndex = 0;
-          profile.profilesCvs.forEach((item, index) => {
-            if (item.cvIndex > maxIndex) {
-              maxIndex = item.cvIndex
-            }
-          })
-          setCvIndex(maxIndex + 1)
-        }
-      }
-      else {
-
-      }
-    }
-  }, [typeAction, profile])
-
-
-  useEffect(() => {
-    dispatch(getCvExtraInformationAction(cvIndex))
-  }, [typeAction, profile])
+    dispatch(getCvExtraInformationAction(cvIndexParent))
+  }, [cvIndexParent])
 
   useEffect(() => {
     if (cvExtraInformation) {
@@ -85,14 +59,14 @@ export default function Ward(prop) {
 
     if (newCreateCvExtraInformation) {
       dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-        dispatch(getCvExtraInformationAction(cvIndex));
+        dispatch(getCvExtraInformationAction(cvIndexParent));
       });
     }
   };
 
   return (
     <View style={styles.container}>
-      <HeaderOfScreen title="Chứng chỉ" />
+      <HeaderOfScreen title="Giải thưởng" />
       <ScrollView>
         {
           listSkill && listSkill.moreCvExtraInformations &&
@@ -112,7 +86,7 @@ export default function Ward(prop) {
                         companyParent: item.company,
                         descriptionParent: item.description,
                         timeParent: item.time,
-                        cvIndexParent: cvIndex,
+                        cvIndexParent: cvIndexParent,
                       })
                     }}
                   >
@@ -128,7 +102,7 @@ export default function Ward(prop) {
                         marginTop: 5,
                         textTransform: 'uppercase',
                       }}>
-                      {`Tên chứng chỉ: ${item.company}`}
+                      {`Tên giải thưởng: ${item.company}`}
                     </Text>
                     <Text
                       numberOfLines={1}
@@ -159,7 +133,7 @@ export default function Ward(prop) {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('AddAward', {
-              cvIndexParent: cvIndex ? cvIndex : 0,
+              cvIndexParent: cvIndexParent,
             })
           }}
           style={{
@@ -186,6 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: '100%',
     width: '100%',
+    backgroundColor: 'white'
   },
   item: {
     width: '95%',
@@ -193,11 +168,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    borderWidth: 1,
     borderRadius: 5,
     margin: 10,
-    borderColor: '#97E7E1',
-    backgroundColor: 'white',
+    backgroundColor: '#E2DFD0',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

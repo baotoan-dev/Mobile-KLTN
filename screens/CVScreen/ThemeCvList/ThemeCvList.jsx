@@ -2,23 +2,19 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'rea
 import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { templateApi } from '../../../api/template/templateApi';
-import HeaderOfScreen from '../../Components/HeaderOfScreen/HeaderOfScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
 import { getCvLayoutAction } from '../../../redux/store/CvLayout/cvLayoutSlice';
-import ModalConfirmCreate from '../ModalComfirmCreate/ModalConfirmCreate';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ThemeCvList() {
     const colors = [
         '#529300',
         '#3B82F6'
     ]
-
-    const navigation = useNavigation()
     const dispatch = useDispatch()
-    const cvLayout = useSelector(state => state.cvLayout.cvLayout);
+    const navigation = useNavigation()
     const profile = useSelector((state) => state.profile.profile);
-    const [showModalConfirmCreate, setShowModalConfirmCreate] = React.useState(false)
     const [themeCv, setThemeCv] = React.useState([])
     const [cvIndex, setCvIndex] = React.useState(0)
     const [templateId, setTemplateId] = React.useState(0)
@@ -59,24 +55,20 @@ export default function ThemeCvList() {
         dispatch(getCvLayoutAction(cvIndex));
     }, [cvIndex])
 
-    const handleCheckData = (index) => {
-        if (cvLayout && cvLayout?.color?.length > 0) {
-            setShowModalConfirmCreate(true)
-        } else {
-            navigation.navigate(
-                'PDFScreen',
-                {
-                    templateId: index,
-                    typeAction: 'create',
-                    cvIndexParent: 0,
-                }
-            )
-        }
-    }
-
     return (
         <View style={styles.container}>
-            <HeaderOfScreen title="Chọn mẫu CV" />
+            <View style={styles.containerHeader}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('CV')
+                    }}>
+                        <Ionicons name="arrow-back-outline" size={24} color="#242670" />
+                    </TouchableOpacity>
+                    <Text style={styles.title}>
+                        Chọn mẫu CV
+                    </Text>
+                </View>
+            </View>
             <View>
                 <View style={{
                     paddingHorizontal: 20,
@@ -128,7 +120,14 @@ export default function ThemeCvList() {
                                     <TouchableOpacity
                                         onPress={() => {
                                             setTemplateId(item.id)
-                                            handleCheckData(item.id)
+                                            navigation.navigate(
+                                                'PDFScreen',
+                                                {
+                                                    templateId: index,
+                                                    typeAction: 'create',
+                                                    cvIndexParent: cvIndex,
+                                                }
+                                            )
                                         }}
                                     >
                                         <View style={{
@@ -182,16 +181,6 @@ export default function ThemeCvList() {
                     </View>
                 </ScrollView>
             </View>
-            {
-                showModalConfirmCreate && (
-                    <ModalConfirmCreate
-                        cvIndex={cvIndex}
-                        templateId={templateId}
-                        showModalConfirmCreate={showModalConfirmCreate}
-                        setShowModalConfirmCreate={setShowModalConfirmCreate}
-                    />
-                )
-            }
         </View>
 
     )
@@ -207,10 +196,30 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: 'gray'
     },
+    containerHeader: {
+        paddingTop: 30,
+        width: '100%',
+        paddingHorizontal: 10,
+        backgroundColor: 'white',
+        zIndex: 100,
+        elevation: 100,
+        shadowColor: 'black',
+        paddingBottom: 10,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     container: {
         backgroundColor: 'white',
         width: '100%',
         height: '100%',
         zIndex: 100,
+    },
+    title: {
+        marginLeft: 5,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#242670',
     }
 })

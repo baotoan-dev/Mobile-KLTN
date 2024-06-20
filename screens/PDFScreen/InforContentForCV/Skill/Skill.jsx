@@ -13,12 +13,10 @@ import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
 import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
 export default function Skill(prop) {
-  const { typeAction } = prop.route.params;
+  const { cvIndexParent } = prop.route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const profile = useSelector(state => state.profile.profile);
   const [listSkill, setListSkill] = useState([]);
-  const [cvIndex, setCvIndex] = useState(0);
   const [listOtherInformation, setListOtherInformation] = useState([]);
   const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
 
@@ -26,28 +24,9 @@ export default function Skill(prop) {
     dispatch(getProfileAction('vi'))
   }, [])
 
-
   useEffect(() => {
-    if (profile) {
-      // get item have cvIndex highest
-      if (typeAction === 'create') {
-        let maxIndex = 0;
-        profile.profilesCvs.forEach((item, index) => {
-          if (item.cvIndex > maxIndex) {
-            maxIndex = item.cvIndex
-          }
-        })
-        setCvIndex(maxIndex)
-      }
-      else {
-
-      }
-    }
-  }, [typeAction, profile])
-
-  useEffect(() => {
-    dispatch(getCvExtraInformationAction(cvIndex))
-  }, [typeAction, profile])
+    dispatch(getCvExtraInformationAction(cvIndexParent))
+  }, [cvIndexParent])
 
   useEffect(() => {
     if (cvExtraInformation) {
@@ -80,7 +59,7 @@ export default function Skill(prop) {
 
     if (newCreateCvExtraInformation) {
       dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-        dispatch(getCvExtraInformationAction(cvIndex));
+        dispatch(getCvExtraInformationAction(cvIndexParent));
       });
     }
   };
@@ -108,7 +87,7 @@ export default function Skill(prop) {
                         companyParent: item.company,
                         descriptionParent: item.description,
                         timeParent: item.time,
-                        cvIndexParent: cvIndex,
+                        cvIndexParent: cvIndexParent,
                       })
                     }}
                   >
@@ -155,7 +134,7 @@ export default function Skill(prop) {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('AddSkill', {
-              cvIndexParent: cvIndex ? cvIndex : 0,
+              cvIndexParent: cvIndexParent
             })
           }}
           style={{
@@ -182,6 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: '100%',
     width: '100%',
+    backgroundColor: 'white'
   },
   item: {
     width: '95%',
@@ -189,11 +169,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    borderWidth: 1,
     borderRadius: 5,
     margin: 10,
-    borderColor: '#97E7E1',
-    backgroundColor: 'white',
+    backgroundColor: '#E2DFD0',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

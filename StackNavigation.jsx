@@ -495,6 +495,7 @@ function Navigation() {
                 <Stack.Screen name="SeenCvApplication" component={SeenCVApplied} options={{
                     headerShown: false,
                 }} />
+
             </Stack.Navigator>
         </NavigationContainer>
     )

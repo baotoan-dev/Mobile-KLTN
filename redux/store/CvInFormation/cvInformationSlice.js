@@ -30,7 +30,7 @@ export const createCvInformationAction = (data) => async (dispatch) => {
 export const deleteCvInformationAction = (cvIndex) => async (dispatch) => {
     try {
         dispatch(actions.deleteCvInformation());
-        await cvApi.deleteCvExtraInformation(cvIndex);
+        await cvApi.deleteCvInformation(cvIndex);
         dispatch(actions.deleteCvInformationSuccess(cvIndex));
     } catch (error) {
         dispatch(actions.deleteCvInformationFailure(error));

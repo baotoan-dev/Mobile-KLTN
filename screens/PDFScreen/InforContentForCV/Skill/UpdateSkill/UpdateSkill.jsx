@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         height: '100%',
         width: '100%',
+        backgroundColor: 'white'
     },
     header: {
         flexDirection: 'row',

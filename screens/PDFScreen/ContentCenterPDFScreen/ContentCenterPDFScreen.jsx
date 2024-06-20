@@ -28,7 +28,7 @@ export default function ContentCenterPDFScreen({
                             </div>
                             <div style="padding: 30px;">
                             <div style="font-size: 30px; margin-top: 10px; color: white; font-weight: 700;">
-                                PERSONAL INFORMATION 
+                                THÔNG TIN CÁ NHÂN
                             </div>
                              <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
                                     ${listPersonalInformation.email ? `
@@ -56,7 +56,7 @@ export default function ContentCenterPDFScreen({
                         </div>
                         <div style="padding: 30px;">
                             <div style="font-size: 30px; margin-top: 10px; color: white; font-weight: 700;">
-                                SKILL
+                                KỸ NĂNG
                             </div>
                             <div>
                                 ${listSkill?.map((item, index) => {
@@ -70,7 +70,7 @@ export default function ContentCenterPDFScreen({
                         </div> 
                         <div style="padding: 30px;">
                             <div style="font-size: 30px; margin-top: 10px; color: white; font-weight: 700;">
-                                AWARDS
+                                GIẢI THƯỞNG
                             </div>
                             <div>
                                 ${listAward?.map((item, index) => {
@@ -91,7 +91,7 @@ export default function ContentCenterPDFScreen({
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
-                            <span style="font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px; font-weight: 700;">CAREER OBJECTIVE</span>
+                            <span style="font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px; font-weight: 700;">MỤC TIÊU NGHỀ NGHIỆP</span>
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div> 
                         <div style="font-size: 20px; margin-top: 20px; padding: 30px; text-align: justify; line-height: 1.5;">
@@ -101,7 +101,7 @@ export default function ContentCenterPDFScreen({
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
-                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">PROJECT</span>
+                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">DỰ ÁN</span>
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div>   
                         <div>
@@ -110,25 +110,25 @@ export default function ContentCenterPDFScreen({
                                 <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Name: </b>
+                                            <b style="">Tên dự án: </b>
                                             <div>${item.position}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Link: </b>
+                                            <b style="">Chức năng: </b>
                                             <div>${item.functionality}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Technologies: </b>
+                                            <b style="">Công nghệ: </b>
                                             <div>${item.technology}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Number of participants: : </b>
+                                            <b style="">Thành viên tham gia: </b>
                                             <div>${item.participant}</div>
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@ export default function ContentCenterPDFScreen({
                                     </div>
                                     <div style="font-size: 25px;">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Time: </b>
+                                            <b style="">Thời gian: </b>
                                             <div>2022-2023</div>
                                         </div>
                                     </div>
@@ -151,7 +151,7 @@ export default function ContentCenterPDFScreen({
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
-                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">EDUCATION</span>
+                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">HỌC VẤN</span>
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div>   
                         <div>
@@ -160,38 +160,26 @@ export default function ContentCenterPDFScreen({
                                 <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Name: </b>
+                                            <b style="">Tên trường: </b>
+                                            <div>${item.company}</div>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 25px;margin-bottom: 10px">
+                                        <div style="display: flex; flex-direction: row; gap: 5px;">
+                                            <b style="">Ngành nghề : </b>
                                             <div>${item.position}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Link: </b>
-                                            <div>${item.functionality}</div>
+                                            <b style="">Mô tả: </b>
+                                            <div>${item.description}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Technologies: </b>
-                                            <div>${item.technology}</div>
-                                        </div>
-                                    </div>
-                                    <div style="font-size: 25px;margin-bottom: 10px">
-                                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Number of participants: : </b>
-                                            <div>${item.participant}</div>
-                                        </div>
-                                    </div>
-                                    <div style="font-size: 25px;margin-bottom: 10px">
-                                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Link: </b>
-                                            <div>${item.link}</div>
-                                        </div>
-                                    </div>
-                                    <div style="font-size: 25px;">
-                                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Time: </b>
-                                            <div>2022-2023</div>
+                                            <b style="">Thời gian: </b>
+                                            <div>${item.time}</div>
                                         </div>
                                     </div>
                                 </div>`;
@@ -244,8 +232,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     a4Paper: {
-        width: '90%',
-        height: '90%',
+        width: '100%',
+        height: '100%',
         backgroundColor: 'white',
         shadowColor: "red",
         shadowOffset: {

@@ -62,14 +62,14 @@ export default function CVScreen() {
               marginVertical: 10
             }}>
               Tìm thấy {(profile.profilesCvs && profile.profilesCvs.filter(
-                item => item.device === 1
+                item => item.device === 0
               )).length} CV tạo mới
             </Text>
           )
         }
         <View>
           {
-            profile && <ContentCvList checkShow={checkShow} profile={profile} type={1} />
+            profile && <ContentCvList checkShow={checkShow} profile={profile} type={0} />
           }
         </View>
         {
@@ -80,14 +80,14 @@ export default function CVScreen() {
               marginVertical: 10
             }}>
               Tìm thấy {profile.profilesCvs && profile.profilesCvs.filter(
-                item => item.device === 0
+                item => item.device === 1
               ).length} CV tải lên
             </Text>
           )
         }
         <View>
           {
-            profile && <ContentCvList checkShow={checkShow} profile={profile} type={0} />
+            profile && <ContentCvList checkShow={checkShow} profile={profile} type={1} />
           }
         </View>
       </ScrollView>

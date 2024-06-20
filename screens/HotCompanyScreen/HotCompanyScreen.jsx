@@ -21,7 +21,10 @@ export default function HotCompanyScreen() {
     }, [themeCompany])
 
     return (
-        <View>
+        <View style={{
+            flex: 1,
+            backgroundColor: '#fff'
+        }}>
             <HeaderOfScreen title="Công ty hot" />
             <ListThemeCompanyComponent data={dataAllThemeCompany} />
         </View>

@@ -38,11 +38,13 @@ export default function JobFitScreen() {
     useEffect(() => {
         if (nearby && nearby.data && nearby.data.posts && page === 0) {
             setListNearBy(nearby.data.posts);
+            setListNearByFilter(nearby.data.posts);
             setIsOver(nearby.data.is_over)
             setTotal(nearby.data.totalPost)
         }
         if (nearby && nearby.data && nearby.data.posts && page > 0) {
             setListNearBy([...listNearBy, ...nearby.data.posts]);
+            setListNearByFilter([...listNearBy, ...nearby.data.posts]);
             setIsOver(nearby.data.is_over)
             setTotal(nearby.data.totalPost)
         }

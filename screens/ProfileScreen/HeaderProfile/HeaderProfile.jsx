@@ -7,6 +7,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { avatarApi } from '../../../api/profile/avatar/avatarApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
+import Toast from 'react-native-toast-message';
 
 export default function HeaderProfile({ isScrolling }) {
     const dispatch = useDispatch();
@@ -39,7 +40,11 @@ export default function HeaderProfile({ isScrolling }) {
             });
 
             if (!response.cancelled) {
-                setImage(response);
+                setImage([{
+                    uri: response.assets[0].uri,
+                    name: response.assets[0].name,
+                    mimeType: 'image/*'
+                }]);
                 await pickImage();
             }
         }
@@ -48,19 +53,26 @@ export default function HeaderProfile({ isScrolling }) {
     const pickImage = async () => {
         const formData = new FormData();
 
-        formData.append('images', {
-            uri: image.uri,
-            name: image.name,
-            type: image.mimeType,
+        image.forEach((item) => {
+            formData.append('images', {
+                uri: item.uri,
+                name: item.name,
+                type: item.mimeType,
+            });
         });
 
         try {
             const response = await avatarApi.updateAvatar(formData);
             if (response && response.code === 200) {
                 setImage(null);
+                Toast.show({
+                    type: 'success',
+                    position: 'top',
+                    text1: 'Cập nhật ảnh đại diện thành công',
+                });
                 dispatch(getProfileAction('vi'));
             }
-            
+
         } catch (error) {
             console.error('Error updating avatar:', error);
         }
@@ -132,6 +144,7 @@ export default function HeaderProfile({ isScrolling }) {
                         </View>
                     </View>
                 </ImageBackground>
+                <Toast ref={(ref) => Toast.setRef(ref)} />
             </View>
         )
     }

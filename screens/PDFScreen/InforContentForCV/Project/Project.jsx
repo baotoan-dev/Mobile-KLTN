@@ -14,42 +14,17 @@ import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 export default function Project(prop) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { typeAction,templateId,cvIndexParent } = prop.route.params;
-    const profile = useSelector(state => state.profile.profile);
+    const { cvIndexParent } = prop.route.params;
     const [listProject, setListProject] = useState([])
     const cvProject = useSelector(state => state.cvProject.cvProject);
-    const [cvIndex, setCvIndex] = useState(0);
 
     useEffect(() => {
         dispatch(getProfileAction('vi'))
     }, [])
 
     useEffect(() => {
-        if (profile) {
-            // get item have cvIndex highest
-            if (typeAction === 'create') {
-                if (profile.profilesCvs.length === 0) {
-                    setCvIndex(0)
-                }
-                else {
-                    let maxIndex = 0;
-                    profile.profilesCvs.forEach((item, index) => {
-                        if (item.cvIndex > maxIndex) {
-                            maxIndex = item.cvIndex
-                        }
-                    })
-                    setCvIndex(maxIndex + 1)
-                }
-            }
-            else {
-                setCvIndex(cvIndexParent)
-            }
-        }
-    }, [typeAction, profile])
-
-    useEffect(() => {
-        dispatch(getCvProjectAction(cvIndex))
-    }, [typeAction, profile])
+        dispatch(getCvProjectAction(cvIndexParent))
+    }, [cvIndexParent])
 
     useEffect(() => {
         if (cvProject) {
@@ -72,7 +47,7 @@ export default function Project(prop) {
 
         if (newCreateProject) {
             dispatch(createCvProjectAction([newCreateProject])).then(() => {
-                dispatch(getCvProjectAction(cvIndex));
+                dispatch(getCvProjectAction(cvIndexParent));
             });
         }
     };
@@ -101,7 +76,7 @@ export default function Project(prop) {
                                                 positionParent: item.position,
                                                 functionalityParent: item.functionality,
                                                 technologyParent: item.technology,
-                                                cvIndexParent: cvIndex,
+                                                cvIndexParent: cvIndexParent,
                                             })
                                         }}
                                     >
@@ -191,7 +166,7 @@ export default function Project(prop) {
                 <TouchableOpacity
                     onPress={() => {
                         navigation.navigate('AddProject', {
-                            cvIndexParent: cvIndex ? cvIndex : 0,
+                            cvIndexParent: cvIndexParent    
                         })
                     }}
                     style={{
@@ -218,6 +193,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         height: '100%',
         width: '100%',
+        backgroundColor: 'white'
     },
     item: {
         width: '95%',
@@ -225,11 +201,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 10,
-        borderWidth: 1,
         borderRadius: 5,
         margin: 10,
-        borderColor: '#97E7E1',
-        backgroundColor: 'white',
+        backgroundColor: '#E2DFD0',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,

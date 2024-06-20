@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
 import ContentBottomPDFScreen from './ContentBottomPDFScreen/ContentBottomPDFScreen';
-import ContentHeaderPDFScreen from './ContentHeaderPDFScreen/ContentHeaderPDFScreen';
 import { useNavigation } from '@react-navigation/native';
 import ContentCenterPDFScreen from './ContentCenterPDFScreen/ContentCenterPDFScreen';
 import * as Print from 'expo-print';
@@ -15,10 +14,12 @@ import { cvProfileApi } from '../../api/cv-profile/cvProfileApi';
 import Toast from 'react-native-toast-message';
 import InforModifyUI from './InforModifyUI/InforModifyUI';
 import { createCvLayoutAction, getCvLayoutAction } from '../../redux/store/CvLayout/cvLayoutSlice';
+import ModalConfirmCreate from '../CVScreen/ModalComfirmCreate/ModalConfirmCreate';
 
 
 export default function PDFScreen(prop) {
     const navigation = useNavigation();
+    const [showModalConfirmCreate, setShowModalConfirmCreate] = React.useState(false)
     const profile = useSelector((state) => state.profile.profile);
     const { typeAction, templateId, cvIndexParent } = prop.route.params;
     const dispatch = useDispatch();
@@ -35,7 +36,6 @@ export default function PDFScreen(prop) {
     const [listAward, setListAward] = useState([]);
     const [listEducation, setListEducation] = useState([]);
     const [nameCv, setNameCv] = useState('');
-    const [cvIndex, setCvIndex] = useState(0);
     const [dataModify, setDataModify] = useState({
         color: '#529300',
         size: 'small',
@@ -46,33 +46,11 @@ export default function PDFScreen(prop) {
     }, [dispatch]);
 
     useEffect(() => {
-        if (profile) {
-            if (typeAction === 'create') {
-                if (profile.profilesCvs.length === 0) {
-                    setCvIndex(0);
-                } else {
-                    let maxIndex = 0;
-                    profile.profilesCvs.forEach((item) => {
-                        if (item.cvIndex > maxIndex) {
-                            maxIndex = item.cvIndex;
-                        }
-                    });
-                    setCvIndex(maxIndex + 1);
-                }
-            } else {
-                setCvIndex(cvIndexParent);
-            }
-        }
-    }, [profile, typeAction, cvIndexParent]);
-
-    useEffect(() => {
-        if (cvIndex !== 0 || typeAction !== 'create') {
-            dispatch(getCvProjectAction(cvIndex));
-            dispatch(getCvExtraInformationAction(cvIndex));
-            dispatch(getCvInformationAction(cvIndex));
-            dispatch(getCvLayoutAction(cvIndex));
-        }
-    }, [dispatch, cvIndex, typeAction]);
+        dispatch(getCvProjectAction(cvIndexParent));
+        dispatch(getCvExtraInformationAction(cvIndexParent));
+        dispatch(getCvInformationAction(cvIndexParent));
+        dispatch(getCvLayoutAction(cvIndexParent));
+    }, [cvIndexParent]);
 
     useEffect(() => {
         if (cvInformation && cvInformation.data) {
@@ -114,7 +92,7 @@ export default function PDFScreen(prop) {
 
     const handleApplyForCvLayout = () => {
         const dataUpload = {
-            cvIndex: cvIndex,
+            cvIndex: cvIndexParent,
             layout: [
                 "40, 60"
             ],
@@ -132,7 +110,7 @@ export default function PDFScreen(prop) {
             ]
         }
         dispatch(createCvLayoutAction(dataUpload));
-        dispatch(getCvLayoutAction(cvIndex)).then((data) => {
+        dispatch(getCvLayoutAction(cvIndexParent)).then((data) => {
             Toast.show({
                 type: 'success',
                 position: 'top',
@@ -152,7 +130,7 @@ export default function PDFScreen(prop) {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         </head>
         <body style="height: fit-content; margin: 0;">
-            <div style="display: flex; flex-direction: row; width: 100%; height: 100%">
+            <div style="display: flex; flex-direction: row; width: 100%; height: 100%; padding: ${dataModify.size === 'small' ? '10px' : '20px'}">
                 <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: ${dataModify.color};">
                     <div>
                         <div>
@@ -160,8 +138,8 @@ export default function PDFScreen(prop) {
                                 <img src=${listPersonalInformation.avatar ? listPersonalInformation.avatar : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqgL3Hd08E6ZEepKPn1kNZnBLnWugLvplig&usqp=CAU'} style="width: 90%; height: 400px; border: 1px solid black; border-radius: 10px;" />
                             </div>
                             <div style="padding: 30px;">
-                            <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
-                                PERSONAL INFORMATION 
+                            <div style="font-size: 30px; margin-top: 10px; color: white; font-weight: 700;">
+                                THÔNG TIN CÁ NHÂN
                             </div>
                              <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
                                     ${listPersonalInformation.email ? `
@@ -188,8 +166,8 @@ export default function PDFScreen(prop) {
                         </div>                        
                         </div>
                         <div style="padding: 30px;">
-                            <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
-                                SKILL
+                            <div style="font-size: 30px; margin-top: 10px; color: white; font-weight: 700;">
+                                KỸ NĂNG
                             </div>
                             <div>
                                 ${listSkill?.map((item, index) => {
@@ -202,8 +180,8 @@ export default function PDFScreen(prop) {
                             </div>
                         </div> 
                         <div style="padding: 30px;">
-                            <div style="font-size: 30px; margin-top: 10px; color: gray; font-weight: 700;">
-                                AWARDS
+                            <div style="font-size: 30px; margin-top: 10px; color: white; font-weight: 700;">
+                                GIẢI THƯỞNG
                             </div>
                             <div>
                                 ${listAward?.map((item, index) => {
@@ -224,7 +202,7 @@ export default function PDFScreen(prop) {
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
-                            <span style="font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px; font-weight: 700;">CAREER OBJECTIVE</span>
+                            <span style="font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px; font-weight: 700;">MỤC TIÊU NGHỀ NGHIỆP</span>
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div> 
                         <div style="font-size: 20px; margin-top: 20px; padding: 30px; text-align: justify; line-height: 1.5;">
@@ -234,7 +212,7 @@ export default function PDFScreen(prop) {
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
-                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">PROJECT</span>
+                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">DỰ ÁN</span>
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div>   
                         <div>
@@ -243,25 +221,25 @@ export default function PDFScreen(prop) {
                                 <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Name: </b>
+                                            <b style="">Tên dự án: </b>
                                             <div>${item.position}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Link: </b>
+                                            <b style="">Chức năng: </b>
                                             <div>${item.functionality}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Technologies: </b>
+                                            <b style="">Công nghệ: </b>
                                             <div>${item.technology}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Number of participants: : </b>
+                                            <b style="">Thành viên tham gia: </b>
                                             <div>${item.participant}</div>
                                         </div>
                                     </div>
@@ -273,7 +251,7 @@ export default function PDFScreen(prop) {
                                     </div>
                                     <div style="font-size: 25px;">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Time: </b>
+                                            <b style="">Thời gian: </b>
                                             <div>2022-2023</div>
                                         </div>
                                     </div>
@@ -284,7 +262,7 @@ export default function PDFScreen(prop) {
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
                             <hr style="width: 20px; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
-                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">EDUCATION</span>
+                            <span style=" font-weight: 700;font-size: 30px; border: 1px solid #c1e8e4; border-radius: 10px;">HỌC VẤN</span>
                             <hr style="flex: 1; margin: 0 10px; border: none; border-top: 1px solid #c1e8e4;">
                         </div>   
                         <div>
@@ -293,38 +271,26 @@ export default function PDFScreen(prop) {
                                 <div style="margin-top: 10px; padding: 30px; flex-direction: column; gap: 10px;" key="${index}">
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Name: </b>
+                                            <b style="">Tên trường: </b>
+                                            <div>${item.company}</div>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 25px;margin-bottom: 10px">
+                                        <div style="display: flex; flex-direction: row; gap: 5px;">
+                                            <b style="">Ngành nghề : </b>
                                             <div>${item.position}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Link: </b>
-                                            <div>${item.functionality}</div>
+                                            <b style="">Mô tả: </b>
+                                            <div>${item.description}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Technologies: </b>
-                                            <div>${item.technology}</div>
-                                        </div>
-                                    </div>
-                                    <div style="font-size: 25px;margin-bottom: 10px">
-                                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Number of participants: : </b>
-                                            <div>${item.participant}</div>
-                                        </div>
-                                    </div>
-                                    <div style="font-size: 25px;margin-bottom: 10px">
-                                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Link: </b>
-                                            <div>${item.link}</div>
-                                        </div>
-                                    </div>
-                                    <div style="font-size: 25px;">
-                                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                                            <b style="">Time: </b>
-                                            <div>2022-2023</div>
+                                            <b style="">Thời gian: </b>
+                                            <div>${item.time}</div>
                                         </div>
                                     </div>
                                 </div>`;
@@ -378,8 +344,6 @@ export default function PDFScreen(prop) {
         formData.append('device', 0);
         formData.append('type', 0);
 
-        // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-
         const res = await cvProfileApi.createCv(formData)
 
         if (res && res.data.statusCode === 201) {
@@ -413,7 +377,7 @@ export default function PDFScreen(prop) {
                     <View style={styles.header}>
                         <View>
                             <TouchableOpacity onPress={() => {
-                                navigation.goBack();
+                                setShowModalConfirmCreate(true)
                             }}>
                                 <Text style={{
                                     fontWeight: 'bold',
@@ -427,8 +391,8 @@ export default function PDFScreen(prop) {
                                 placeholder="Tên file"
                                 onChangeText={(text) => setNameCv(text)}
                                 style={{
-                                    borderRadius: 10,
-                                    padding: 5,
+                                    borderRadius: 5,
+                                    padding: 2,
                                     width: 100,
                                     fontWeight: 'bold',
                                     textAlign: 'center',
@@ -507,9 +471,18 @@ export default function PDFScreen(prop) {
                 typeAction={typeAction}
                 clickUpdateUI={clickUpdateUI}
                 setClickUpdateUI={setClickUpdateUI}
-                dataModify={dataModify}
-                setDataModify={setDataModify}
+                cvIndex={cvIndexParent}
             />
+            {
+                showModalConfirmCreate && (
+                    <ModalConfirmCreate
+                        cvIndex={cvIndexParent}
+                        templateId={templateId}
+                        showModalConfirmCreate={showModalConfirmCreate}
+                        setShowModalConfirmCreate={setShowModalConfirmCreate}
+                    />
+                )
+            }
             <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
 

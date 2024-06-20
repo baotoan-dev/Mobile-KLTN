@@ -8,6 +8,8 @@ import * as DocumentPicker from 'expo-document-picker';
 import { cvProfileApi } from '../../../api/cv-profile/cvProfileApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
+import ViewShot from 'react-native-view-shot';
+import { WebView } from 'react-native-webview';
 
 export default function ModalAddCv({
     showModalAddCv,
@@ -78,13 +80,16 @@ export default function ModalAddCv({
                 copyToCacheDirectory: true
             });
 
-            if (result && result.type === 'success') {
+            if (result && result.canceled === false) {
                 setFilePdf({
-                    uri: result.uri,
-                    name: result.name,
-                    type: result.mimeType
+                    uri: result.assets[0].uri,
+                    name: result.assets[0].name,
+                    type: result.assets[0].mimeType
                 })
+                setShowModalAddCv(false)
             }
+
+            return
 
             const formData = new FormData();
 

@@ -81,8 +81,6 @@ export default function PostDetail(prop) {
         fetchDetailPost();
     }, [id])
 
-    console.log(post.post_id);
-
     return (
         post ? (
             <View style={styles.container}>
@@ -249,7 +247,7 @@ export default function PostDetail(prop) {
                             <TouchableOpacity
                                 onPress={() => {
                                     if (post?.applied === false) {
-                                        navigation.navigate('ApplyPost', {
+                                        navigation.navigate('Application', {
                                             id: post.id,
                                             title: post.title,
                                             company_name: post.company_name,
@@ -278,9 +276,11 @@ export default function PostDetail(prop) {
                                 <Text style={{
                                     textAlign: 'center',
                                     color: 'white'
-                                }}> {
+                                }}>
+                                    {
                                         post?.applied === true ? 'Đã ứng tuyển' : 'Ứng tuyển'
-                                    }</Text>
+                                    }
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
