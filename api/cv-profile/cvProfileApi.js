@@ -5,6 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 export const cvProfileApi = {
     createCv: async (data) => {
         const URL = `${CONST_API}/api/v3/profiles-cvs`
+        console.log(URL);
         return await axiosConfig.post(URL, data, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,

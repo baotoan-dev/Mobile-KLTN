@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ToastAndroid } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '../../redux/store/Profile/profileSilce';
 import ContentBottomPDFScreen from './ContentBottomPDFScreen/ContentBottomPDFScreen';
@@ -11,14 +11,14 @@ import { getCvExtraInformationAction } from '../../redux/store/CvExtraInformatio
 import { getCvInformationAction } from '../../redux/store/CvInFormation/cvInformationSlice';
 import ModalActionSave from './ModalActionSave/ModalActionSave';
 import { cvProfileApi } from '../../api/cv-profile/cvProfileApi';
-import Toast from 'react-native-toast-message';
 import InforModifyUI from './InforModifyUI/InforModifyUI';
 import { createCvLayoutAction, getCvLayoutAction } from '../../redux/store/CvLayout/cvLayoutSlice';
 import ModalConfirmCreate from '../CVScreen/ModalComfirmCreate/ModalConfirmCreate';
 
-
 export default function PDFScreen(prop) {
     const navigation = useNavigation();
+    const viewShotRef = useRef(null);
+    const [imageUri, setImageUri] = useState(null);
     const [showModalConfirmCreate, setShowModalConfirmCreate] = React.useState(false)
     const profile = useSelector((state) => state.profile.profile);
     const { typeAction, templateId, cvIndexParent } = prop.route.params;
@@ -62,6 +62,9 @@ export default function PDFScreen(prop) {
         if (cvProject && cvProject.length > 0) {
             setListProject(cvProject[0]?.moreCvProjects);
         }
+        else {
+            setListProject([]);
+        }
     }, [cvProject]);
 
     useEffect(() => {
@@ -88,6 +91,11 @@ export default function PDFScreen(prop) {
             setListAward(awards.length > 0 ? awards[0].moreCvExtraInformations : []);
             setListEducation(educations.length > 0 ? educations[0].moreCvExtraInformations : []);
         }
+        else {
+            setListAward([]);
+            setListSkill([]);
+            setListEducation([]);
+        }
     }, [cvExtraInformation]);
 
     const handleApplyForCvLayout = () => {
@@ -111,13 +119,7 @@ export default function PDFScreen(prop) {
         }
         dispatch(createCvLayoutAction(dataUpload));
         dispatch(getCvLayoutAction(cvIndexParent)).then((data) => {
-            Toast.show({
-                type: 'success',
-                position: 'top',
-                text1: 'Áp dụng giao diện thành công',
-                visibilityTime: 2000,
-                autoHide: true,
-            });
+            ToastAndroid.show('Áp dụng thành công', ToastAndroid.SHORT);
             setDataModify(dataModify);
         });
     }
@@ -129,7 +131,7 @@ export default function PDFScreen(prop) {
             <title>CV</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         </head>
-        <body style="height: fit-content; margin: 0;">
+        <body style="height: fit-content; margin: 0;" id="content">
             <div style="display: flex; flex-direction: row; width: 100%; height: 100%; padding: ${dataModify.size === 'small' ? '10px' : '20px'}">
                 <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: ${dataModify.color};">
                     <div>
@@ -197,7 +199,7 @@ export default function PDFScreen(prop) {
                 </div>
                 <div style="width: 55%; height: 100%">
                     <div style="margin: 40px; font-size: 30px; font-weight: 700;">
-                        ${listPersonalInformation.name ? listPersonalInformation.name : 'Name'}
+                        ${listPersonalInformation.name ? listPersonalInformation.name : ''}
                     </div>
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
@@ -228,7 +230,7 @@ export default function PDFScreen(prop) {
                                     <div style="font-size: 25px;margin-bottom: 10px">
                                         <div style="display: flex; flex-direction: row; gap: 5px;">
                                             <b style="">Chức năng: </b>
-                                            <div>${item.functionality}</div>
+                                            <div>${item.returnfunctionality}</div>
                                         </div>
                                     </div>
                                     <div style="font-size: 25px;margin-bottom: 10px">
@@ -304,6 +306,13 @@ export default function PDFScreen(prop) {
     `;
 
 
+    const handleCaptureImage = () => {
+        viewShotRef.current.capture().then(uri => {
+            setImageUri(uri);
+        }).catch(error => {
+            console.error("Failed to capture image", error);
+        });
+    };
     const handleAction = () => {
         setShowModalAction(true);
     }
@@ -317,17 +326,12 @@ export default function PDFScreen(prop) {
 
 
     const printToFile = async () => {
+        handleCaptureImage();
         const { uri } = await Print.printToFileAsync({ html });
 
         if (!nameCv) {
             setShowModalAction(false);
-            Toast.show({
-                type: 'error',
-                position: 'top',
-                text1: 'Vui lòng nhập tên file',
-                visibilityTime: 2000,
-                autoHide: true,
-            });
+            ToastAndroid.show('Vui lòng nhập tên file', ToastAndroid.SHORT);
             return;
         }
 
@@ -339,10 +343,16 @@ export default function PDFScreen(prop) {
             type: 'application/pdf',
         });
         formData.append('name', nameCv);
-        formData.append('cvIndex', cvIndex);
+        formData.append('cvIndex', cvIndexParent);
         formData.append('templateId', 0);
         formData.append('device', 0);
-        formData.append('type', 0);
+        formData.append('type', 1);
+        formData.append('images', {
+            uri: imageUri,
+            name: 'image.png',
+            type: 'image/png',
+        })
+
 
         const res = await cvProfileApi.createCv(formData)
 
@@ -350,13 +360,7 @@ export default function PDFScreen(prop) {
             dispatch(getProfileAction('vi'))
             setShowModalAction(false);
             navigation.navigate('CV');
-            Toast.show({
-                type: 'success',
-                position: 'top',
-                text1: 'Tạo CV thành công',
-                visibilityTime: 2000,
-                autoHide: true,
-            });
+            ToastAndroid.show('Tạo file thành công', ToastAndroid.SHORT);
         }
     };
 
@@ -460,6 +464,8 @@ export default function PDFScreen(prop) {
                 listProject={listProject}
                 listSkill={listSkill}
                 listEducation={listEducation}
+                viewShotRef={viewShotRef}
+                imageUri={imageUri}
             />
             <InforModifyUI
                 clickUpdateUI={clickUpdateUI}
@@ -483,9 +489,7 @@ export default function PDFScreen(prop) {
                     />
                 )
             }
-            <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
-
     );
 }
 
@@ -518,7 +522,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     a4Paper: {
-        width: '90%',
-        height: '90%'
+        width: '100%',
+        height: '100%'
     },
 });

@@ -187,7 +187,6 @@ export default function ContentCvList({ checkShow, profile, type }) {
                     setShowModalActionCv={setShowModalActionCv}
                     typeCv={typeCv}
                     linkCv={linkCv}
-
                 />
             }
         </Animated.View>

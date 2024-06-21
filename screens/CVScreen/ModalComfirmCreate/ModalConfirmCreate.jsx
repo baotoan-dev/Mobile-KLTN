@@ -115,7 +115,7 @@ export default function ModalConfirmCreate({
                                     text1: 'Lưu thành công',
                                     text2: 'Hãy kiểm tra lại thông tin',
                                 })
-                                navigation.navigate('ThemeCvList')
+                                navigation.navigate('CV')
                             }}
                         >
                             <Text style={{

@@ -1,6 +1,7 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import WebView from 'react-native-webview';
+import ViewShot from 'react-native-view-shot';
 
 export default function ContentCenterPDFScreen({
     dataModify,
@@ -8,7 +9,8 @@ export default function ContentCenterPDFScreen({
     listPersonalInformation,
     listProject,
     listSkill,
-    listEducation
+    listEducation,
+    viewShotRef
 }) {
 
     const html = `
@@ -18,7 +20,7 @@ export default function ContentCenterPDFScreen({
             <title>CV</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         </head>
-        <body style="height: fit-content; margin: 0;">
+        <body style="height: fit-content; margin: 0;" id="content">
             <div style="display: flex; flex-direction: row; width: 100%; height: 100%; padding: ${dataModify.size === 'small' ? '10px' : '20px'}">
                 <div style="overflow: hidden;width: 45%; height: 100vh; flex-direction: column; background-color: ${dataModify.color};">
                     <div>
@@ -86,7 +88,7 @@ export default function ContentCenterPDFScreen({
                 </div>
                 <div style="width: 55%; height: 100%">
                     <div style="margin: 40px; font-size: 30px; font-weight: 700;">
-                        ${listPersonalInformation.name ? listPersonalInformation.name : 'Name'}
+                        ${listPersonalInformation.name ? listPersonalInformation.name : ''}
                     </div>
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
@@ -195,12 +197,17 @@ export default function ContentCenterPDFScreen({
 
     return (
         <View style={styles.content}>
-            <View style={styles.a4Paper}>
-                <WebView
-                    source={{ html }}
-                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                />
-            </View>
+            {
+                <View style={styles.a4Paper}>
+                    <ViewShot ref={viewShotRef} style={{ width: '100%', height: '100%' }}>
+                        <WebView
+                            originWhitelist={['*']}
+                            source={{ html: html }}
+                            style={{ flex: 1 }}
+                        />
+                    </ViewShot>
+                </View>
+            }
         </View>
     )
 }
@@ -232,8 +239,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     a4Paper: {
-        width: '100%',
-        height: '100%',
+        width: '95%',
+        height: '95%',
         backgroundColor: 'white',
         shadowColor: "red",
         shadowOffset: {
