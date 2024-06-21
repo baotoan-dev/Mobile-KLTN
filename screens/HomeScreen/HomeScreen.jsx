@@ -46,7 +46,7 @@ export default function HomeScreen() {
             <BannerComponent />
           </View>
           <View style={{
-            backgroundColor: '#CDE8E5',
+            backgroundColor: '#DBDFAA',
             position: 'relative',
             paddingBottom: 10,
           }}>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -30,
     width: '95%',
-    backgroundColor: '#F8F9D7',
+    backgroundColor: '#F1F5A8',
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.3,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F9D7',
+    backgroundColor: '#F1F5A8',
     shadowColor: 'red',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.3,
