@@ -15,11 +15,12 @@ export default function NotifyScreen() {
   const allNotification = useSelector((state) => state.allNotification.notifications)
 
 
-  const fetchDataUpdate = async (notificationId) => {
+  const fetchDataUpdate = async (notificationId, typeText) => {
 
     const res = await notificationApi.updateNotification(
       notificationId,
-      1
+      1,
+      typeText
     )
 
     if (res && res.data.code === 200) {
@@ -51,7 +52,7 @@ export default function NotifyScreen() {
         id: postId
       })
     }
-    fetchDataUpdate(notificationId)
+    fetchDataUpdate(notificationId, typeText)
   };
 
 

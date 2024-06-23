@@ -71,7 +71,7 @@ export default function CreateBlogComponent(prop) {
         }
     }
 
-    handleEditBlog = async () => {
+    const handleEditBlog = async () => {
         const formData = new FormData()
 
         formData.append('title', title)

@@ -12,12 +12,13 @@ export const notificationApi = {
             },
         })
     },
-    updateNotification: async (notificationId, isRead) => {
+    updateNotification: async (notificationId, isRead, typeText) => {
         const URL = `${CONST_API_V1}/api/v1/notification/update`
 
         return await axiosConfig.put(URL, {
             notification_id: notificationId,
-            is_read: isRead
+            is_read: isRead,
+            typeText: typeText
         }, {
             headers: {
                 Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,

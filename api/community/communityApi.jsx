@@ -94,7 +94,6 @@ export const communityApi = {
     limit,
     sort,
   ) {
-    console.log("token", await SecureStore.getItemAsync("token"));
     const URL = `${CONST_API}/api/v3/communications/by-account?page=${page}&limit=${limit}&sort=${sort}`;
 
     return axiosConfig.get(URL, {
