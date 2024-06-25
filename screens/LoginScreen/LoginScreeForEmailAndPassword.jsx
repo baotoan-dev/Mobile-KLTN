@@ -8,6 +8,10 @@ import { useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from "expo-web-browser";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreeForEmailAndPassword() {
     const navigation = useNavigation();
@@ -17,6 +21,23 @@ export default function LoginScreeForEmailAndPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
+
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        clientId: '157728721726-oenicisps96tt1jhq4hmej0j1k66qeea.apps.googleusercontent.com',
+        androidClientId: '157728721726-41nkgblnad3c3u2eqv5eugbraj79qovd.apps.googleusercontent.com',
+        iosClientId: '157728721726-1m7qidhrnineb2nmcj6pthpc8v6fl9rh.apps.googleusercontent.com',
+        webClientId: '157728721726-djlk2umnldvfndmaqgms29ob00ecen4a.apps.googleusercontent.com',
+        redirectUri: `${WebBrowser.maybeCompleteAuthSession().url}`,
+        useProxy: false,
+    });
+
+    React.useEffect(() => {
+        if (response?.type === 'success') {
+            const { id_token } = response.params;
+            console.log(id_token);
+        }
+    }, [response]);
+
 
     const handleLogin = async () => {
         try {
@@ -75,8 +96,8 @@ export default function LoginScreeForEmailAndPassword() {
                     style={{
                         textAlign: 'center',
                         width: '100%',
-                        height: '100%',
-                        marginTop: 30,
+                        height: '90%',
+                        marginTop: 20,
                         borderRadius: 20,
                         objectFit: 'contain',
                     }}>
@@ -170,12 +191,14 @@ export default function LoginScreeForEmailAndPassword() {
             <Text style={{
                 color: "black",
                 textAlign: "center",
-                marginTop: 10,
             }}>
                 OR
             </Text>
 
             <TouchableOpacity
+                onPress={() => {
+                    promptAsync();
+                }}
                 style={{
                     width: '100%',
                     padding: 20,
@@ -246,7 +269,7 @@ const styles = StyleSheet.create({
         color: "black",
         fontSize: 25,
         fontWeight: "bold",
-        marginTop: 20,
+        marginTop: 10,
         paddingHorizontal: 20,
         fontStyle: "italic"
     },
