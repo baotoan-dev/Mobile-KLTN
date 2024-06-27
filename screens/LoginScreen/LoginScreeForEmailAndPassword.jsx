@@ -37,23 +37,18 @@ import {
       revocationEndpoint: 'https://oauth2.googleapis.com/revoke'
     };
     
-    
-    const redirectUri = makeRedirectUri({
-        useProxy: true,
-      });
-    
-    console.log("Redirect URI: ", redirectUri);
-    
+            
     const [request, response, promptAsync] = Google.useAuthRequest({
-      clientId: "157728721726-oenicisps96tt1jhq4hmej0j1k66qeea.apps.googleusercontent.com",
-      expoClientId: "157728721726-oenicisps96tt1jhq4hmej0j1k66qeea.apps.googleusercontent.com",
-      androidClientId: "157728721726-41nkgblnad3c3u2eqv5eugbraj79qovd.apps.googleusercontent.com",
-      scopes: ["email", "profile"],
-      redirectUri,
-      responseType: "token",
-    }, discovery);
+        clientId: '157728721726-djlk2umnldvfndmaqgms29ob00ecen4a.apps.googleusercontent.com',
+        androidClientId: '157728721726-41nkgblnad3c3u2eqv5eugbraj79qovd.apps.googleusercontent.com',
+        scopes: ['email', 'profile'],
+        redirectUri: 'https://auth.expo.io/@hbt123/music-project',
+        useProxy: false, // Ensure this matches your setup
+        responseType: 'token',
+      }, discovery);
+
+    console.log(request);
     
-  
     React.useEffect(() => {
       if (response?.type === "success") {
         const { id_token } = response.params;
