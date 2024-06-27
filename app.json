@@ -2,6 +2,12 @@
   "expo": {
     "name": "music-project",
     "slug": "music-project",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "scheme": "musicproject",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +21,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hbt123.musicproject"
     },
     "android": {
       "adaptiveIcon": {
