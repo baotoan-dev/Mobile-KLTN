@@ -18,7 +18,7 @@ export default function AllCVFromProfile({
 
     useEffect(() => {
         if (profile && profile.profilesCvs && profile.profilesCvs.length > 0) {
-            const newCvFilter = profile.profilesCvs.filter(cv => cv.status === 1 && cv.id === idSelected)[0];
+            const newCvFilter = profile.profilesCvs.filter(cv => cv.id === idSelected)[0];
             setListCv(newCvFilter)
             setIdFromCVAll(idSelected)
         }
@@ -64,9 +64,12 @@ export default function AllCVFromProfile({
                             borderRadius: 3,
                         }}>
                         <View style={{
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            width: '85%'
                         }}>
-                            <Text>
+                            <Text
+                                 numberOfLines={1}
+                            >
                                 {listCv?.name}
                             </Text>
                             <Text style={{

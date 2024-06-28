@@ -50,14 +50,16 @@ export default function ModifyPassword() {
         try {
             res = await authCandidate.modifyPassword(oldPassword, newPassword);
 
-            if (res.code === 200) {
+            if (res.data && res.data.code === 200) {
                 Toast.show({
                     type: 'success',
                     text1: 'Thành công',
                     text2: 'Đổi mật khẩu thành công',
                     position: 'bottom',
                 });
-                navigation.goBack();
+                setTimeout(() => {
+                    navigation.goBack();
+                }, 2000);
             }
         } catch (error) {
             Toast.show({

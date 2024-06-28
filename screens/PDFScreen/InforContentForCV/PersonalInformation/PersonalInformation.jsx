@@ -93,7 +93,7 @@ export default function PersonalInformation(prop) {
     }
 
     const handleSavePersonalInformation = () => {
-        const formData = createCvInformation(name, email, phone, address, link, intent, TYPE_PERSONAL, listImage, row, part, col, cvIndex, avatarPath);
+        const formData = createCvInformation(name, email, phone, address, link, intent, TYPE_PERSONAL, listImage, row, part, col, cvIndexParent, avatarPath);
 
         dispatch(createCvInformationAction(formData)).then(() => {
             dispatch(getCvInformationAction(cvIndexParent));

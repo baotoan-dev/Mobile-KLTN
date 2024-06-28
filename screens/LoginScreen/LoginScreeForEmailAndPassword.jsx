@@ -19,7 +19,7 @@ import {
   import * as Google from "expo-auth-session/providers/google";
   import * as WebBrowser from "expo-web-browser";
   import { makeRedirectUri } from "expo-auth-session";
-  
+
   WebBrowser.maybeCompleteAuthSession();
   
   export default function LoginScreeForEmailAndPassword() {
@@ -38,16 +38,13 @@ import {
     };
     
             
-    const [request, response, promptAsync] = Google.useAuthRequest({
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         clientId: '157728721726-djlk2umnldvfndmaqgms29ob00ecen4a.apps.googleusercontent.com',
         androidClientId: '157728721726-41nkgblnad3c3u2eqv5eugbraj79qovd.apps.googleusercontent.com',
         scopes: ['email', 'profile'],
-        redirectUri: 'https://auth.expo.io/@hbt123/music-project',
-        useProxy: false, // Ensure this matches your setup
-        responseType: 'token',
-      }, discovery);
-
-    console.log(request);
+        redirectUri: "https://auth.expo.io/@hbt123/mucsic-project"
+      }
+    );
     
     React.useEffect(() => {
       if (response?.type === "success") {

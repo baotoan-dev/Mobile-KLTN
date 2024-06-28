@@ -110,6 +110,6 @@ export default function MoreInforOfTopCompany() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFAF4'
+        backgroundColor: 'white'
     }
 })

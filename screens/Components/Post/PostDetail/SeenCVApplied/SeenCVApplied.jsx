@@ -20,7 +20,7 @@ export default function SeenCVApplied(prop) {
                 >
                     <Ionicons name="arrow-back" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.headerText}>Seen CV</Text>
+                <Text style={styles.headerText}>Xem CV</Text>
             </View>
             {
                 cv && (

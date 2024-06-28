@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ToastAndroid } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import React, { useEffect } from 'react'
 import Modal from 'react-native-modal'
 import { MaterialIcons } from '@expo/vector-icons';
-import { CheckBox } from '@rneui/themed';
+import Checkbox from 'expo-checkbox';
 
 export default function ModalVerifytAction({
     setShowModalSearch,
@@ -94,16 +94,16 @@ export default function ModalVerifytAction({
                                         {
                                             flexDirection: 'row',
                                             alignItems: 'center',
+                                            padding: 10,
                                         }
                                     }>
-                                        <CheckBox
-                                            checked={checkedItems[item.id]}
-                                            onPress={() => toggleCheckbox(item.id)}
-                                            iconType="material-community"
-                                            checkedIcon="checkbox-outline"
-                                            uncheckedIcon={'checkbox-blank-outline'}
+                                        <Checkbox
+                                            value={checkedItems[item.id]}
+                                            onValueChange={() => toggleCheckbox(item.id)}
                                         />
-                                        <Text>
+                                        <Text numberOfLines={1} style={{
+                                            marginLeft: 10,
+                                        }}>
                                             {item.name}
                                         </Text>
                                     </View>

@@ -52,6 +52,11 @@ export default function NotifyScreen() {
         id: postId
       })
     }
+    if (typeText === "follow") {
+      navigation.navigate('PostDetail', {
+        id: postId
+      })
+    }
     fetchDataUpdate(notificationId, typeText)
   };
 

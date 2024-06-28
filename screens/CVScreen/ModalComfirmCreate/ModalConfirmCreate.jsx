@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native'
 import React from 'react'
 import Modal from 'react-native-modal';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -109,12 +109,17 @@ export default function ModalConfirmCreate({
                             }}
                             onPress={() =>{
                                 setShowModalConfirmCreate(false)
-                                Toast.show({
-                                    type: 'success',
-                                    position: 'top',
-                                    text1: 'Lưu thành công',
-                                    text2: 'Hãy kiểm tra lại thông tin',
-                                })
+                                // Toast.show({
+                                //     type: 'success',
+                                //     position: 'top',
+                                //     text1: 'Lưu thành công',
+                                //     text2: 'Hãy kiểm tra lại thông tin',
+                                // })
+                                ToastAndroid.showWithGravity(
+                                    "Lưu thành công",
+                                    ToastAndroid.SHORT,
+                                    ToastAndroid.CENTER
+                                );
                                 navigation.navigate('CV')
                             }}
                         >

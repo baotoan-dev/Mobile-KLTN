@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   nameCompany: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   sizeCompany: {
     fontSize: 11,

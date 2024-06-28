@@ -11,7 +11,6 @@ export default function ModalAllCvFromProfile({
     idSelected, 
     setIdSelected
 }) {
-
     return (
         <View>
             <Modal

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { RadioButton } from 'react-native-paper';
 import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
 
 export default function RecentCVApplication({
     setIsCheckRecentCV,
@@ -10,7 +11,7 @@ export default function RecentCVApplication({
     setIdFromCVRecent,
     setTypeApplication
 }) {
-
+    const navigation = useNavigation();
     const [listCv, setListCv] = React.useState({})
 
     useEffect(() => {
@@ -79,7 +80,9 @@ export default function RecentCVApplication({
                                         {listCv?.name}
                                     </Text>
                                     <TouchableOpacity onPress={() => {
-
+                                        //  navigation.navigate('SeenCvApplication', {
+                                        //     cv: post.cvApplication
+                                        // })
                                     }}>
                                         <Text style={{
                                             color: '#5755FE',

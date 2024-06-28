@@ -101,8 +101,8 @@ export default function CompanyTabComponent({ post }) {
             <Image
               source={require('../../../../../../images/company.png')}
               style={{
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
                 alignSelf: 'center',
                 marginTop: 100
               }}
