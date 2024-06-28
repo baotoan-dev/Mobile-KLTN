@@ -38,11 +38,9 @@ import {
     };
     
             
-    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: '157728721726-djlk2umnldvfndmaqgms29ob00ecen4a.apps.googleusercontent.com',
         androidClientId: '157728721726-41nkgblnad3c3u2eqv5eugbraj79qovd.apps.googleusercontent.com',
-        scopes: ['email', 'profile'],
-        redirectUri: "https://auth.expo.io/@hbt123/mucsic-project"
       }
     );
     
