@@ -29,7 +29,7 @@ export default function ModalAddCv({
         if (profile) {
             // get item have cvIndex highest
             let maxIndex = 0;
-            profile.profilesCvs.forEach((item, index) => {
+            profile.profilesCvs?.forEach((item, index) => {
                 if (item.cvIndex > maxIndex) {
                     maxIndex = item.cvIndex
                 }
@@ -166,6 +166,7 @@ export default function ModalAddCv({
                         <TouchableOpacity
                             onPress={() => {
                                 navigation.navigate('ThemeCvList')
+                                setShowModalAddCv(false)
                             }}
                         >
                             <View style={{

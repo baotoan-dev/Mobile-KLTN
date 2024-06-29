@@ -53,7 +53,7 @@ export default function HeaderProfile({ isScrolling }) {
     const pickImage = async () => {
         const formData = new FormData();
 
-        image.forEach((item) => {
+        image?.forEach((item) => {
             formData.append('images', {
                 uri: item.uri,
                 name: item.name,

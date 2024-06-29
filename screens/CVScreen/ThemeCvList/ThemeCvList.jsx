@@ -42,11 +42,11 @@ export default function ThemeCvList() {
 
   useEffect(() => {
     if (profile) {
-      if (profile.profilesCvs.length === 0) {
+      if (profile.profilesCvs?.length === 0) {
         setCvIndex(0);
       } else {
         let maxIndex = 0;
-        profile.profilesCvs.forEach((item) => {
+        profile.profilesCvs?.forEach((item) => {
           if (item.cvIndex > maxIndex) {
             maxIndex = item.cvIndex;
           }
