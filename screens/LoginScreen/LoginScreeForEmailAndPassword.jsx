@@ -18,12 +18,13 @@ import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
-import { makeRedirectUri } from "expo-auth-session";
+import { useDispatch } from "react-redux";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreeForEmailAndPassword() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { auth, setAuth } = useContext(AuthContext);

@@ -81,4 +81,9 @@ export const authCandidate = {
 
     return await axiosConfig.post(URL, data);
   },
+  candidatRegister: async (data) => {
+    const URL = `${CONST_API}/api/v3/users/candidate/sign-up`;
+
+    return await axiosConfig.post(URL, data);
+  },
 };

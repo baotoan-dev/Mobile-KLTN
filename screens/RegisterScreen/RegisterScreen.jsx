@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { authCandidate } from '../../api/candidate/auth';
 
 export default function RegisterScreen() {
   const fields = {
@@ -14,6 +15,7 @@ export default function RegisterScreen() {
     password: 'Vui lòng nhập mật khẩu',
     rePassword: 'Vui lòng nhập lại mật khẩu'
   };
+
   const navigation = useNavigation();
   const [isCheckShowPassword, setIsCheckShowPassword] = React.useState(false)
   const [isCheckShowRePassword, setIsCheckShowRePassword] = React.useState(false)
@@ -23,7 +25,7 @@ export default function RegisterScreen() {
   const [rePassword, setRePassword] = React.useState('')
   const [isCheckPolicy, setIsCheckPolicy] = React.useState(false)
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!isCheckPolicy) {
       Toast.show({
         type: 'error',
@@ -56,6 +58,53 @@ export default function RegisterScreen() {
       }
     }
 
+    if (password !== rePassword) {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Lỗi',
+        text2: 'Mật khẩu không trùng khớp',
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 50,
+      });
+      return; 
+    }
+
+    const data = {
+      email: email,
+      name: name,
+      password: password
+    }
+
+    const res = await authCandidate.candidatRegister(data)
+
+    if (res && res.data.statusCode === 201) {
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Thành công',
+        text2: 'Đăng ký tài khoản thành công',
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 50,
+      });
+      navigation.navigate('LoginEmailAndPassword')
+    }
+    else {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Lỗi',
+        text2: 'Đăng ký tài khoản thất bại',
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 40,
+        bottomOffset: 50,
+      });
+    }
   }
 
   return (
@@ -210,8 +259,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     alignSelf: 'center',
     marginTop: 50
   },
@@ -228,13 +277,13 @@ const styles = StyleSheet.create({
   },
   center: {
     flex: 1,
-    marginTop: 30
+    marginTop: 20
   },
   titleRegister: {
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: 20,
+    marginBottom: 10,
     textAlign: 'center'
   },
   item: {

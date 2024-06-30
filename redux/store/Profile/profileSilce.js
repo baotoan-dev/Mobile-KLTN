@@ -10,7 +10,7 @@ const initState = {
 export const getProfileAction = (lang) => async (dispatch) => {
     try {
         dispatch(actions.getProfile()); 
-        const response = await profileApi.getProfile(lang);
+        const response = await profileApi.getProfile(lang);        
         if (response.status === 200) {
             dispatch(actions.getProfileSuccess(response.data.data)); 
         }

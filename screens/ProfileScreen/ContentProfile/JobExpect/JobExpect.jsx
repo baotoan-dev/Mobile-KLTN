@@ -29,7 +29,7 @@ export default function JobExpect({ profile }) {
                         ) : <View>
                             <Text style={{
                                 fontWeight: 'bold',
-                                color: '#242670',
+                                color: 'black',
                             }}>Chưa cập nhật</Text>
                         </View>
                     }
