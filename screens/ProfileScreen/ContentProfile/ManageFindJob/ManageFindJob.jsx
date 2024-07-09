@@ -40,7 +40,7 @@ export default function ManageFindJob() {
                             Đã ứng tuyển
                         </Text>
                         <Text style={styles.count}>
-                            {listProfileAnalytic.totalApplication}
+                            {listProfileAnalytic.totalApplication ? listProfileAnalytic.totalApplication : 0}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -59,7 +59,7 @@ export default function ManageFindJob() {
                             Đã lưu
                         </Text>
                         <Text style={styles.count}>
-                            {listProfileAnalytic.totalBookmark}
+                            {listProfileAnalytic.totalBookmark ? listProfileAnalytic.totalBookmark : 0}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -78,7 +78,7 @@ export default function ManageFindJob() {
                             Phù hợp
                         </Text>
                         <Text style={styles.count}>
-                            {listProfileAnalytic.totalPost}
+                            {listProfileAnalytic.totalPost ? listProfileAnalytic.totalPost : 0}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -99,7 +99,7 @@ export default function ManageFindJob() {
                             Công ty theo dõi
                         </Text>
                         <Text style={styles.count}>
-                            {listProfileAnalytic.totalFollowCompany}
+                            {listProfileAnalytic.totalFollowCompany ? listProfileAnalytic.totalFollowCompany : 0}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -116,7 +116,7 @@ export default function ManageFindJob() {
                             NTD xem hồ sơ
                         </Text>
                         <Text style={styles.count}>
-                            {listProfileAnalytic.totalViewProfile}
+                            {listProfileAnalytic.totalViewProfile ? listProfileAnalytic.totalViewProfile : 0}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -136,7 +136,7 @@ export default function ManageFindJob() {
                         </Text>
                         <Text style={styles.count}>
                             {
-                                listProfileAnalytic.totalKeywordNotification
+                                listProfileAnalytic.totalKeywordNotification ? listProfileAnalytic.totalKeywordNotification : 0
                             }
                         </Text>
                     </View>

@@ -27,13 +27,13 @@ export default function HeaderProfile({ isScrolling }) {
 
 
     const openImageLibrary = async () => {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-        if (status !== 'granted') {
-            alert('Sorry, we need camera roll permissions to make this work!');
-        }
+        // if (status !== 'granted') {
+        //     alert('Sorry, we need camera roll permissions to make this work!');
+        // }
 
-        if (status === 'granted') {
+        // if (status === 'granted') {
             const response = await DocumentPicker.getDocumentAsync({
                 type: 'image/*',
                 copyToCacheDirectory: true,
@@ -47,7 +47,7 @@ export default function HeaderProfile({ isScrolling }) {
                 }]);
                 await pickImage();
             }
-        }
+        // }
     };
 
     const pickImage = async () => {

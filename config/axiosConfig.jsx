@@ -31,30 +31,44 @@ axiosConfig.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        if ((error.response.status === 403  || error.response.status === 400 || error.response.status === 401) && !originalRequest._retry) {
+
+        if ((error.response.status === 403 || error.response.status === 400 || error.response.status === 401) && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await SecureStore.getItemAsync("refreshToken");
+
+            if (!refreshToken) {
+                await SecureStore.deleteItemAsync("token");
+                await SecureStore.deleteItemAsync("refreshToken");
+                return Promise.reject(error);
+            }
 
             const URL = "/api/v1/reset-access-token";
             const data = {
                 refreshToken: refreshToken,
             };
 
-            return axiosConfig.post(URL, data).then((res) => {
+            try {
+                const res = await axiosConfig.post(URL, data);
+
                 if (res.data.code === 200) {
-                    SecureStore.setItemAsync("token", res.data.data.accessToken);
+                    await SecureStore.setItemAsync("token", res.data.data.accessToken);
+                    originalRequest.headers['Authorization'] = `Bearer ${res.data.data.accessToken}`;
                     return axiosConfig(originalRequest);
-                }
-                else{
-                    SecureStore.deleteItemAsync("token");
-                    SecureStore.deleteItemAsync("refreshToken");
+                } else {
+                    await SecureStore.deleteItemAsync("token");
+                    await SecureStore.deleteItemAsync("refreshToken");
                     return Promise.reject(error);
                 }
-            });
+            } catch (refreshError) {
+                await SecureStore.deleteItemAsync("token");
+                await SecureStore.deleteItemAsync("refreshToken");
+                return Promise.reject(refreshError);
+            }
         }
+        
+        // Nếu đã thử lại mà vẫn lỗi, từ chối yêu cầu
         return Promise.reject(error);
     }
 );
-
 
 export default axiosConfig;

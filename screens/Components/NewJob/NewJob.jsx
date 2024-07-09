@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  ToastAndroid,
 } from "react-native";
 import React from "react";
 import Heading from "../Heading/Heading";
@@ -23,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { getProfileAnalyticsAction } from "../../../redux/store/Profile/ProfileAnalytic/profileAnalyticSlice";
 import { getNewPostAction } from "../../../redux/store/NewPost/newPostSlice";
 import { useSelector } from "react-redux";
+import { getProfileAction } from "../../../redux/store/Profile/profileSilce";
 
 const SCREEN_WIDTH = Dimensions.get("screen").width - 45;
 
@@ -35,6 +37,11 @@ export default function NewJob() {
   const [index, setIndex] = React.useState(0);
   const [accountId, setAccountId] = useState("");
   const { newPost, loading } = useSelector((state) => state.newPost);
+  const profile = useSelector((state) => state.profile.profile);
+
+  useEffect(() => {
+    dispatch(getProfileAction("vi"));
+  }, []);
 
   const getNewJob = () => {
     dispatch(
@@ -102,6 +109,19 @@ export default function NewJob() {
 
   const handleCreateBookmark = async (postId) => {
     try {
+      if (profile.isActive === 0) {
+        ToastAndroid.showWithGravity(
+          "Tài khoản chưa được kích hoạt",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+        setTimeout(() => {
+          navigation.navigate("ActiveAccount", {
+            email: profile.email,
+          });
+        }, 2000);
+        return;
+      }
       const res = await bookmarksApi.createBookMark(postId);
 
       if (res && res.data && res.data.code === 200) {
@@ -115,6 +135,19 @@ export default function NewJob() {
 
   const handleDeleteBookmark = async (postId) => {
     try {
+      if (profile.isActive === 0) {
+        ToastAndroid.showWithGravity(
+          "Tài khoản chưa được kích hoạt",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+        setTimeout(() => {
+          navigation.navigate("ActiveAccount", {
+            email: profile.email,
+          });
+        }, 2000);
+        return;
+      }
       const res = await bookmarksApi.deleteBookMark(postId);
 
       if (res && res.data && res.data.code === 200) {

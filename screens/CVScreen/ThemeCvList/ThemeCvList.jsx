@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -131,11 +132,27 @@ export default function ThemeCvList() {
                 >
                   <TouchableOpacity
                     onPress={() => {
+                     if (profile.isActive === 1) {
                       navigation.navigate("PDFScreen", {
                         templateId: item.id,
                         typeAction: "create",
                         cvIndexParent: cvIndex,
+                        nameCvParent: ""
                       });
+                      return;
+                     }
+                     else {
+                      ToastAndroid.showWithGravity(
+                        "Tài khoản chưa được kích hoạt",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                      );
+                      setTimeout(() => {
+                        navigation.navigate("ActiveAccount", {
+                          email: profile.email,
+                        });
+                      }, 2000);
+                     }
                     }}
                   >
                     <View

@@ -786,6 +786,7 @@ function Navigation() {
             headerShown: false,
           }}
         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

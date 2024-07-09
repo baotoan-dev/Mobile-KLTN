@@ -64,10 +64,12 @@ export default function ModalActionCv({
     if (listCv) {
       let cvIndex = 0
       let templateId = 0
+      let nameCv = ''
       listCv.forEach((item) => {
         if (item.id === idCV) {
           cvIndex = item.cvIndex
           templateId = item.templateId
+          nameCv = item.name
         }
       })
 
@@ -76,6 +78,7 @@ export default function ModalActionCv({
           templateId: templateId,
           typeAction: 'edit',
           cvIndexParent: cvIndex,
+          nameCvParent: nameCv,
         })
     }
   }

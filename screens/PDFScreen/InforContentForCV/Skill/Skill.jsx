@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { Entypo } from '@expo/vector-icons';
@@ -10,7 +10,6 @@ import { createCvListExtraInformaion } from './helpers/CreateCvListExtraInformat
 import { CreateCvExtraInformation, CreateMoreCvExtraInformation } from './helpers/CreateCvExtraInformation';
 import { TYPE_SKILL } from '../constant/constantContentCv';
 import HeaderOfScreen from '../../../Components/HeaderOfScreen/HeaderOfScreen';
-import { getProfileAction } from '../../../../redux/store/Profile/profileSilce';
 
 export default function Skill(prop) {
   const { cvIndexParent } = prop.route.params;
@@ -18,17 +17,20 @@ export default function Skill(prop) {
   const dispatch = useDispatch();
   const [listSkill, setListSkill] = useState([]);
   const [listOtherInformation, setListOtherInformation] = useState([]);
+  const [loading, setLoading] = useState(false);
   const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
 
   useEffect(() => {
-    dispatch(getProfileAction('vi'))
-  }, [])
+    const fetchData = async () => {
+      setLoading(true);
+      dispatch(getCvExtraInformationAction(cvIndexParent));
+      setLoading(false);
+    };
+    fetchData();
+  }, [cvIndexParent, dispatch]);
 
   useEffect(() => {
-    dispatch(getCvExtraInformationAction(cvIndexParent))
-  }, [cvIndexParent])
-
-  useEffect(() => {
+    console.log('cvExtraInformation', cvExtraInformation);
     if (cvExtraInformation) {
       const data = createCvListExtraInformaion(cvExtraInformation);
 
@@ -40,120 +42,89 @@ export default function Skill(prop) {
 
       setListSkill(newData ? newData[0] : {});
     }
-  }, [cvExtraInformation])
-
+  }, [cvExtraInformation]);
 
   const handleDeleteExtraInformation = async (id) => {
-    let arrayMore = []
+    let arrayMore = [];
 
-    const newListExtraInformation = listSkill && listSkill.moreCvExtraInformations.filter(item => +item.id !== +id);
+    const newListExtraInformation = listSkill?.moreCvExtraInformations?.filter(item => +item.id !== +id);
 
-    newListExtraInformation.map((item, index) => {
+    newListExtraInformation?.map((item) => {
       const createMoreCvExtraInformationData = CreateMoreCvExtraInformation(item.position, item.time, item.company, item.description, item.index, item.padIndex);
       arrayMore.push(createMoreCvExtraInformationData);
     });
 
     const newCreateCvExtraInformation = CreateCvExtraInformation(listSkill.type, listSkill.row, listSkill.col, listSkill.cvIndex, listSkill.part, arrayMore, listSkill.padIndex);
 
-    listOtherInformation.push(newCreateCvExtraInformation);
+    const updatedListOtherInformation = [...listOtherInformation, newCreateCvExtraInformation];
 
     if (newCreateCvExtraInformation) {
-      dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-        dispatch(getCvExtraInformationAction(cvIndexParent));
-      });
+      setLoading(true);
+      dispatch(createCvExtraInformationAction(updatedListOtherInformation));
+      dispatch(getCvExtraInformationAction(cvIndexParent));
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <HeaderOfScreen title="Kỹ năng" />
-      <ScrollView>
-        {
-          listSkill && listSkill.moreCvExtraInformations &&
-          listSkill.moreCvExtraInformations.map((item, index) => {
-            return (
-              <View style={styles.item} key={index}>
-                <View style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '80%'
-                }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('UpdateSkill', {
-                        idParent: index,
-                        typeParent: item.type,
-                        positionParent: item.position,
-                        companyParent: item.company,
-                        descriptionParent: item.description,
-                        timeParent: item.time,
-                        cvIndexParent: cvIndexParent,
-                      })
-                    }}
-                  >
-                    <Entypo name="dial-pad" size={24} color="black" />
-                  </TouchableOpacity>
-                  <View style={{
-                    marginLeft: 10
-                  }}>
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        fontSize: 12,
-                        marginTop: 5,
-                        textTransform: 'uppercase',
-                      }}>
-                      {`Tên chứng chỉ: ${item.company}`}
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        fontSize: 12,
-                        marginTop: 2,
-                        color: 'gray'
-                      }}>
-
-                      {`Mô tả: ${item.description}`}
-                    </Text>
-                  </View>
-                </View>
+      {loading ? (
+        <ActivityIndicator size="large" color="blue" />
+      ) : (
+        <ScrollView>
+          {listSkill?.moreCvExtraInformations?.map((item, index) => (
+            <View style={styles.item} key={index}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', width: '80%' }}>
                 <TouchableOpacity
                   onPress={() => {
-                    handleDeleteExtraInformation(item.id);
+                    navigation.navigate('UpdateSkill', {
+                      idParent: index,
+                      typeParent: item.type,
+                      positionParent: item.position,
+                      companyParent: item.company,
+                      descriptionParent: item.description,
+                      timeParent: item.time,
+                      cvIndexParent: cvIndexParent,
+                    });
                   }}
                 >
-                  <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
+                  <Entypo name="dial-pad" size={24} color="black" />
                 </TouchableOpacity>
+                <View style={{ marginLeft: 10 }}>
+                  <Text numberOfLines={1} style={{ fontSize: 12, marginTop: 5, textTransform: 'uppercase' }}>
+                    {`Tên chứng chỉ: ${item.company}`}
+                  </Text>
+                  <Text numberOfLines={1} style={{ fontSize: 12, marginTop: 2, color: 'gray' }}>
+                    {`Mô tả: ${item.description}`}
+                  </Text>
+                </View>
               </View>
-            )
-          }
-          )
-        }
-      </ScrollView>
+              <TouchableOpacity
+                onPress={() => {
+                  handleDeleteExtraInformation(item.id);
+                }}
+              >
+                <MaterialCommunityIcons name="delete-empty-outline" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      )}
       <View>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('AddSkill', {
               cvIndexParent: cvIndexParent
-            })
+            });
           }}
-          style={{
-            margin: 20,
-            borderWidth: 0.2,
-            backgroundColor: 'blue',
-            alignItems: 'center',
-            padding: 10,
-            borderRadius: 5,
-          }}
+          style={styles.addButton}
         >
-          <Text style={{
-            color: 'white',
-            fontWeight: 'bold',
-          }}>Thêm</Text>
+          <Text style={styles.addButtonText}>Thêm</Text>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -180,5 +151,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  addButton: {
+    margin: 20,
+    borderWidth: 0.2,
+    backgroundColor: 'blue',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
+  },
+  addButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   }
-})
+});

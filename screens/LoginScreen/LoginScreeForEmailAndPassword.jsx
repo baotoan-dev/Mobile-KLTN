@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
@@ -121,6 +122,7 @@ export default function LoginScreeForEmailAndPassword() {
         console.log("Login failed");
       }
     } catch (error) {
+      ToastAndroid.show(error.response.data.message, ToastAndroid.SHORT);
       throw error;
     }
   };

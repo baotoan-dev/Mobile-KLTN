@@ -23,7 +23,7 @@ export default function ContentProfile({ isScrolling, profile }) {
                     {profile && (<AddressExpect profile={profile}/>)}
                     {profile && (<ManageRecord />)}
                     <ManageFindJob/>
-                    {profile && (<SettingProfile />)}
+                    {profile && (<SettingProfile profile={profile}/>)}
                     {profile && (<Logout />)}
                 </View>
             </ScrollView>

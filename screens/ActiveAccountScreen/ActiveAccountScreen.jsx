@@ -108,8 +108,11 @@ const style = StyleSheet.create({
     padding: 10,
     margin: 10,
     borderRadius: 10,
+    height: 130,
     marginTop: 10,
     width: "95%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   messageText: {
     padding: 10,

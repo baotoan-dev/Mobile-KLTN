@@ -189,9 +189,9 @@ export default function ChatDetail(prop) {
               </Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.right}>
+          {/* <TouchableOpacity style={styles.right}>
             <AntDesign name="infocirlce" size={24} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <ContentChatDetail listMessage={listMessage} />

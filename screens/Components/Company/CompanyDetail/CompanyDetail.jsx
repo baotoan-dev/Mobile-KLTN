@@ -159,11 +159,7 @@ export default function CompanyDetail(prop) {
                                             buttonStyle={{
                                                 backgroundColor: '#FF6347'
                                             }}
-                                            icon={{
-                                                name: "edit",
-                                                size: 15,
-                                                color: "white"
-                                            }}
+                                            icon={<Ionicons name="add" size={24} color="white" />}
                                         />
                                     </View>
                                 )

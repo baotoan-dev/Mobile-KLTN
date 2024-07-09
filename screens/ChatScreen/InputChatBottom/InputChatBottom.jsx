@@ -17,9 +17,9 @@ export default function InputChatBottom({
             {
                 !checkClick && (
                     <View style={styles.left}>
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity>
                             <MaterialIcons name="keyboard-voice" size={24} color="black" />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity>
                             <AntDesign name="camerao" size={24} color="black" />
                         </TouchableOpacity>
@@ -32,7 +32,7 @@ export default function InputChatBottom({
                 )
             }
             <View style={[styles.right, {
-                width: !checkClick ? '70%' : '100%'
+                width: !checkClick ? '80%' : '100%'
             }]}>
                 <TextInput
                     onTouchStart={() =>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        width: '30%'
+        width: '20%'
     },
     right: {
         borderWidth: 0.5,

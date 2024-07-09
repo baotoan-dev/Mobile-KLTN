@@ -19,7 +19,18 @@ export default function ModalConfirmCreate({
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
+    const handleCheckExitData = () => {
+        if (listPersonalInformation || listSkill.length > 0 || listAward.length > 0 || listProject.length > 0 || listEducation.length > 0) {
+            setShowModalConfirmCreate(true)
+            return true
+        } else {
+            setShowModalConfirmCreate(false)
+            return false
+        }
+    }
+
     const handleCancelRecorveryCv = () => {
+
         dispatch(deleteCvProjectAction(cvIndex))
         dispatch(deleteCvLayoutAction(cvIndex))
         dispatch(deleteCvExtraInformationAction(cvIndex))
@@ -50,7 +61,7 @@ export default function ModalConfirmCreate({
                             fontSize: 16,
                             fontWeight: 'bold',
                         }}>
-                            Lưu thay đổi
+                            Bạn có muốn giữ lại những thông tin này không
                         </Text>
                     </View>
                     <TouchableOpacity

@@ -72,7 +72,7 @@ export default function AddCertification(prop) {
         listOtherInformation.push(newDataCvExtraInformation);
 
         if (newDataCvExtraInformation) {
-            dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
+            await dispatch(createCvExtraInformationAction(listOtherInformation)).then(async () => {
                 dispatch(getCvExtraInformationAction(cvIndexParent));
             });
         }

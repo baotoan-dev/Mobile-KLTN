@@ -1,13 +1,26 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ToastAndroid } from 'react-native'
 import React from 'react'
 import HeadingContentProfile from '../HeadingContentProfile/HeadingContentProfile'
 import ModalUpdateAddressExpect from './ModalUpdateAddressExpect/ModalUpdateAddressExpect'
-
+import { useNavigation } from '@react-navigation/native'
 export default function AddressExpect({ profile }) {
-
+    const navigation = useNavigation()
     const [isOpenModalUpdateAddress, setIsOpenModalUpdateAddress] = React.useState(false)
     const [listAddressExpect, setListAddressExpect] = React.useState([])
     const handleOpenModal = () => {
+        if (profile.isActive === 0) {
+            ToastAndroid.showWithGravity(
+                "Tài khoản chưa được kích hoạt",
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+              );
+              setTimeout(() => {
+                navigation.navigate("ActiveAccount", {
+                  email: profile.email,
+                });
+              }, 2000);
+            return  
+        }
         setIsOpenModalUpdateAddress(!isOpenModalUpdateAddress)
     }
     return (
