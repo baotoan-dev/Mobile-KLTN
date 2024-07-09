@@ -67,6 +67,7 @@ import BlogProfileScreen from "./screens/BlogProfileScreen/BlogProfileScreen";
 import SeenCVApplied from "./screens/Components/Post/PostDetail/SeenCVApplied/SeenCVApplied";
 import ActiveAccountScreen from "./screens/ActiveAccountScreen/ActiveAccountScreen";
 import VerifyOTPActiveScreen from "./screens/VerifyOTPActiveScreen/VerifyOTPActiveScreen";
+import AISeenJobForCVScreen from "./screens/AISeenJobForCVScreen/AISeenJobForCVScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -787,6 +788,13 @@ function Navigation() {
           }}
         />
 
+        <Stack.Screen
+         name="AIJobForCvScreen"
+         component={AISeenJobForCVScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

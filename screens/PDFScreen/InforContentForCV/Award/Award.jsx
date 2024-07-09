@@ -21,12 +21,8 @@ export default function Ward(prop) {
   const cvExtraInformation = useSelector(state => state.cvExtraInformation.cvExtraInformation);
 
   useEffect(() => {
-    dispatch(getProfileAction('vi'))
-  }, [])
-
-  useEffect(() => {
     dispatch(getCvExtraInformationAction(cvIndexParent))
-  }, [cvIndexParent])
+  }, [cvIndexParent, cvExtraInformation])
 
   useEffect(() => {
     if (cvExtraInformation) {

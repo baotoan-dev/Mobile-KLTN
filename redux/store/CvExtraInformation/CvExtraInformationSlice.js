@@ -25,25 +25,29 @@ export const createCvExtraInformationAction = (data) => async (dispatch) => {
         dispatch(actions.createCvExtraInformation())
         const response = await cvApi.createCvExtraInformation(data)
         if (response && response.data) {
-            dispatch(actions.createCvExtraInformationSuccess(response.data))
+            // dispatch(actions.createCvExtraInformationSuccess(response.data))
+            getCvExtraInformationAction(data.cvIndex)
         }
     } catch (error) {
         console.log('error from createCvExtraInformationAction', error.message)
         dispatch(actions.createCvExtraInformationFailed(error.message))
+        throw error
     }
 }
 
 
 export const deleteCvExtraInformationAction = (cvIndex) => async (dispatch) => {
     try {
-        dispatch(actions.getCvExtraInformation())
+        dispatch(actions.deleteCvExtraInformation())
         const response = await cvApi.deleteCvExtraInformation(cvIndex)
         if (response && response.data) {
-            dispatch(actions.deleteCvExtraInformationSuccess(response.data))
+            // dispatch(actions.deleteCvExtraInformationSuccess(response.data))
+            getCvExtraInformationAction(cvIndex)
         }
     } catch (error) {
         console.log('error from deleteCvExtraInformationAction', error.message)
         dispatch(actions.getCvExtraInformationFailed(error.message))
+        throw error
     }
 }
 

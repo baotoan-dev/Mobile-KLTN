@@ -14,5 +14,14 @@ export const aiApi = {
                 Authorization: `Bearer ${SecureStore.getItemAsync('token')}`,
             },
         })
+    },
+    getCvCategory: async (cvIndex) => {
+        const URL = `${CONST_API}/api/v3/cv-categories?cvIndex=${cvIndex}`
+        
+        return await axiosConfig.get(URL, {
+            headers: {
+                Authorization: `Bearer ${SecureStore.getItemAsync('token')}`,
+            },
+        })
     }
 }

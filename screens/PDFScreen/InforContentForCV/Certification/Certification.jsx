@@ -35,15 +35,10 @@ export default function Certification(prop) {
   );
   const [listCertification, setListCertification] = useState([]);
   const [listOtherInformation, setListOtherInformation] = useState([]);
-  const [cvIndex, setCvIndex] = useState(0);
-
-  useEffect(() => {
-    dispatch(getProfileAction("vi"));
-  }, []);
 
   useEffect(() => {
     dispatch(getCvExtraInformationAction(cvIndexParent));
-  }, [cvIndexParent]);
+  }, [cvIndexParent, cvExtraInformation]);
 
   useEffect(() => {
     if (cvExtraInformation && cvExtraInformation.length > 0) {

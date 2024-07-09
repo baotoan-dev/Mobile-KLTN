@@ -17,7 +17,8 @@ export default function CommonInforTabComponent({ post }) {
                         </View>
                         <View style={styles.mrLeft}>
                             <Text style={styles.title}>Loại công việc</Text>
-                            <Text style={styles.content}>{post?.job_type?.job_type_name}</Text>
+                            <Text style={styles.content}>{post?.job_type?.job_type_name ? 
+                                post?.job_type?.job_type_name : 'Không xác định'}</Text>    
                         </View>
                     </View>
                     <View style={styles.item}>
@@ -61,7 +62,11 @@ export default function CommonInforTabComponent({ post }) {
                                 } else {
                                     return item.child_category + ', ';
                                 }
-                            })}</Text>
+                            })}
+                                {
+                                post && post.categories === undefined && 'Không xác định'
+                                }
+                            </Text>
                         </View>
                     </View>
                 </View>

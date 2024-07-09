@@ -19,12 +19,8 @@ export default function Project(prop) {
     const cvProject = useSelector(state => state.cvProject.cvProject);
 
     useEffect(() => {
-        dispatch(getProfileAction('vi'))
-    }, [])
-
-    useEffect(() => {
         dispatch(getCvProjectAction(cvIndexParent))
-    }, [cvIndexParent])
+    }, [cvIndexParent, cvProject])
 
     useEffect(() => {
         if (cvProject) {

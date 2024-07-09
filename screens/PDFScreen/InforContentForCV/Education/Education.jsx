@@ -21,13 +21,8 @@ export default function Education(prop) {
     const [listOtherInformation, setListOtherInformation] = useState([]);
 
     useEffect(() => {
-        dispatch(getProfileAction('vi'))
-    }, [])
-
-
-    useEffect(() => {
         dispatch(getCvExtraInformationAction(cvIndexParent))
-    }, [cvIndexParent])
+    }, [cvIndexParent, cvExtraInformation])
 
     useEffect(() => {
         if (cvExtraInformation) {

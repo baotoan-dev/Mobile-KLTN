@@ -106,7 +106,7 @@ export default function ModalActionCv({
         <View style={{
           backgroundColor: 'white',
           width: '100%',
-          height: '40%',
+          height: '45%',
           borderRadius: 10,
         }}>
           <View style={styles.header}>
@@ -198,6 +198,19 @@ export default function ModalActionCv({
                 >
                   <AntDesign name="exclamationcircleo" size={20} color="black" />
                 </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.itemContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowModalActionCv(false)
+                  navigation.navigate('AIJobForCvScreen')
+                }}
+                style={styles.item}>
+                <AntDesign name="table" size={20} color="black" />
+                <Text style={[styles.ml, {
+                  color: 'black'
+                }]}>Xem công việc</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.itemContainer}>

@@ -45,13 +45,14 @@ export default function AddSkill(prop) {
     let part = listExtraInformation && listExtraInformation.part ? listExtraInformation.part : 0;
     let row = listExtraInformation && listExtraInformation.row ? listExtraInformation.row : 0;
     let type = listExtraInformation && listExtraInformation.type ? listExtraInformation.type : TYPE_SKILL;
-
+    let padIndex = listExtraInformation && listExtraInformation.padIndex ? listExtraInformation.padIndex : 0;
     const newListExtraInformation = {
       col: col,
       cvIndex: cvIndex,
       part: part,
       row: row,
       type: type,
+      padIndex: padIndex,
       moreCvExtraInformations: [
         ...(listExtraInformation && listExtraInformation.moreCvExtraInformations) ? listExtraInformation.moreCvExtraInformations : [],
         {
@@ -64,17 +65,14 @@ export default function AddSkill(prop) {
       ]
     };
 
-    const newDataCvExtraInformation = CreateCvExtraInformation(type, row, col, cvIndex, part, newListExtraInformation.moreCvExtraInformations);
+    const newDataCvExtraInformation = CreateCvExtraInformation(type, row, col, cvIndex, part, newListExtraInformation.moreCvExtraInformations, padIndex);
 
     listOtherInformation.push(newDataCvExtraInformation);
 
     if (newDataCvExtraInformation) {
-      dispatch(createCvExtraInformationAction(listOtherInformation)).then(() => {
-        dispatch(getCvExtraInformationAction(cvIndexParent));
-      });
+      dispatch(createCvExtraInformationAction(listOtherInformation));
+      navigation.goBack();
     }
-
-    navigation.goBack();
   };
   return (
     <View style={styles.container}>

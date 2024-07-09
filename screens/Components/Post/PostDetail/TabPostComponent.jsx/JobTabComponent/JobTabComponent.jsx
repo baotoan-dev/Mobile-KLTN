@@ -44,7 +44,7 @@ export default function JobTabComponent({ post }) {
 
   useEffect(() => {
     if (post) {
-      const idChildCategory = post.categories.map((item) => {
+      const idChildCategory = post?.categories?.map((item) => {
         return item.child_category_id
       })
       setIdChildCategory(idChildCategory)
