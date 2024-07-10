@@ -646,31 +646,30 @@ export default function PDFScreen(prop) {
         moreCvProjects: listProject,
       });
 
-    setLoading(true);
-    try {
-      const res = await axios.post(
-        "https://train-django.onrender.com/jobFit/",
-        {
-          content: content,
-        }
-      );
+    // setLoading(true);
+    // try {
+    //   const res = await axios.post(
+    //     "https://train-django.onrender.com/jobFit/",
+    //     {
+    //       content: content,
+    //     }
+    //   );
 
-      if (Array.isArray(res.data.data)) {
-        const dataRequest = res.data.data.map((item) => ({
-          ...item,
-          cvIndex: cvIndexParent,
-        }));
+    //   if (Array.isArray(res.data.data)) {
+    //     const dataRequest = res.data.data.map((item) => ({
+    //       ...item,
+    //       cvIndex: cvIndexParent,
+    //     }));
 
-        await aiApi.createCvCategory(dataRequest);
-      } else {
-        console.error("res.data is not an array:", res.data);
-      }
-    } catch (error) {
-      // handle the error as needed
-      console.error(error.response.data);
-    } finally {
-      setLoading(false);
-    }
+    //     await aiApi.createCvCategory(dataRequest);
+    //   } else {
+    //     console.error("res.data is not an array:", res.data);
+    //   }
+    // } catch (error) {
+    //   console.error(error.response.data);
+    // } finally {
+    //   setLoading(false);
+    // }
 
     handleCaptureImage();
     const { uri } = await Print.printToFileAsync({

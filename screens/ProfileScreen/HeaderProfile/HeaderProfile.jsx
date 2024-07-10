@@ -106,6 +106,7 @@ export default function HeaderProfile({ isScrolling }) {
                             />
                             <TouchableOpacity
                                 onPress={() => {
+                                    console.log('click');
                                     openImageLibrary();
                                 }}
                                 style={{
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
-        zIndex: 1000000000000000,
+        zIndex: 10000000,
         borderColor: '#242670',
         borderWidth: 0.6,
     },
@@ -228,6 +229,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         borderColor: '#242670',
         borderWidth: 0.6,
+        zIndex: 1000000000000000,
         position: 'relative'
     },
 })

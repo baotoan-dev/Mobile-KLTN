@@ -105,6 +105,8 @@ export default function PostDetail(prop) {
     fetchDetailPost();
   }, [id]);
 
+  console.log(post.cvApplication);
+
   return post ? (
     <View style={styles.container}>
       <ScrollView

@@ -185,7 +185,7 @@ export default function ChatDetail(prop) {
                 fontSize: 15,
                 fontWeight: 'bold',
               }}>
-                {nameParent.length > 10 ? nameParent.slice(0, 10) + '...' : nameParent}
+                {nameParent?.length > 10 ? nameParent.slice(0, 10) + '...' : nameParent}
               </Text>
             </View>
           </View>

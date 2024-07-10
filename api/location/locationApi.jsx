@@ -10,4 +10,9 @@ export const locationApi = {
         const URL = `${CONST_API_V1}/api/v1/locations/p?search=${search}`
         return await axiosConfig.get(URL)
     },
+    getAllDictrict: async (id) => {
+        const URL = `${CONST_API_V1}/api/v1/locations/d?pid=${id}`
+
+        return await axiosConfig.get(URL)
+    }
 }

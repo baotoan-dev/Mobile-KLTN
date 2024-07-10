@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ToastAndroid } from 'react-native'
 import React from 'react'
 import Modal from 'react-native-modal';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -45,7 +45,7 @@ export default function ModalAllNotificationProfile({
         )
 
         if (res && res.data.code === 201) {
-            alert('Thêm từ khóa thành công');
+            ToastAndroid.show('Thêm thông báo thành công', ToastAndroid.SHORT);
             dispatch(getAllKeywordNotificationAction());
             dispatch(getProfileAnalyticsAction());
             setShowModalAddKeyWordNotify(false);

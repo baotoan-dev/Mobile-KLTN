@@ -21,20 +21,21 @@ export default function SeeAllBlog(prop) {
     }, []);
 
     useEffect(() => {
+        console.log(community.communications);
         if (community && community.communications) {
-            if (currentPage === 0) {
-                setBlog(community.communications);
-            } else {
-                setBlog((prevBlog) => [...prevBlog, ...community?.communications]);
-            }
-            setIsOver(community.is_over);
-            setTotal(community.total);
+          // if (currentPage === 0) {
+          setBlog(community.communications);
+          // } else {
+          //     setBlog((prevBlog) => [...prevBlog, ...community?.communications]);
+          // }
+          setIsOver(community.is_over);
+          setTotal(community.communications.length);
         }
     }, [community])
 
-    useEffect(() => {
-        dispatch(getCommunitiesAction(currentPage.toString(), "10", "cm", type === 'user' ? 0 : 1, "vi"))
-    }, [currentPage])
+    // useEffect(() => {
+    //     dispatch(getCommunitiesAction(currentPage.toString(), "10", "cm", type === 'user' ? 0 : 1, "vi"))
+    // }, [currentPage])
 
     const loadMoreItem = () => {
         if (!isOver) {
