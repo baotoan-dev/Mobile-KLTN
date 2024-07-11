@@ -96,19 +96,19 @@ export default function LoginScreeForEmailAndPassword() {
         return;
       }
       // check regex email
-      if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
-        Toast.show({
-          type: "error",
-          position: "top",
-          text1: "Lỗi",
-          text2: "Email không hợp lệ",
-          visibilityTime: 4000,
-          autoHide: true,
-          topOffset: 40,
-          bottomOffset: 100,
-        });
-        return;
-      }
+      // if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
+      //   Toast.show({
+      //     type: "error",
+      //     position: "top",
+      //     text1: "Lỗi",
+      //     text2: "Email không hợp lệ",
+      //     visibilityTime: 4000,
+      //     autoHide: true,
+      //     topOffset: 40,
+      //     bottomOffset: 100,
+      //   });
+      //   return;
+      // }
 
       const response = await authCandidate.signInCandidate(email, password);
 

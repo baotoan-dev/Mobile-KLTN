@@ -120,13 +120,13 @@ export default function ChatDetail(prop) {
         multiple: true,
       });
 
-      if (!response.cancelled) {
+      if (!response.assets[0].canceled) {
         const formData = new FormData();
 
         formData.append('images', {
-          uri: response.uri,
-          name: response.name,
-          type: response.mimeType,
+          uri: response.assets[0].uri,
+          name: response.assets[0].name,
+          type: response.assets[0].mimeType,
         });
 
         const res = await chatApi.uploadImageChat(formData);
@@ -143,7 +143,7 @@ export default function ChatDetail(prop) {
     if (selectedImage && socketInstance) {
       socketInstance.emit("client-send-message", {
         receiverId: userId,
-        files: selectedImage ? [selectedImage] : [],
+        files: selectedImage,
         createdAt: Date.now(),
         type: "url",
         postId: postId,

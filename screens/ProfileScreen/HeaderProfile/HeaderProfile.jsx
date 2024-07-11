@@ -74,6 +74,7 @@ export default function HeaderProfile({ isScrolling }) {
             }
 
         } catch (error) {
+            console.log(error.response);
             console.error('Error updating avatar:', error);
         }
 
