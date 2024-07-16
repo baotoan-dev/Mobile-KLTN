@@ -15,10 +15,12 @@ import { communityApi } from "../../../../api/community/communityApi";
 import Toast from "react-native-toast-message";
 import { getAllCommunityOfProileAction } from "../../../../redux/store/CommunityProfile/GetAllCommunitOfProile/getAllCommunitOfProileSlice";
 import { getAllHistoryCommunityOfProileAction } from "../../../../redux/store/CommunityProfile/GetAllHistoryCommunitOfProile/getAllHistoryCommunitOfProileSlice";
+import Modal from "react-native-modal";
 
 export default function ListBlogProfileComponent({ communityData, total }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [showModalConfirmDelete, setShowModalConfirmDelete] = React.useState(false);
   const hideOrShowCommunity = async (id, status) => {
     const formData = new FormData();
     formData.append("status", status);
@@ -43,13 +45,11 @@ export default function ListBlogProfileComponent({ communityData, total }) {
 
       if (res && res.data && res.data.statusCode === 200) {
         ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
-        dispatch(getAllHistoryCommunityOfProileAction(0, 10, 'v'))
+        dispatch(getAllHistoryCommunityOfProileAction(0, 10, "v"));
         navigation.navigate("BlogHistoryProfileScreen");
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
   return (
     <View style={styles.container}>
       <Text
@@ -91,16 +91,16 @@ export default function ListBlogProfileComponent({ communityData, total }) {
                     <AntDesign name="edit" size={24} color="black" />
                   </TouchableOpacity>
                 }
-                 <TouchableOpacity
-                    onPress={() => {
-                      handleDeleteCommunication(item.id)
-                    }}
-                    style={{
-                      marginRight: 10,
-                    }}
-                  >
-                    <AntDesign name="delete" size={24} color="black" />
-                  </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setShowModalConfirmDelete(true);
+                  }}
+                  style={{
+                    marginRight: 10,
+                  }}
+                >
+                  <AntDesign name="delete" size={24} color="black" />
+                </TouchableOpacity>
                 {item.status === 1 ? (
                   <TouchableOpacity
                     onPress={() => {
@@ -125,6 +125,76 @@ export default function ListBlogProfileComponent({ communityData, total }) {
         keyExtractor={(item) => item.id}
       />
       <Toast ref={(ref) => Toast.setRef(ref)} />
+        {
+          showModalConfirmDelete && (
+            <Modal
+              isVisible={showModalConfirmDelete}
+              onBackdropPress={() => setShowModalConfirmDelete(false)}
+            >
+              <View
+                style={{
+                  backgroundColor: "white",
+                  padding: 20,
+                  borderRadius: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    marginBottom: 10,
+                  }}
+                >
+                  Bạn có chắc chắn muốn xóa bài viết này không?
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShowModalConfirmDelete(false);
+                    }}
+                    style={{
+                      padding: 10,
+                      backgroundColor: "gray",
+                      borderRadius: 5,
+                      marginRight: 10,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                      }}
+                    >
+                      Hủy
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleDeleteCommunication(item.id);
+                    }}
+                    style={{
+                      padding: 10,
+                      backgroundColor: "red",
+                      borderRadius: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                      }}
+                    >
+                      Xóa
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          )
+        }
     </View>
   );
 }

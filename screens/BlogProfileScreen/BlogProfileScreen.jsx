@@ -84,10 +84,10 @@ export default function BlogProfileScreen() {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            width: "20%",
+            width: "10%",
           }}
         >
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate("BlogHistoryProfileScreen");
             }}
@@ -96,7 +96,7 @@ export default function BlogProfileScreen() {
             }}
           >
             <FontAwesome name="history" size={24} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={{
               marginLeft: 10,
