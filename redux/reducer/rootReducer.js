@@ -26,6 +26,7 @@ import allNotificationReducer from "../store/Notification/getAllNotificationSlic
 import cvLayoutReducer from "../store/CvLayout/cvLayoutSlice";
 import allCommunityOfProfileReducer from "../store/CommunityProfile/GetAllCommunitOfProile/getAllCommunitOfProileSlice";
 import aiGetAllJobReducer from "../store/AISeenForCV/getAllJobForCVSlice";
+import allHistoryCommunityOfProfileReducer from "../store/CommunityProfile/GetAllHistoryCommunitOfProile/getAllHistoryCommunitOfProileSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -54,6 +55,7 @@ const rootReducer = combineReducers({
     allKeywordNotification: allKeywordNotificationReducer,
     allNotification: allNotificationReducer,
     allCommunityOfProfile: allCommunityOfProfileReducer,
+    allHistoryCommunityOfProfile: allHistoryCommunityOfProfileReducer,
     aiGetAllJob: aiGetAllJobReducer,
 });
 

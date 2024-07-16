@@ -23,6 +23,16 @@ export const communityApi = {
       },
     });
   },
+  deleteCommunity: async (id) => {
+    const URL = `${CONST_API}/api/v3/communications/action/${id}`;
+
+    return await axiosConfig.delete(URL, {
+      headers: {
+        Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
   getCommunityNews: async (
     page,
     limit,
@@ -102,5 +112,19 @@ export const communityApi = {
         'Content-Type': 'application/json',
       },
     });
-  }
+  },
+  async getHistoryCommunityByAccount(
+    page,
+    limit,
+    sort,
+  ) {
+    const URL = `${CONST_API}/api/v3/communications/by-account/history?page=${page}&limit=${limit}&sort=${sort}`;
+
+    return axiosConfig.get(URL, {
+      headers: {
+        Authorization: `Bearer ${SecureStore.getItemAsync("token")}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  },
 }
