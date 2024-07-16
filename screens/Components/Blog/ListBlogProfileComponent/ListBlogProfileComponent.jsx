@@ -20,6 +20,7 @@ import Modal from "react-native-modal";
 export default function ListBlogProfileComponent({ communityData, total }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [idDelete, setIdDelete] = React.useState(0);
   const [showModalConfirmDelete, setShowModalConfirmDelete] = React.useState(false);
   const hideOrShowCommunity = async (id, status) => {
     const formData = new FormData();
@@ -45,8 +46,8 @@ export default function ListBlogProfileComponent({ communityData, total }) {
 
       if (res && res.data && res.data.statusCode === 200) {
         ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
-        dispatch(getAllHistoryCommunityOfProileAction(0, 10, "v"));
-        navigation.navigate("BlogHistoryProfileScreen");
+        dispatch(getAllCommunityOfProileAction(0, 10, "v"));
+        // navigation.navigate("BlogHistoryProfileScreen");
       }
     } catch (error) {}
   };
@@ -93,6 +94,7 @@ export default function ListBlogProfileComponent({ communityData, total }) {
                 }
                 <TouchableOpacity
                   onPress={() => {
+                    setIdDelete(item.id);
                     setShowModalConfirmDelete(true);
                   }}
                   style={{
@@ -125,7 +127,7 @@ export default function ListBlogProfileComponent({ communityData, total }) {
         keyExtractor={(item) => item.id}
       />
       <Toast ref={(ref) => Toast.setRef(ref)} />
-        {
+      {
           showModalConfirmDelete && (
             <Modal
               isVisible={showModalConfirmDelete}
@@ -174,7 +176,7 @@ export default function ListBlogProfileComponent({ communityData, total }) {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      handleDeleteCommunication(item.id);
+                      handleDeleteCommunication(idDelete);
                     }}
                     style={{
                       padding: 10,
