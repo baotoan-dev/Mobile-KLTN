@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, RefreshControl } from "react-native";
 import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import ListBlogProfileComponent from "../Components/Blog/ListBlogProfileComponent/ListBlogProfileComponent";
@@ -17,6 +17,7 @@ export default function BlogProfileScreen() {
   const [communityData, setCommunityData] = React.useState([]);
   const [isOver, setIsOver] = React.useState(false);
   const [total, setTotal] = React.useState(0);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
     dispatch(getAllCommunityOfProileAction(currentPage, 10, "v"));
@@ -29,6 +30,12 @@ export default function BlogProfileScreen() {
       setTotal(allCommunityOfProfile.data.total);
     }
   }, [allCommunityOfProfile]);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    dispatch(getAllCommunityOfProileAction(currentPage, 10, "v"));
+    setRefreshing(false);
+  }
 
   return (
     <View
@@ -112,9 +119,17 @@ export default function BlogProfileScreen() {
           </TouchableOpacity>
         </View>
       </View>
-      <View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+        style={{
+          backgroundColor: "white",
+          flex: 1,
+        }}
+      >
         <ListBlogProfileComponent communityData={communityData} total={total} />
-      </View>
+      </ScrollView>
     </View>
   );
 }

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
@@ -18,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import BannerComponent from "../Components/BannerComponent/BannerComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileAction } from "../../redux/store/Profile/profileSilce";
+import { getNewPostAction } from "../../redux/store/NewPost/newPostSlice";
 
 const data = [
   {
@@ -62,7 +64,7 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.profile.profile);
   const navigation = useNavigation();
-
+  const [refreshing, setRefreshing] = React.useState(false);
   // modify color status
   StatusBar.setBackgroundColor("#fff");
 
@@ -79,8 +81,20 @@ export default function HomeScreen() {
     </TouchableOpacity>
   );
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    dispatch(getProfileAction("vi"));
+    dispatch(getNewPostAction(null, null, null, null, 16, null, "vi", 0));
+    setRefreshing(false);
+  };
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.container}>
         {profile.isActive === 0 && (
           <View
@@ -105,26 +119,37 @@ export default function HomeScreen() {
               >
                 Tài khoản của bạn chưa được kích hoạt, vui lòng nhấn
               </Text>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center'
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("ActiveAccount", {
-                    email: profile.email,
-                  });
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
                 }}
               >
-                <Text style={{
-                  // underline
-                  textDecorationLine: 'underline',
-                  fontWeight: 'bold'
-                }}> xác thực </Text>
-              </TouchableOpacity>
-              <Text style={{
-                color: 'red'
-              }}>tại đây</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("ActiveAccount", {
+                      email: profile.email,
+                    });
+                  }}
+                >
+                  <Text
+                    style={{
+                      // underline
+                      textDecorationLine: "underline",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    xác thực{" "}
+                  </Text>
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  tại đây
+                </Text>
               </View>
             </View>
           </View>

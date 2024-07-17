@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, RefreshControl } from 'react-native'
 import React, { useEffect } from 'react'
 import { Tab } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
@@ -8,16 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import ListJobComponent from '../../../../Components/ListJobComponent/ListJobComponent';
 import { FunctionFilterByCreateAtText } from '../../../../../utils/FuntionFilterByCreateAtText';
 import Animated from 'react-native-reanimated';
-import { bookmarksApi } from '../../../../../api/bookmarks/bookmarksApi';
 
 export default function ManageJobApplication() {
-    const navigation = useNavigation();
     const dispatch = useDispatch();
     const submitApply = useSelector(state => state.submitApply.submitApply);
     const [index, setIndex] = React.useState(0);
     const [isOver, setIsOver] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState(0);
     const [listApply, setListApply] = React.useState([]);
+    const [refreshing, setRefreshing] = React.useState(false);
 
     useEffect(() => {
         dispatch(getAllSubmitedAppliedAction(10, currentPage, 'vi'))
@@ -78,8 +77,19 @@ export default function ManageJobApplication() {
         }
     }, [index])
 
+    const handleRefresh = () => {
+        setRefreshing(true);
+        dispatch(getAllSubmitedAppliedAction(10, 0, 'vi'));
+        setRefreshing(false);
+    }
+
+
     return (
-        <View>
+        <ScrollView
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+            }
+        >
             <HeaderOfScreen title="Quản lý ứng tuyển" />
             <Tab
                 value={index}
@@ -139,7 +149,7 @@ export default function ManageJobApplication() {
                         </View>
                     )
             }
-        </View>
+        </ScrollView>
     )
 }
 

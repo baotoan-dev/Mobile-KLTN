@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, ScrollView, RefreshControl } from 'react-native'
 import React, { useEffect } from 'react'
 import HeaderOfScreen from '../Components/HeaderOfScreen/HeaderOfScreen'
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,7 @@ export default function BookmarkScreen() {
     const [currentPage, setCurrentPage] = React.useState(0);
     const [listBookmark, setListBookmark] = React.useState([]);
     const [isOver, setIsOver] = React.useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
 
     useEffect(() => {
         dispatch(getAllBookmarkAction(0, 10, currentPage, 'vi'));
@@ -39,9 +40,20 @@ export default function BookmarkScreen() {
         }
     }
 
+    const handleRefresh = () => {
+        setRefreshing(true);
+        dispatch(getAllBookmarkAction(0, 10, currentPage, 'vi'));
+        setRefreshing(false);
+    }
+
     return (
-        <View style={{
+        <ScrollView 
+        refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+        style={{
             backgroundColor: 'white',
+            flex: 1
         }}>
             <HeaderOfScreen title="Đã lưu" />
             {
@@ -81,6 +93,6 @@ export default function BookmarkScreen() {
                     )
             }
 
-        </View>
+        </ScrollView>
     )
 }

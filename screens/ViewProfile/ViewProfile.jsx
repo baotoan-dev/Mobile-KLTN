@@ -1,4 +1,4 @@
-import { StyleSheet, Animated, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Animated, Text, FlatList, Image, TouchableOpacity, RefreshControl } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import HeaderOfScreen from '../Components/HeaderOfScreen/HeaderOfScreen';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ export default function ViewProfile() {
     const [animation] = React.useState(new Animated.Value(0));
     const [itemOpacity] = React.useState(new Animated.Value(0));
     const [itemScale] = React.useState(new Animated.Value(0))
+    const [refreshing, setRefreshing] = React.useState(false);
 
     const loadMoreItem = () => {
         if (!isLastPage) {
@@ -66,8 +67,19 @@ export default function ViewProfile() {
         }, 3000);
     };
 
+    const hanleRefresh = () => {
+        setRefreshing(true);
+        setCurrentPage(0);
+        dispatch(getViewProfilesAction(0, 10));
+        setRefreshing(false);
+    }
+
     return (
-        <Animated.View>
+        <Animated.ScrollView
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={hanleRefresh} />
+            }
+        >
             <HeaderOfScreen title='Xem hồ sơ' />
             {listViewProfile && listViewProfile.length > 0 ? (
                 <Animated.View>
@@ -148,7 +160,7 @@ export default function ViewProfile() {
                     }}>Không có dữ liệu</Text>
                 </Animated.View>
             )}
-        </Animated.View>
+        </Animated.ScrollView>
     );
 }
 

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, FlatList, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native'
+import { View, Text, ScrollView, FlatList, StyleSheet, TouchableOpacity, Image, ImageBackground, RefreshControl } from 'react-native'
 import React from 'react'
 import { chatApi } from '../../../api/chat/chatApi';
 import { Entypo } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function ListUserChat() {
     const navigation = useNavigation();
+    const [refreshing, setRefreshing] = React.useState(false);
     const [listUserChat, setListUserChat] = React.useState([]);
     const fetchData = async () => {
         const response = await chatApi.getUserChated('vi');
@@ -19,9 +20,19 @@ export default function ListUserChat() {
     React.useEffect(() => {
         fetchData();
     }, [])
+
+    const handleRefresh = () => {
+        setRefreshing(true);
+        fetchData();
+        setRefreshing(false);
+    }
     
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView 
+        refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+        style={styles.container}>
             <FlatList
                 data={listUserChat}
                 renderItem={({ item }) => {

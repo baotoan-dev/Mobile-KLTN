@@ -1,33 +1,42 @@
-import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { useNavigation } from '@react-navigation/native'
-import moment from 'moment'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { getAllNoticationAction } from '../../redux/store/Notification/getAllNotificationSlice'
-import { notificationApi } from '../../api/notification/notificationApi'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+} from "react-native";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllNoticationAction } from "../../redux/store/Notification/getAllNotificationSlice";
+import { notificationApi } from "../../api/notification/notificationApi";
 
 export default function NotifyScreen() {
-  const navigation = useNavigation()
-  const [dataNotify, setDataNotify] = React.useState([])
-  const [isOver, setIsOver] = React.useState(false)
-  const dispatch = useDispatch()
-  const allNotification = useSelector((state) => state.allNotification.notifications)
-
+  const navigation = useNavigation();
+  const [dataNotify, setDataNotify] = React.useState([]);
+  const [isOver, setIsOver] = React.useState(false);
+  const dispatch = useDispatch();
+  const allNotification = useSelector(
+    (state) => state.allNotification.notifications
+  );
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const fetchDataUpdate = async (notificationId, typeText) => {
-
     const res = await notificationApi.updateNotification(
       notificationId,
       1,
       typeText
-    )
+    );
 
     if (res && res.data.code === 200) {
-      dispatch(getAllNoticationAction())
+      dispatch(getAllNoticationAction());
     }
-
-  }
+  };
 
   const handleClickNoty = (
     postId,
@@ -37,115 +46,135 @@ export default function NotifyScreen() {
     notificationId
   ) => {
     if (typeText === "recruiter") {
-
     }
     if (typeText === "applicator") {
-      navigation.navigate('ManageJobApplication')
+      navigation.navigate("ManageJobApplication");
     }
     if (typeText === "communicationComment") {
-      navigation.navigate('DetailBlog', {
-        id: commentId
-      })
+      navigation.navigate("DetailBlog", {
+        id: commentId,
+      });
     }
     if (typeText === "keyword") {
-      navigation.navigate('PostDetail', {
-        id: postId
-      })
+      navigation.navigate("PostDetail", {
+        id: postId,
+      });
     }
     if (typeText === "follow") {
-      navigation.navigate('PostDetail', {
-        id: postId
-      })
+      navigation.navigate("PostDetail", {
+        id: postId,
+      });
     }
-    fetchDataUpdate(notificationId, typeText)
+    fetchDataUpdate(notificationId, typeText);
   };
 
-
   useEffect(() => {
-    dispatch(getAllNoticationAction())
-  }, [])
+    dispatch(getAllNoticationAction());
+  }, []);
 
   useEffect(() => {
     if (allNotification) {
-      setDataNotify(allNotification)
-      setIsOver(allNotification.is_over)
-      setDataNotify(allNotification.notifications)
+      setDataNotify(allNotification);
+      setIsOver(allNotification.is_over);
+      setDataNotify(allNotification.notifications);
     }
-  }, [allNotification])
+  }, [allNotification]);
+
+  const hanleRefresh = () => {
+    setRefreshing(true);
+    dispatch(getAllNoticationAction());
+    setRefreshing(false);
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={
-        styles.header
-      }>
-        Thông báo
-      </Text>
-      {
-        dataNotify && dataNotify.length > 0 ? (
-          <ScrollView>
-            <FlatList
-              data={dataNotify}
-              keyExtractor={(item) => item.data.notificationId.toString()}
-              renderItem={({ item }) => (
-                <TouchableOpacity style={[styles.item, {
-                  backgroundColor: item.data.isRead === false ? '#e6f7ff' : '#ffffff'
-                }]}
-                  onPress={() => handleClickNoty(
+      <Text style={styles.header}>Thông báo</Text>
+      {dataNotify && dataNotify.length > 0 ? (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={hanleRefresh} />
+          }
+        >
+          <FlatList
+            data={dataNotify}
+            keyExtractor={(item) => item.data.notificationId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[
+                  styles.item,
+                  {
+                    backgroundColor:
+                      item.data.isRead === false ? "#e6f7ff" : "#ffffff",
+                  },
+                ]}
+                onPress={() =>
+                  handleClickNoty(
                     item.data.postId,
                     item.data.communicationId,
                     item.data.applicationId,
                     item.data.typeText,
                     item.data.notificationId
-                  )}
-                >
-                  <Text style={{
-                    fontWeight: 'bold',
+                  )
+                }
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
                     fontSize: 14,
-                  }}>
-                    {item.content.title}
-                  </Text>
-                  <Text>
-                    {item.content.body}
-                  </Text>
-                  <Text style={{
-                    color: 'gray',
+                  }}
+                >
+                  {item.content.title}
+                </Text>
+                <Text>{item.content.body}</Text>
+                <Text
+                  style={{
+                    color: "gray",
                     fontSize: 12,
-                  }}>
-                    {
-                      moment(item.created_at).format('DD/MM/YYYY HH:mm:ss')
-                    }
-                  </Text>
-                </TouchableOpacity>
-              )}
+                  }}
+                >
+                  {moment(item.created_at).format("DD/MM/YYYY HH:mm:ss")}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+        </ScrollView>
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={hanleRefresh} />
+          }
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "50%",
+            }}
+          >
+            <Image
+              style={styles.image}
+              source={require("../../images/no-data.png")}
             />
-          </ScrollView>
-        ) : (
-          <View style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '50%',
-          }}>
-            <Image style={styles.image} source={
-              require('../../images/no-data.png')
-            } />
-            <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#333',
-            }}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "#333",
+              }}
+            >
               Chưa tìm thấy thông báo
             </Text>
           </View>
-        )
-      }
+        </ScrollView>
+      )}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   image: {
     width: 100,
@@ -154,17 +183,17 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 18,
     paddingTop: 30,
-    fontWeight: 'bold',
-    color: '#242670',
-    borderBottomColor: 'gray',
+    fontWeight: "bold",
+    color: "#242670",
+    borderBottomColor: "gray",
     borderBottomWidth: 0.5,
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   item: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     borderRadius: 10,
     padding: 10,
     margin: 10,
@@ -176,5 +205,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  }
-})
+  },
+});
