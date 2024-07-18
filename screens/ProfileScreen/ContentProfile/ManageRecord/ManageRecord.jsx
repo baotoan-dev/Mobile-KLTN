@@ -75,7 +75,7 @@ export default function ManageRecord() {
 
     useEffect(() => {
         if (profile && profile.profilesCvs) {
-            const count = profile.profilesCvs.filter((item) => item.isPublic).length;
+            const count = profile.profilesCvs.filter((item) => item.status === 1).length;
             setCountCvSearch(count);
         }
     }, [profile]);

@@ -32,7 +32,7 @@ export default function ModalVerifytAction({
                 return {
                     id: item.id,
                     name: item.name,
-                    checked: item.isPublic,
+                    checked: item.status,
                 }
 
             })
