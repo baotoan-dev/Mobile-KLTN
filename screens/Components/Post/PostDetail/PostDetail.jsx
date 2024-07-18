@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -24,28 +25,30 @@ import { getNewPostAction } from "../../../../redux/store/NewPost/newPostSlice";
 import Toast from "react-native-toast-message";
 import { getProfileAction } from "../../../../redux/store/Profile/profileSilce";
 import { ToastAndroid } from "react-native";
+import { getDetailPostAction } from "../../../../redux/store/Post/getDetailPostSlice";
 
 export default function PostDetail(prop) {
   const id = prop.route.params.id;
   const profile = useSelector((state) => state.profile.profile);
+  const postDetail = useSelector((state) => state.getPostDetail.postDetail);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [fitOfPost, setFitOfPost] = useState("");
   const [post, setPost] = useState({});
   const [scrollY, setScrollY] = useState(false);
-
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    dispatch(getDetailPostAction(id, 'vi'));
     dispatch(getProfileAction("vi"));
   }, []);
 
-  const fetchDetailPost = async () => {
-    const response = await jobApi.getPostbyId(id, "vi");
-    if (response && response.data.code === 200) {
-      setPost(response.data.data);
-      setFitOfPost(response.data.data.fit);
+  useEffect(() => {
+    if (postDetail) {
+      setPost(postDetail.data);
+      setFitOfPost(postDetail.fit);
     }
-  };
+  }, [postDetail]);
 
   const handleScroll = (e) => {
     if (e.nativeEvent.contentOffset.y > 300) {
@@ -72,7 +75,7 @@ export default function PostDetail(prop) {
     const res = await bookmarksApi.createBookMark(post.id);
 
     if (res && res.data.code === 200) {
-      fetchDetailPost();
+      dispatch(getDetailPostAction(post.id, "vi"));
       dispatch(getProfileAnalyticsAction());
       dispatch(getNewPostAction(null, null, null, null, 16, null, "vi", 0));
     }
@@ -95,21 +98,28 @@ export default function PostDetail(prop) {
     const res = await bookmarksApi.deleteBookMark(post.id);
 
     if (res && res.data.code === 200) {
-      fetchDetailPost();
+      dispatch(getDetailPostAction(post.id, "vi"));
       dispatch(getProfileAnalyticsAction());
       dispatch(getNewPostAction(null, null, null, null, 16, null, "vi", 0));
     }
   };
 
   useEffect(() => {
-    fetchDetailPost();
+    dispatch(getDetailPostAction(id, "vi"));
   }, [id]);
 
-  console.log(post.cvApplication);
+  const handleRefresh = () => {
+    setRefreshing(true);
+    dispatch(getDetailPostAction(id, 'vi'));
+    setRefreshing(false);
+  };
 
   return post ? (
     <View style={styles.container}>
       <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
         onScroll={(e) => {
           handleScroll(e);
         }}

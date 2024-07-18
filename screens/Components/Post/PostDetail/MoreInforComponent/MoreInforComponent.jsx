@@ -64,7 +64,7 @@ export default function MoreInforComponent({ post, fitOfPost }) {
             }}
           />
           <Text style={styles.textCenterGray}>Phù hợp</Text>
-          <Text style={styles.item}>{fitOfPost + "%"}</Text>
+          <Text style={styles.item}>{fitOfPost ? fitOfPost : 0 + "%"}</Text>
         </View>
       </View>
     </View>

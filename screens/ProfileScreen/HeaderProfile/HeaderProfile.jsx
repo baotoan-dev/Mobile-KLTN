@@ -107,7 +107,6 @@ export default function HeaderProfile({ isScrolling }) {
                             />
                             <TouchableOpacity
                                 onPress={() => {
-                                    console.log('click');
                                     openImageLibrary();
                                 }}
                                 style={{

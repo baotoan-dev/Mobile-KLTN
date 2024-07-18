@@ -35,7 +35,8 @@ export default function PDFScreen(prop) {
   const [showModalConfirmCreate, setShowModalConfirmCreate] =
     React.useState(false);
   const profile = useSelector((state) => state.profile.profile);
-  const { typeAction, templateId, cvIndexParent, nameCvParent } = prop.route.params;
+  const { typeAction, templateId, cvIndexParent, nameCvParent } =
+    prop.route.params;
   const dispatch = useDispatch();
   const [clickUpdateUI, setClickUpdateUI] = useState(false);
   const [avatar, setAvatar] = useState(null);
@@ -646,30 +647,30 @@ export default function PDFScreen(prop) {
         moreCvProjects: listProject,
       });
 
-    // setLoading(true);
-    // try {
-    //   const res = await axios.post(
-    //     "https://train-django.onrender.com/jobFit/",
-    //     {
-    //       content: content,
-    //     }
-    //   );
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        "https://train-django.onrender.com/jobFit/",
+        {
+          content: content,
+        }
+      );
 
-    //   if (Array.isArray(res.data.data)) {
-    //     const dataRequest = res.data.data.map((item) => ({
-    //       ...item,
-    //       cvIndex: cvIndexParent,
-    //     }));
+      if (Array.isArray(res.data.data) && res.data.data.length > 0) {
+        const dataRequest = res.data.data.map((item) => ({
+          ...item,
+          cvIndex: cvIndexParent,
+        }));
 
-    //     await aiApi.createCvCategory(dataRequest);
-    //   } else {
-    //     console.error("res.data is not an array:", res.data);
-    //   }
-    // } catch (error) {
-    //   console.error(error.response.data);
-    // } finally {
-    //   setLoading(false);
-    // }
+        await aiApi.createCvCategory(dataRequest);
+      } else {
+        console.error("res.data is not an array:", res.data);
+      }
+    } catch (error) {
+      console.error(error.response.data);
+    } finally {
+      setLoading(false);
+    }
 
     handleCaptureImage();
     const { uri } = await Print.printToFileAsync({

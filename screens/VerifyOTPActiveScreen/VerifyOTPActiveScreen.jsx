@@ -43,7 +43,6 @@ export default function VerifyOTPActiveScreen(prop) {
   };
 
   const handleReloadProfile = () => {
-    console.log('vao day');
     dispatch(getProfileAction("vi"));
     navigation.navigate("Main");
   };

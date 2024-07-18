@@ -1,20 +1,28 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ToastAndroid, ActivityIndicator } from 'react-native'
-import React, { useEffect } from 'react'
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProfileAction } from '../../../redux/store/Profile/profileSilce';
-import RecentCVApplication from './RecentCVApplication/RecentCVApplication';
-import AllCVFromProfile from './AllCVFromProfile/AllCVFromProfile';
-import UploadCVFromMobile from './UploadCVFromMobile/UploadCVFromMobile';
-import Notice from './Notice/Notice';
-import { applicationsApi } from '../../../api/applications/applicationsApi';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ToastAndroid,
+  ActivityIndicator,
+} from "react-native";
+import React, { useEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfileAction } from "../../../redux/store/Profile/profileSilce";
+import RecentCVApplication from "./RecentCVApplication/RecentCVApplication";
+import AllCVFromProfile from "./AllCVFromProfile/AllCVFromProfile";
+import UploadCVFromMobile from "./UploadCVFromMobile/UploadCVFromMobile";
+import Notice from "./Notice/Notice";
+import { applicationsApi } from "../../../api/applications/applicationsApi";
 
 export default function Application(prop) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const id = prop.route.params.id;
-  const profile = useSelector(state => state.profile.profile);
+  const profile = useSelector((state) => state.profile.profile);
   const [isCheckRecentCV, setIsCheckRecentCV] = React.useState(false);
   const [isCheckAllCV, setIsCheckAllCV] = React.useState(false);
   const [isCheckUploadCV, setIsCheckUploadCV] = React.useState(false);
@@ -25,8 +33,8 @@ export default function Application(prop) {
   const [typeApplication, setTypeApplication] = React.useState(null);
 
   useEffect(() => {
-    dispatch(getProfileAction('vi'))
-  }, [])
+    dispatch(getProfileAction("vi"));
+  }, []);
 
   useEffect(() => {
     if (isCheckRecentCV) {
@@ -41,24 +49,27 @@ export default function Application(prop) {
       setIsCheckRecentCV(false);
       setIsCheckAllCV(false);
     }
-  }, [isCheckRecentCV, isCheckAllCV, isCheckUploadCV])
+  }, [isCheckRecentCV, isCheckAllCV, isCheckUploadCV]);
 
   const handleApplication = async () => {
     const formData = new FormData();
 
-    formData.append('type', typeApplication);
-    formData.append('postId', id);
+    formData.append("type", typeApplication);
+    formData.append("postId", id);
 
-    if (typeApplication === 'near' || typeApplication === 'all') {
-      formData.append('idCv', typeApplication === 'near' ? idFromCVRecent : idFromCVAll);
+    if (typeApplication === "near" || typeApplication === "all") {
+      formData.append(
+        "idCv",
+        typeApplication === "near" ? idFromCVRecent : idFromCVAll
+      );
     }
 
-    if (typeApplication === 'upload') {
+    if (typeApplication === "upload") {
       if (!filePdf) {
-        Alert.alert('Thông báo', 'Vui lòng chọn file PDF');
+        Alert.alert("Thông báo", "Vui lòng chọn file PDF");
         return;
       }
-      formData.append('pdf', filePdf);
+      formData.append("pdf", filePdf);
     }
 
     setLoadingApplication(true);
@@ -67,26 +78,33 @@ export default function Application(prop) {
 
     if (res && res.data && res.data.code === 201) {
       setLoadingApplication(false);
-      ToastAndroid.show('Ứng tuyển thành công', ToastAndroid.SHORT);
+      ToastAndroid.show("Ứng tuyển thành công", ToastAndroid.SHORT);
+      dispatch(getDetailPostAction(id, "vi"));
       navigation.goBack();
     }
-  }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => {
-          navigation.goBack();
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.title}>Ứng tuyển</Text>
       </View>
       <View style={styles.content}>
-        <Text style={{
-          fontWeight: 'bold',
-          fontSize: 16,
-          marginBottom: 10,
-        }}>CV ứng tuyển</Text>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 16,
+            marginBottom: 10,
+          }}
+        >
+          CV ứng tuyển
+        </Text>
         <View>
           <RecentCVApplication
             setIdFromCVRecent={setIdFromCVRecent}
@@ -114,83 +132,84 @@ export default function Application(prop) {
       <View style={styles.contentBottom}>
         <Notice />
       </View>
-      <View style={{
-        position: 'absolute',
-        bottom: 10,
-        width: '100%'
-      }}>
-        <TouchableOpacity 
-        onPress={() => {
-          handleApplication();
-        }}
+      <View
         style={{
-          backgroundColor: '#5755FE',
-          padding: 15,
-          alignItems: 'center',
-          marginHorizontal: 15,
-          borderRadius: 5,
-          marginTop: 20
-        }}>
-          <Text style={{
-            color: 'white',
-            fontWeight: 'bold'
-          }}>Ứng tuyển</Text>
+          position: "absolute",
+          bottom: 10,
+          width: "100%",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            handleApplication();
+          }}
+          style={{
+            backgroundColor: "#5755FE",
+            padding: 15,
+            alignItems: "center",
+            marginHorizontal: 15,
+            borderRadius: 5,
+            marginTop: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontWeight: "bold",
+            }}
+          >
+            Ứng tuyển
+          </Text>
         </TouchableOpacity>
       </View>
-      {
-        loadingApplication && (
-          <View style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 100
-          }}>
-            <ActivityIndicator size="large" color="#5755FE" />
-          </View>
-        )
-      }
+      {loadingApplication && (
+        <View
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 100,
+          }}
+        >
+          <ActivityIndicator size="large" color="#5755FE" />
+        </View>
+      )}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    position: 'relative',
-    height: '100%',
-    backgroundColor: 'white',
+    position: "relative",
+    height: "100%",
+    backgroundColor: "white",
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
     marginLeft: 5,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 0.5,
-    borderBottomColor: 'gray',
+    borderBottomColor: "gray",
     padding: 10,
   },
   content: {
     paddingHorizontal: 15,
     marginTop: 10,
   },
-  left: {
-
-  },
-  center: {
-
-  },
-  bottom: {
-
-  },
+  left: {},
+  center: {},
+  bottom: {},
   contentBottom: {
     paddingHorizontal: 15,
     marginTop: 20,
-  }
-})
+  },
+});

@@ -21,7 +21,6 @@ export default function SeeAllBlog(prop) {
     }, []);
 
     useEffect(() => {
-        console.log(community.communications);
         if (community && community.communications) {
           // if (currentPage === 0) {
           setBlog(community.communications);

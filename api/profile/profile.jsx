@@ -8,8 +8,6 @@ const profileApi = {
 
         const token = await SecureStore.getItemAsync("token");
 
-        console.log('token', token);
-
         return await axios.get(URL, {
             headers: {
                 Authorization: `Bearer ${token}`,

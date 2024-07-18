@@ -206,7 +206,9 @@ export default function HomeScreen() {
       </View>
       <View>
         <NewJob />
-        <Company />
+        <Company 
+          refreshing={refreshing}
+        />
         <Blog />
       </View>
     </ScrollView>

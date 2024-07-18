@@ -27,6 +27,7 @@ import cvLayoutReducer from "../store/CvLayout/cvLayoutSlice";
 import allCommunityOfProfileReducer from "../store/CommunityProfile/GetAllCommunitOfProile/getAllCommunitOfProileSlice";
 import aiGetAllJobReducer from "../store/AISeenForCV/getAllJobForCVSlice";
 import allHistoryCommunityOfProfileReducer from "../store/CommunityProfile/GetAllHistoryCommunitOfProile/getAllHistoryCommunitOfProileSlice";
+import getPostDetailReducer from "../store/Post/getDetailPostSlice";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -57,6 +58,7 @@ const rootReducer = combineReducers({
     allCommunityOfProfile: allCommunityOfProfileReducer,
     allHistoryCommunityOfProfile: allHistoryCommunityOfProfileReducer,
     aiGetAllJob: aiGetAllJobReducer,
+    getPostDetail: getPostDetailReducer,
 });
 
 export default rootReducer;
