@@ -65,6 +65,7 @@ export default function HomeScreen() {
   const profile = useSelector((state) => state.profile.profile);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshingCompany, setRefreshingCompany] = React.useState(false);
   // modify color status
   StatusBar.setBackgroundColor("#fff");
 
@@ -83,6 +84,7 @@ export default function HomeScreen() {
 
   const handleRefresh = () => {
     setRefreshing(true);
+    setRefreshingCompany(true);
     dispatch(getProfileAction("vi"));
     dispatch(getNewPostAction(null, null, null, null, 16, null, "vi", 0));
     setRefreshing(false);
@@ -207,7 +209,8 @@ export default function HomeScreen() {
       <View>
         <NewJob />
         <Company 
-          refreshing={refreshing}
+          refreshing={refreshingCompany}
+          setRefreshing={setRefreshingCompany}
         />
         <Blog />
       </View>

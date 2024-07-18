@@ -16,7 +16,7 @@ import { CheckLengthTitle } from "../../../utils/CheckLengthTitle";
 import { useNavigation } from "@react-navigation/native";
 import { Fontisto } from "@expo/vector-icons";
 
-export default function Company({ refreshing }) {
+export default function Company({ refreshing, setRefreshing }) {
   const [company, setCompany] = useState([]);
   const [loading, setLoading] = useState(true); 
   const translateY = useRef(new Animated.Value(0)).current;
@@ -34,6 +34,7 @@ export default function Company({ refreshing }) {
 
   useEffect(() => {
     getCompany();
+    setRefreshing(false);
   }, []);
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export default function Company({ refreshing }) {
   }, [translateY]);
 
   useEffect(() => {
+    console.log(refreshing);
     getCompany();
   }, [refreshing]);
 
